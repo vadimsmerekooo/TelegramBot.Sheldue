@@ -60,6 +60,7 @@
     <Compile Include="Classes\Menu\MenuSDepartment\ListSewingDepartmentGroups.cs" />
     <Compile Include="Classes\Menu\MenuStudent.cs" />
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
+    <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
     <Compile Include="Emoji.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +74,9 @@
     <Folder Include="Classes\Student\MDepartment\" />
     <Folder Include="Classes\Student\SDepartment\" />
     <Folder Include="Classes\Teacher\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resource\Piar\InstagramPhoto.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

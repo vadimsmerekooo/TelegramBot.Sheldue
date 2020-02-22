@@ -76,6 +76,8 @@ namespace Telegram_Bot.View
                                             },
                         ResizeKeyboard = true
                     };
+                    Classes.Menu.PiarClasses.PiarInstagram piarInst = new Classes.Menu.PiarClasses.PiarInstagram(BotRoma, ApiKeyBot);
+                    piarInst.InstagramDeveloper(e);
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboardMain);
                     break;
                 case "/help":
@@ -91,6 +93,12 @@ namespace Telegram_Bot.View
                     menuSelectPerson.ViewkeyBoardButton(sender, e);
                     break;
                 case "Помощь ❔":
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"*Список доступных команд:*
+
+{convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} /help \- просмотреть список команд
+{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} /start \- старт/презагрузка бота
+{convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} /personality \- выбор личности
+{convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} /reset \- перезапуск бота", ParseMode.MarkdownV2);
                     break;
                 case "/personality":
                     Classes.MenuPersonality menuSelectPersonSecond = new Classes.MenuPersonality(BotRoma, ApiKeyBot);

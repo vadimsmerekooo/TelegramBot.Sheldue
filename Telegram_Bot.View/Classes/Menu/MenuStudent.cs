@@ -7,7 +7,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram_Bot.View.Classes.Student
 {
-    class MenuStudent : MainMenu
+    public class MenuStudent : MainMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;

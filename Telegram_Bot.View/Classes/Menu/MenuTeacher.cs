@@ -3,6 +3,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram_Bot.View.Classes.Menu;
 
 namespace Telegram_Bot.View.Classes.Teacher
 {
@@ -26,8 +27,8 @@ namespace Telegram_Bot.View.Classes.Teacher
 {convertEmoji = new Emoji(0x2139)} _На данный момент некоторые преподаватели не доступны_
 
 {convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} Толочко П\.С\.
-{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} Киреня О\.П\.", ParseMode.MarkdownV2);
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Вводи цифру {convertEmoji = new Emoji(0x2B07)}");
+{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} Киреня О\.П\.", ParseMode.MarkdownV2);      
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Вводи цифру {convertEmoji = new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, new ReplyKeyboardRemove());
         }
         
     }
