@@ -20,6 +20,8 @@ namespace Telegram_Bot.View.Classes.Teacher
 
         public async void ViewListWithTeacher(object sender, MessageEventArgs e)
         {
+            Student.MenuStudent ms = new Student.MenuStudent(BotRoma, ApiKeyBot);
+            BotRoma.OnMessage -= ms.Frog;
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
                 return;

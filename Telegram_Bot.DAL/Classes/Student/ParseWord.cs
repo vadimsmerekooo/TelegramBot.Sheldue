@@ -1,26 +1,20 @@
 ﻿using System;
-using Telegram.Bot.Types;
 using System.Collections.Generic;
 using WordText = Microsoft.Office.Interop.Word;
-using Telegram.Bot;
 
-namespace Telegram_Bot.View.Classes.Student.IDepartment
+
+namespace Telegram_Bot.DAL.Classes.Student
 {
-    class ParseWord : MainMenu
+    public class ParseWord
     {
         WordText.Application word = new WordText.Application();
         WordText.Document doc = new WordText.Document();
+        
 
-        private TelegramBotClient BotRoma;
-        private string ApiKeyBot;
-        public ParseWord(TelegramBotClient Bot, string api) : base(Bot, api)
+        public void SelectGroupFile()
         {
-            this.BotRoma = Bot;
-            this.ApiKeyBot = api;
-        }
-
-        public async void SelectGroupFile(Message message)
-        {
+            string rowbuf = string.Empty;
+            Console.WriteLine("Запуск метода ParseText");
             try
             {
                 Object missing = System.Reflection.Missing.Value;
@@ -36,7 +30,6 @@ namespace Telegram_Bot.View.Classes.Student.IDepartment
                 word.Visible = false;
                 WordText.Table tbl = doc.Tables[1];
                 string row = string.Empty;
-                string rowbuf = string.Empty;
                 int date = 3;
                 List<string> listdate = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
                 DateTime dt = DateTime.Now;
@@ -68,7 +61,8 @@ namespace Telegram_Bot.View.Classes.Student.IDepartment
                 if (daate == "Thursday") date = 15;
                 if (daate == "Friday") date = 19;
                 if (daate == "Saturday") { date = 23; rowdate = 2; }
-                rowbuf = daate.ToString() + "\n";
+                rowbuf = daate.ToString() + @"
+";
                 try
                 {
                     for (int i = date; i < date + rowdate; i++)
@@ -97,14 +91,17 @@ namespace Telegram_Bot.View.Classes.Student.IDepartment
                 {
 
                 }
-                finally
-                {
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, rowbuf);
-                }
 
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                doc.Close();
+                word.Quit();
+                Console.WriteLine(rowbuf);
             }
         }
     }

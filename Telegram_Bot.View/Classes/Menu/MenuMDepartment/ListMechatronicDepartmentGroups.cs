@@ -21,6 +21,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
             if (message.Type != MessageType.Text || message.Text == null)
                 return;
             await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Список групп машиностроительного отделения:
+
 {convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} 01 эс
 {convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} 02 эс
 {convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} 26 тм

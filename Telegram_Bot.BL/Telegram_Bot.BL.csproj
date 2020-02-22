@@ -40,12 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Student\ParseWord.cs" />
+    <Compile Include="Classes\Student\CollectionInformationParseText.cs" />
     <Compile Include="MainClassBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Teacher\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Telegram_Bot.DAL\Telegram_Bot.DAL.csproj">
+      <Project>{d312dbf3-1046-49e4-bdf2-16f023d4038c}</Project>
+      <Name>Telegram_Bot.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

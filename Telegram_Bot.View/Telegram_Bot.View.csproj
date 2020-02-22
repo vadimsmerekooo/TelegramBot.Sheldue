@@ -61,7 +61,7 @@
     <Compile Include="Classes\Menu\MenuStudent.cs" />
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
     <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
-    <Compile Include="Emoji.cs" />
+    <Compile Include="Resource\Emoji.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -77,6 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resource\Piar\InstagramPhoto.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Telegram_Bot.BL\Telegram_Bot.BL.csproj">
+      <Project>{0e81ef54-e113-4d52-9f9b-129359022e17}</Project>
+      <Name>Telegram_Bot.BL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

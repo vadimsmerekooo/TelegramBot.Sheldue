@@ -7,7 +7,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram_Bot.View.Classes.Student
 {
-    public class MenuStudent : MainMenu
+    class MenuStudent : MainMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
@@ -47,7 +47,7 @@ namespace Telegram_Bot.View.Classes.Student
             
             BotRoma.OnMessage += Frog;
         }
-        public async void Frog(object sender, MessageEventArgs e)
+        public void Frog(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
