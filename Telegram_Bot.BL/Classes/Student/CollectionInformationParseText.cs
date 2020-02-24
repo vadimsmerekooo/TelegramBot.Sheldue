@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Telegram_Bot.DAL.Classes;
+using Telegram_Bot.DAL.Classes.Student;
+
 namespace Telegram_Bot.BL.Classes.Student
 {
     public class CollectionInformationParseText
     {
-        public void SearchShedule()
+        public string SearchShedule(string groupName, string day)
         {
-            DAL.Classes.Student.ParseWord pw = new DAL.Classes.Student.ParseWord();
-            pw.SelectGroupFile();
+            ParseWord pw = new ParseWord();
+            return pw.SelectGroupFile(groupName, day);
         }
     }
 }

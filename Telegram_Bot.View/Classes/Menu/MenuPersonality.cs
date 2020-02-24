@@ -35,7 +35,6 @@ namespace Telegram_Bot.View.Classes
                 ResizeKeyboard = true
             };
             await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardPersonality);
-            
             BotRoma.OnMessage += MenuPers;
         }
 
@@ -49,10 +48,14 @@ namespace Telegram_Bot.View.Classes
                 case "Преподаватель 👨‍🏫":
                     Teacher.MenuWithListTeacher menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot);
                     menuSelectTeacher.ViewListWithTeacher(sender, e);
+                    BotRoma.OnMessage -= MenuPers;
                     break;
                 case "Учащийся 🎓":
                     Student.MenuStudent menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot);
+                    BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
+                    BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
                     menuSelectStudentDepartment.ListDepartment(sender, e);
+                    BotRoma.OnMessage -= MenuPers;
                     break;
                 default: BotRoma.OnMessage -= MenuPers; break;
             }

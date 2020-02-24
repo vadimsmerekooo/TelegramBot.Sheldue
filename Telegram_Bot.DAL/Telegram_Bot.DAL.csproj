@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\DataBase\" />
+    <Folder Include="Classes\Student\FileWord\ListShedule\" />
+    <Folder Include="Classes\Student\FileWord\Zameny\" />
     <Folder Include="Classes\Teacher\" />
   </ItemGroup>
   <ItemGroup>

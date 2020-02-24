@@ -53,6 +53,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Menu\DeleteMessage.cs" />
+    <Compile Include="Classes\Menu\ListDayWeak.cs" />
     <Compile Include="Classes\Menu\MenuEMDepartment\ListElectoMechanicDepartmentGroups.cs" />
     <Compile Include="Classes\Menu\MenuIDepartment\ListInformationDepartmentGroup.cs" />
     <Compile Include="Classes\Menu\MenuMDepartment\ListMechatronicDepartmentGroups.cs" />
@@ -61,6 +63,8 @@
     <Compile Include="Classes\Menu\MenuStudent.cs" />
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
     <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
+    <Compile Include="Interface\IStepsForWorkFile.cs" />
+    <Compile Include="Interface\IStepsOnMenu.cs" />
     <Compile Include="Resource\Emoji.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
