@@ -60,9 +60,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Telegram_Bot.View\Telegram_Bot.View.csproj">
+    <ProjectReference Include="..\Telegram_Bot.View\Telegram_Bot.PL.csproj">
       <Project>{a7d38e0c-296a-457a-bc28-f85ac775ae76}</Project>
-      <Name>Telegram_Bot.View</Name>
+      <Name>Telegram_Bot.PL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

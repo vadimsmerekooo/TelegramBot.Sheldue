@@ -9,7 +9,7 @@ using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
 {
-    class ListInformationDepartmentGroup : MainMenu, IStepsForWorkFile
+    class ListInformationDepartmentGroup : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;

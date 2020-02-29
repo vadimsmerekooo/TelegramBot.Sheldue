@@ -6,7 +6,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Telegram_Bot.View.Interface;
 namespace Telegram_Bot.View.Classes.Menu.MenuEMDepartment
 {
-    class ListElectoMechanicDepartmentGroups : MainMenu, IStepsForWorkFile
+    class ListElectoMechanicDepartmentGroups : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;

@@ -4,6 +4,7 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram_Bot.View.Interface;
+using Telegram_Bot.BL.Classes.Student;
 
 namespace Telegram_Bot.View.Classes.Menu
 {
@@ -83,22 +84,19 @@ namespace Telegram_Bot.View.Classes.Menu
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
                     NextStepParseFile(sender, e, "суббота");
                     break;
-                default: BotRoma.OnMessage -= SelectDay; break;
             }
         }
 
         public async void NextStepParseFile(object sender, MessageEventArgs e, string day)
         {
             var message = e.Message;
-            if (message.Type != MessageType.Text || message == null)
-                return;
 
             deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);
             deleteMessage.DeleteMessageOfMenu(message);
 
             await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Заргузка...");
 
-            BL.Classes.Student.CollectionInformationParseText collectionInform = new BL.Classes.Student.CollectionInformationParseText();
+            CollectionInformationParseText collectionInform = new CollectionInformationParseText();
             string parseTextWithoutWordFile = collectionInform.SearchShedule(groupName, day);
 
             deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);

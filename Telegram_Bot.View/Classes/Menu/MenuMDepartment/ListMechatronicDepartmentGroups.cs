@@ -7,7 +7,7 @@ using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
 {
-    class ListMechatronicDepartmentGroups : MainMenu, IStepsForWorkFile
+    class ListMechatronicDepartmentGroups : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
@@ -16,7 +16,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
         }
-        public async void ListViewGroups(object sender, MessageEventArgs e)
+        public async void ViewListGroups(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message.Text == null)

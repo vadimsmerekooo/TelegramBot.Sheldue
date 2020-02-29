@@ -10,9 +10,9 @@ namespace Telegram_Bot.DAL.Classes.Student
 {
     public class ParseWord
     {
-        WordText.Application word = new WordText.Application();
-        WordText.Document doc = new WordText.Document();
-        WordText.Table tbl = null;
+        WordText.Application word;
+        WordText.Document doc;
+        WordText.Table tbl;
 
         public string SelectGroupFile(string groupName, string day)
         {
@@ -21,27 +21,36 @@ namespace Telegram_Bot.DAL.Classes.Student
 
             try
             {
+                word = new WordText.Application();
+                doc = new WordText.Document();
+                tbl = null;
+                Object missing = System.Reflection.Missing.Value;
                 Object confConv = false;
                 Object readOnly = true;
+                Object isVisible = false;
+                Object saveChanges = false;
                 Object filename = @"C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\Telegram_Bot.DAL\Classes\Student\FileWord\ListShedule\Information.docx";
 
 
                 //openDocThread = new Thread(() => doc = word.Documents.Open(ref filename, ref confConv, ref readOnly));
                 //openDocThread.Start();
-                //word.Visible = true;
-               // tbl = doc.Tables[1];
+                //word.Visible = false;
+                //tbl = doc.Tables[1];
 
 
             }
-            catch (Exception ex)
+            catch 
             {
-                Console.WriteLine(ex);
+                
             }
             finally
             {
-                doc.Close();
-                word.Quit();
-                tbl = null;
+                if(word != null)
+                {
+                    doc.Close();
+                    word.Quit();
+                    tbl = null;
+                }
             }
 
             rowbuf = groupName + " " + day;

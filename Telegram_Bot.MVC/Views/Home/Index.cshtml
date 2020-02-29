@@ -1,0 +1,564 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Бот Рома - твой помощник в обучении</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="~/Content/slick.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/animate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:300,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="shortcut icon" href="~/Content/favicon.ico">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137435809-1"></script>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-137435809-1');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(54650032, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/54650032" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?162",t.onload=function(){VK.Retargeting.Init("VK-RTRG-407589-7fjI1"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script>
+    <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-407589-7fjI1" style="position:fixed; left:-999px;" alt="" /></noscript>
+
+    <meta name="yandex-verification" content="870cd50944d17f32" />
+
+</head>
+
+<body>
+    <div class="slider single-item">
+
+        <div class="slide slick-slide">
+            <div class="slide-inner slide-video">
+                <div class="slide-content">
+                    <img src="~/Content/img/tg_fon.png" style="text-align: center;" />
+                    <img src="~/Content/img/tg_logo.png" style="margin-bottom: 50%; position: absolute; display: block; max-width: 100%;"/>
+                    <div class="btns-container">
+                        <div class="inner-next"></div><div class="inner-prev"></div>
+
+                        <a class=""
+                           style="background: none; text-align: center;background: none; background-size: contain; padding: 0; margin-bottom: auto; width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+            bottom:5%!important;
+            width: 80%!important;
+
+            ">
+                            <img src='https://5d14f9ef88532d001e44028e.storage.yandexcloud.net/4fe45f12-b42e-4598-9b4b-ef8bac06c866.gif' style='width: 100%; ' />
+                            <span style="position: absolute;">  </span>
+                        </a>
+                        <a href="https://t.me/studentassistant_bot" role="button" class="btn btn-outline-primary" style="text-align: center;background-size: contain; color: white; font-size: 20px; padding: 0;  width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+              bottom:15%!important;
+              width: 70%!important;
+
+              ">Запуск Бота</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="slide slick-slide">
+            <div class="slide-inner slide-video">
+                <div class="slide-content">
+                    <img src="~/Content/img/git_fon.png" style="position:absolute;"/>
+                    <div class="btns-container">
+                        <div class="inner-next"></div><div class="inner-prev"></div>
+                        <a href="https://github.com/VadimShkuratov" role="button" class="btn btn-outline-dark" style="text-align: center;background-size: contain; font-size: 20px; padding: 0;  width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+              bottom:15%!important;
+              width: 70%!important;
+
+              ">Репозиторий Бота</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="slide slick-slide">
+            <div class="slide-inner slide-video">
+                <div class="slide-content">
+                    <img src="~/Content/img/vk_fon.png" style="text-align: center;" />
+                    <img src="~/Content/img/vk_logo.png" class="img-center" style="margin-bottom: 50%; width: 75%; margin-left: 45px; height: auto; position: absolute; display: block; max-width: 100%;"/>
+                    <div class="btns-container">
+                        <div class="inner-next"></div><div class="inner-prev"></div>
+
+                        <a class=""
+                           style="background: none; text-align: center;background: none; background-size: contain; padding: 0; margin-bottom: auto; width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+        bottom:5%!important;
+        width: 80%!important;
+
+        ">
+                            <img src='https://5d14f9ef88532d001e44028e.storage.yandexcloud.net/4fe45f12-b42e-4598-9b4b-ef8bac06c866.gif' style='width: 100%; ' />
+                            <span style="position: absolute;">  </span>
+                        </a>
+                        <a href="https://vk.com/lovebonsticks" role="button" class="btn btn-outline-primary" style="text-align: center;background-size: contain; color: white; font-size: 20px; padding: 0;  width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+          bottom:15%!important;
+          width: 70%!important;
+
+          ">Я Вконтакте</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="slide slick-slide">
+            <div class="slide-inner slide-video">
+                <div class="slide-content">
+                    <img src="~/Content/img/inst_fon.png" />
+                    <img src="~/Content/img/inst_logo.png" style="text-align: center; position: absolute; height: 45% ; margin-left: 45px;" />
+                    <div class="btns-container">
+                        <div class="inner-next"></div><div class="inner-prev"></div>
+                        <a href="https://www.instagram.com/tvoy_prostoy_malchik/?hl=ru" role="button" class="btn btn-outline-light" style="text-align: center;background-size: contain; font-size: 20px; padding: 0;  width: 100%; text-align: center; overflow: visible; position: absolute;
+
+
+              bottom:15%!important;
+              width: 70%!important;
+
+              ">Мой Истаграм</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- next -->
+    </div>
+
+    <div class="progressBarContainer">
+        <div><span data-slick-index="0" class="progressBar"></span></div>
+        <div><span data-slick-index="1" class="progressBar"></span></div>
+        <div><span data-slick-index="2" class="progressBar"></span></div>
+        <div><span data-slick-index="3" class="progressBar"></span></div>
+        <!-- progressbar -->
+    </div>
+    <script type="text/javascript" src="~/Scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/slick.min.js"></script>
+    <script src="~/Scripts/animatedModal.min.js"></script>
+
+    <script type="text/javascript">
+    var stopFlag = true;
+    var isVideo = false;
+    var currentVideo;
+    var isPauseProcessing = false;
+    var $slideshow;
+    var setLabel = true;
+
+    function stopSlider () {
+      isPauseProcessing = true
+    }
+
+    function startSlider () {
+      isPauseProcessing = false
+    }
+
+    function isPhoneNumber (value) {
+      return value.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)
+    }
+
+    function isEmail (value) {
+      return value.match(/^([a-zA-Z0-9_.-])+([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/)
+    }
+
+    $(document).ready(function () {
+      $('video').each(function(index, videoItem) {
+        videoItem.play();
+      });
+
+      $('.form-submit').click(function (e) {
+        e.preventDefault()
+
+        var formData = $(this).parent().parent()
+        var formId = $(this).data('formId')
+
+        var nameInput = formData.find('.user-name-input')
+        var isNameHide = nameInput.data('hide')
+        var phoneInput = formData.find('.user-phone-input')
+        var isPhoneHide = phoneInput.data('hide')
+        var emailInput = formData.find('.user-email-input')
+        var isEmailHide = emailInput.data('hide')
+
+        nameInput.css('border-color', '#aaa')
+        phoneInput.css('border-color', '#aaa')
+        emailInput.css('border-color', '#aaa')
+
+        var name = nameInput.val()
+        var phone = phoneInput.val()
+        phone = phone.split('-').join('')
+        var email = emailInput.val()
+
+        var firstLevelValidate = true
+        if (name.trim() == '' && !isNameHide) {
+          nameInput.css('border-color', 'red')
+          firstLevelValidate = false
+        }
+
+        if (phone.trim() == '' && !isPhoneHide) {
+          phoneInput.css('border-color', 'red')
+          firstLevelValidate = false
+        }
+
+        if (!isPhoneNumber(phone) && !isPhoneHide) {
+          phoneInput.css('border-color', 'red')
+          firstLevelValidate = false
+        }
+
+        if (email.trim() == '' && !isEmailHide) {
+          emailInput.css('border-color', 'red')
+          firstLevelValidate = false
+        }
+
+        if (!isEmail(email) && !isEmailHide) {
+          emailInput.css('border-color', 'red')
+          firstLevelValidate = false
+        }
+
+        if (!firstLevelValidate) {
+          return;
+        }
+
+        $.ajax({
+          type: "POST",
+          beforeSend: function(request) {
+            request.setRequestHeader("X-Source-Uri", window.location.href.split('/')[2]);
+          },
+          url: 'https://form.storyland.mobi/api/catch',
+          contentType: "application/json",
+          data: JSON.stringify({
+            phone: phone,
+            name: name,
+            email: email,
+            formId: formId
+          }),
+          success: (data) => {
+            console.log('success')
+          },
+          error: () => {
+            console.log('error req')
+          },
+          dataType: "json"
+        });
+
+        formData.parent().parent().addClass('success')
+      })
+
+      $('.special-form-btn').each(function() {
+        $(this).animatedModal()
+      })
+
+      $('.stop-slider').click(function() {
+        stopSlider()
+        $('.slider').slick("slickSetOption", "swipe", false);
+      })
+
+      $('.start-slider').click(function() {
+        startSlider()
+        $('.slider').slick("slickSetOption", "swipe", true);
+      })
+
+      try {
+        if (window.location.search) {
+          var search = window.location.search.substring(1);
+          var querySelectors = search
+
+          $('.btn-safe-utms').each(function() {
+            var elemHref = $(this).attr('href')
+            if (elemHref.indexOf('?') == -1) {
+              $(this).attr('href', elemHref + '?' + querySelectors)
+            } else {
+              $(this).attr('href', elemHref + '&' + querySelectors)
+            }
+          })
+        }
+      } catch (e) {
+        console.error(e)
+      }
+
+/*
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+if (!iOS) {
+  $('.slide').css('will-change', 'transform')
+}
+*/
+
+
+console.log(setLabel)
+
+const slidesContents = $('.slide-content')
+if (setLabel === undefined || setLabel === true) {
+  slidesContents.eq(slidesContents.length - 1).append(`
+  <div style='position: absolute; bottom: 0; left: 0; width: 100%; z-index: 5555'>
+    <style>
+      .slide .slide-inner a.cr {
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.3);
+        text-transform: initial;
+        opacity: .85;
+        height: 35px;
+      }
+      .slide .slide-inner a.cr:hover {
+        text-decoration: none;
+        opacity: 1;
+      }
+      .slide .slide-inner a.cr strong {
+        text-transform: uppercase;
+        font-weight: 300;
+      }
+      .slide .slide-inner a.cr span {
+      background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 50 50' style='enable-background:new 0 0 50 50;' xml:space='preserve'%3E%3Cpath style='fill:%23D75A4A;' d='M24.85,10.126c2.018-4.783,6.628-8.125,11.99-8.125c7.223,0,12.425,6.179,13.079,13.543 c0,0,0.353,1.828-0.424,5.119c-1.058,4.482-3.545,8.464-6.898,11.503L24.85,48L7.402,32.165c-3.353-3.038-5.84-7.021-6.898-11.503 c-0.777-3.291-0.424-5.119-0.424-5.119C0.734,8.179,5.936,2,13.159,2C18.522,2,22.832,5.343,24.85,10.126z'/%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center center;
+        width: 25px;
+        height: 15px;
+      }
+    </style>
+  </div>`)
+}
+
+
+$slideshow = $('.slider').slick({
+  centerMode: true,
+  dots: false,
+  centerPadding: '60px',
+  variableWidth: true,
+  lazyLoad: 'ondemand',
+  infinite: false,
+  focusOnSelect: true,
+  speed: 300,
+  touchThreshold: 15,
+  prevArrow: '<a class="slick-prev">  </a>',
+  nextArrow: '<a class="slick-next">  </a><a class="slick-replay">  </a>',
+  responsive: [{
+      breakpoint: 768,
+      settings: {
+        variableWidth: true,
+        lazyLoad: 'ondemand',
+        arrows: true,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1,
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: true,
+        lazyLoad: 'ondemand',
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1,
+      }
+    }
+  ]
+});
+
+var defaultTime = 10
+
+// Ticking machine
+var percentTime; // начальное положение прогрессбара
+var tick; // заполняет полоски с указанным интервалом
+var time = defaultTime; // время показа одного слайда
+var progressBarIndex = 0; // содержит индекс текущей кнопки
+var slidesNumber = 5;
+var slides = slidesNumber - 1
+
+$('.progressBarContainer .progressBar').each(function (index) {
+        var progress = "<div class='inProgress inProgress" + index + "'></div>";
+        $(this).html(progress);
+});
+
+function startProgressbar() {
+  resetProgressbar()
+
+  const ItemsForFill = []
+
+  for (var i = 0; i < progressBarIndex; i++) {
+    $('.inProgress').eq(i).css({
+      width: '100%'
+    })
+  }
+
+  currentVideo = $('.slide').eq(progressBarIndex).find('video');
+  isVideo = currentVideo.length !== 0;
+  if (isVideo) {
+    currentVideo.on(
+    "timeupdate",
+    function(event){
+      time = this.duration
+    })
+    currentVideo[0].currentTime = 0
+  } else {
+    $('video').off()
+    time = defaultTime
+  }
+
+  percentTime = 0;
+  tick = setInterval(interval, 10);
+}
+
+function interval() {
+  if (isPauseProcessing) {
+    return;
+  }
+  if (!($('.slider .slick-track div[data-slick-index="' + progressBarIndex + '"]').hasClass(
+    "slick-center"))) {
+    progressBarIndex = $('.slider .slick-track div[class="slide slick-slide slick-current slick-center"]')
+      .data("slickIndex");
+    startProgressbar();
+  } else {
+    if (stopFlag) {
+      if (isVideo) {
+
+      }
+
+      percentTime += 1 / time;
+      $('.inProgress' + progressBarIndex).css({
+        width: percentTime + "%"
+      });
+
+      if (percentTime >= 100) {
+        $('.slider').slick('slickNext');
+        progressBarIndex++;
+
+        currentVideo = $('.slide').eq(progressBarIndex).find('video')
+        isVideo = currentVideo.length !== 0
+        if (isVideo) {
+          currentVideo.on(
+          "timeupdate",
+          function(event) {
+            time = this.duration
+          })
+          currentVideo[0].currentTime = 0
+        } else {
+          $('video').off()
+          time = defaultTime
+        }
+
+        if (progressBarIndex > slides) { // если индекс текущей кнопки больше количества слайдов - останавливает воспроизведение
+          stopProgressbar()
+        } else {
+          startProgressbar();
+        }
+      }
+    }
+
+  }
+}
+
+function resetProgressbar() {
+  $('.inProgress').css({
+    width: 0 + '%'
+  });
+  clearInterval(tick);
+}
+
+function stopProgressbar() { /* останавливает воспроизведение слайдера на последнем слайде */
+  $('.inProgress .inProgress' + slides).css({
+    width: 100 + '%'
+  });
+  clearInterval(tick);
+}
+
+startProgressbar();
+// End ticking machine
+
+$('.progressBarContainer div').click(function () { // меняет кнопку на прогрессбаре при клике
+  clearInterval(tick);
+  var goToThisIndex = $(this).find("span").data("slickIndex");
+  $('.slider').slick('slickGoTo', goToThisIndex, false);
+  startProgressbar();
+});
+$('.slide.slick-slide').click(function () { // меняет кнопку на прогрессбаре по клику на слайд
+  clearInterval(tick);
+  var goToThisIndex = $(this).find("span").data("slickIndex");
+  $('.slider').slick('slickGoTo', goToThisIndex, false);
+  startProgressbar();
+});
+
+$('.slick-replay').click(function () { // возвращает на первый слайд
+  clearInterval(tick);
+  var goToThisIndex = $(this).find("span").data("slickIndex");
+  $('.slider').slick('slickGoTo', 0);
+  startProgressbar();
+});
+
+/* Для мобилок. Отслеживает свайп с последнего слайда */
+var $div = $('.slick-track .slick-slide:last-child');
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.attributeName === "class") {
+      clearInterval(tick);
+      var goToThisIndex = $(this).find("span").data("slickIndex");
+      $('.slider').slick('slickGoTo', 0);
+      startProgressbar();
+    }
+  });
+});
+observer.observe($div[0], {
+  attributes: true
+});
+
+
+if($(window).width() < 647) {
+    $(".slide").delay(1500).queue(function (next) {
+      $(this).css('height', `${window.innerHeight}px`);
+      next();
+    });
+    $(window).resize(() => {
+      $(".slide").delay(1500).queue(function (next) {
+        $(this).css('height', `${window.innerHeight}px`);
+        next();
+      });
+    });
+  }
+  window.addEventListener("touchmove", function(event) {
+    event.preventDefault();
+  }, {passive: false});
+
+  $('.inner-next').click(function() {
+    $slideshow.slick('slickNext');
+  });
+  $('.inner-prev').click(function() {
+    $slideshow.slick('slickPrev');
+  });
+});
+    </script>
+
+</body>
+
+</html>

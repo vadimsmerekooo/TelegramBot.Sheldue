@@ -72,13 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Classes\Student\EMDepartment\" />
-    <Folder Include="Classes\Student\IDepartment\" />
-    <Folder Include="Classes\Student\MDepartment\" />
-    <Folder Include="Classes\Student\SDepartment\" />
-    <Folder Include="Classes\Teacher\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resource\Piar\InstagramPhoto.jpg" />
   </ItemGroup>

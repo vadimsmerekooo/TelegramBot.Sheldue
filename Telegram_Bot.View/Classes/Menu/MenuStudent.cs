@@ -4,6 +4,7 @@ using Telegram.Bot.Args;
 using Telegram_Bot.View.Classes.Menu;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes.Student
 {
@@ -56,29 +57,29 @@ namespace Telegram_Bot.View.Classes.Student
                     deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);
                     deleteMessage.DeleteMessageOfMenu(message);
                     BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    Menu.MenuIDepartment.ListInformationDepartmentGroup lid = new Menu.MenuIDepartment.ListInformationDepartmentGroup(BotRoma, ApiKeyBot);
+                    IStepsForWorkFile lid = new Menu.MenuIDepartment.ListInformationDepartmentGroup(BotRoma, ApiKeyBot);
                     lid.ViewListGroups(sender, e);
                     break;
                 case "2":
                     deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);
                     deleteMessage.DeleteMessageOfMenu(message);
                     BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    Menu.MenuSDepartment.ListSewingDepartmentGroups lsd = new Menu.MenuSDepartment.ListSewingDepartmentGroups(BotRoma, ApiKeyBot);
+                    IStepsForWorkFile lsd = new Menu.MenuSDepartment.ListSewingDepartmentGroups(BotRoma, ApiKeyBot);
                     lsd.ViewListGroups(sender, e);
                     break;
                 case "3":
                     deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);
                     deleteMessage.DeleteMessageOfMenu(message);
                     BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    Menu.MenuEMDepartment.ListElectoMechanicDepartmentGroups lemd = new Menu.MenuEMDepartment.ListElectoMechanicDepartmentGroups(BotRoma, ApiKeyBot);
+                    IStepsForWorkFile lemd = new Menu.MenuEMDepartment.ListElectoMechanicDepartmentGroups(BotRoma, ApiKeyBot);
                     lemd.ViewListGroups(sender, e);
                     break;
                 case "4":
                     deleteMessage = new DeleteMessage(BotRoma, ApiKeyBot);
                     deleteMessage.DeleteMessageOfMenu(message);
                     BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    Menu.MenuMDepartment.ListMechatronicDepartmentGroups lmd = new Menu.MenuMDepartment.ListMechatronicDepartmentGroups(BotRoma, ApiKeyBot);
-                    lmd.ListViewGroups(sender, e);
+                    IStepsForWorkFile lmd = new Menu.MenuMDepartment.ListMechatronicDepartmentGroups(BotRoma, ApiKeyBot);
+                    lmd.ViewListGroups(sender, e);
                     break;
                 default: BotRoma.OnMessage -= Frog; break;
             }

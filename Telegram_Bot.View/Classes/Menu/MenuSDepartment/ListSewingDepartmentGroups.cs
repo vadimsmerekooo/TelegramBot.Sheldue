@@ -6,7 +6,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Telegram_Bot.View.Interface;
 namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
 {
-    class ListSewingDepartmentGroups : MainMenu, IStepsForWorkFile
+    class ListSewingDepartmentGroups : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
@@ -15,6 +15,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
         }
+
         public async void ViewListGroups(object sender, MessageEventArgs e)
         {
             var message = e.Message;
