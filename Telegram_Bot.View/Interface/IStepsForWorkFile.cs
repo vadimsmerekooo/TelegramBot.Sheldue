@@ -5,10 +5,10 @@ namespace Telegram_Bot.View.Interface
 {
     public interface IStepsForWorkFile
     {
-        void ViewListGroups(object sender, MessageEventArgs e);
+        void ViewListGroups(object sender, MessageEventArgs e, string department);
     }
     public interface IStepsForWorkFileInList
     {
-        void NextStepSelectDay(object sender, MessageEventArgs e, string groupName);
+        void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department);
     }
 }

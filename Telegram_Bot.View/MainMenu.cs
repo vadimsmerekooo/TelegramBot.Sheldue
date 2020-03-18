@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram_Bot.View.Classes.Menu;
+using System.Threading;
+using NLog;
 
 namespace Telegram_Bot.View
 {
@@ -14,7 +15,8 @@ namespace Telegram_Bot.View
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         public Emoji convertEmoji;
-        public DeleteMessage deleteMessage;
+        private Keyboards keyboard = new Keyboards();
+        private Logger logger;
 
         public MainMenu(TelegramBotClient Bot, string api)
         {
@@ -25,6 +27,7 @@ namespace Telegram_Bot.View
 
         public async void StartedMenu(object sender, DoWorkEventArgs e)
         {
+            logger = LogManager.GetCurrentClassLogger();
             try
             {
                 var worker = sender as BackgroundWorker;
@@ -32,23 +35,15 @@ namespace Telegram_Bot.View
                 BotRoma = new TelegramBotClient(key);
                 await BotRoma.SetWebhookAsync("");
                 BotRoma.OnMessage += BotOnMessageReceived;
-                BotRoma.OnCallbackQuery += BotOnMessageCallBack;
                 BotRoma.StartReceiving();
+                logger.Debug("Presentaition Layer: Status - enable");
             }
-            catch (Exception ex)
+            catch
             {
-
+                logger.Debug("Presentaition Layer: Status - disable");
             }
         }
-
-        private void BotOnMessageCallBack(object sender, CallbackQueryEventArgs e)
-        {
-            var message = e.CallbackQuery.Message;
-            if (e.CallbackQuery.Data == "callbackPersonality")
-            {
-                
-            }
-        }
+        
 
         public async void BotOnMessageReceived(object sender, MessageEventArgs e)
         {
@@ -58,91 +53,47 @@ namespace Telegram_Bot.View
             switch (message.Text)
             {
                 case "/start":
-                    await BotRoma.SetWebhookAsync("");
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Привет - {message.From.FirstName}{convertEmoji = new Emoji(0x1F525)}!
 Я - бот, меня зовут Рома {convertEmoji = new Emoji(0x1F916)};)
 Я помогу составить тебе распиание пар на завтра {convertEmoji = new Emoji(0x1F4CB)}, без посещения сайта колледжа {convertEmoji = new Emoji(0x1F310)}!
 Для промотра списка команд {convertEmoji = new Emoji(0x1F4DC)}, просто введи /help {convertEmoji = new Emoji(new int[] { 0x2139, 0xFE0F })}!
-Для быстрого доступа к овновному меню, введи - Меню(с большой)!
+Для быстрого доступа к овновному меню, введи - Меню {convertEmoji = new Emoji(0x2714)}
 
 Краткая информация о работе со мной:
 {convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} Если Я не отвечаю на команды, перезапусти меня командой /reset {convertEmoji = new Emoji(0x1F503)};)
 {convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} Если после перезапуска, я не отвечаю на команды, свяжись с моим создателем {convertEmoji = new Emoji(0x1F4AD)}
 ");
-                    var keyboardMain = new ReplyKeyboardMarkup
-                    {
-                        Keyboard = new[] {
-                                                new[]
-                                                {
-                                                    new KeyboardButton($"Выбор личности {convertEmoji = new Emoji(0x1F465)}"),
-                                                    new KeyboardButton($"Помощь {convertEmoji = new Emoji(0x2754)}")
-                                                },
-                                            },
-                        ResizeKeyboard = true
-                    };
                     Classes.Menu.PiarClasses.PiarInstagram piarInst = new Classes.Menu.PiarClasses.PiarInstagram(BotRoma, ApiKeyBot);
                     piarInst.InstagramDeveloper(e);
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboardMain);
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboard.Personality());
                     break;
                 case "/help":
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"*Список доступных команд:*
-
-{convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} /help \- просмотреть список команд
-{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} /start \- старт/презагрузка бота
-{convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} /personality \- выбор личности
-{convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} /reset \- перезапуск бота
-{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} /contacts \- контакты с разработчиком", ParseMode.MarkdownV2);
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, keyboard.Help(), ParseMode.MarkdownV2);
                     break;
                 case "Выбор личности 👥":
                     Classes.MenuPersonality menuSelectPerson = new Classes.MenuPersonality(BotRoma, ApiKeyBot);
                     menuSelectPerson.ViewkeyBoardButton(sender, e);
                     break;
                 case "Помощь ❔":
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"*Список доступных команд:*
-
-{convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} /help \- просмотреть список команд
-{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} /start \- старт/презагрузка бота
-{convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} /personality \- выбор личности
-{convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} /reset \- перезапуск бота
-{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} /contacts \- контакты с разработчиком", ParseMode.MarkdownV2);
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, keyboard.Help(), ParseMode.MarkdownV2);
                     break;
                 case "/personality":
                     Classes.MenuPersonality menuSelectPersonSecond = new Classes.MenuPersonality(BotRoma, ApiKeyBot);
                     menuSelectPersonSecond.ViewkeyBoardButton(sender, e);
                     break;
                 case "/reset":
-                    await BotRoma.SetWebhookAsync("");
-                    var keyboardMainMenuRestart = new ReplyKeyboardMarkup
-                    {
-                        Keyboard = new[] {
-                                                new[]
-                                                {
-                                                    new KeyboardButton($"Выбор личности {convertEmoji = new Emoji(0x1F465)}"),
-                                                    new KeyboardButton($"Помощь {convertEmoji = new Emoji(0x2754)}")
-                                                },
-                                            },
-                        ResizeKeyboard = true
-                    };
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Привет - {message.From.FirstName}{convertEmoji = new Emoji(0x1F525)}
-Теперь я снова в строю {convertEmoji = new Emoji(0x2705)}", ParseMode.Markdown, false, false, 0, keyboardMainMenuRestart);
+Я снова в строю {convertEmoji = new Emoji(0x2705)}", ParseMode.Markdown, false, false, 0, keyboard.Personality());
                     break;
                 case "/contacts":
                     Classes.Menu.PiarClasses.PiarInstagram piarInstSlash = new Classes.Menu.PiarClasses.PiarInstagram(BotRoma, ApiKeyBot);
                     piarInstSlash.InstagramDeveloper(e);
                     break;
                 case "Меню":
-                    var keyboardMainMenu = new ReplyKeyboardMarkup
-                    {
-                        Keyboard = new[] {
-                                                new[]
-                                                {
-                                                    new KeyboardButton($"Выбор личности {convertEmoji = new Emoji(0x1F465)}"),
-                                                    new KeyboardButton($"Помощь {convertEmoji = new Emoji(0x2754)}")
-                                                },
-                                            },
-                        ResizeKeyboard = true
-                    };
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboardMainMenu);
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboard.Personality());
+                    break;
+                case "меню":
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboard.Personality());
                     break;
             }
            

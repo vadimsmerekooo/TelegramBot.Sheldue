@@ -1,17 +1,23 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram_Bot.DAL.Classes;
-using Telegram_Bot.DAL.Classes.Student;
+﻿using Telegram_Bot.DAL.Classes.Student;
+using Telegram.Bot;
 
 namespace Telegram_Bot.BL.Classes.Student
 {
     public class CollectionInformationParseText
     {
-        public string SearchShedule(string groupName, string day)
+        private TelegramBotClient BotRoma;
+        private string ApiKeyBot;
+
+        public CollectionInformationParseText(TelegramBotClient Bot, string api)
         {
-            ParseWord pw = new ParseWord();
-            return pw.SelectGroupFile(groupName, day);
+            this.BotRoma = Bot;
+            this.ApiKeyBot = api;
+        }
+
+        public string SearchShedule(string groupName, string day, string department)
+        {
+            ParseWord pw = new ParseWord(BotRoma, ApiKeyBot);
+            return pw.SelectGroupFile(groupName, day, department);
         }
     }
 }

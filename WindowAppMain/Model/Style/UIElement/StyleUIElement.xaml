@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WindowAppMain.Model.Style.UIElement" >
+    
+    <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="None"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="Foreground" Value="#151515"/>
+        <Setter Property="FontSize" Value="30"/>
+    </Style>
+    <Style x:Key="ItemIcon" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="2 0 15 0"/>
+    </Style>
+
+</ResourceDictionary>

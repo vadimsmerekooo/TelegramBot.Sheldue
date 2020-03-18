@@ -38,7 +38,7 @@ namespace Telegram_Bot.View.Classes
             BotRoma.OnMessage += MenuPers;
         }
 
-        private void MenuPers(object sender, MessageEventArgs e)
+        private async void MenuPers(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -46,18 +46,19 @@ namespace Telegram_Bot.View.Classes
             switch (message.Text)
             {
                 case "Преподаватель 👨‍🏫":
+                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
+                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
                     Teacher.MenuWithListTeacher menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot);
                     menuSelectTeacher.ViewListWithTeacher(sender, e);
-                    BotRoma.OnMessage -= MenuPers;
                     break;
                 case "Учащийся 🎓":
+                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
+                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
                     Student.MenuStudent menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot);
-                    BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
                     menuSelectStudentDepartment.ListDepartment(sender, e);
-                    BotRoma.OnMessage -= MenuPers;
                     break;
-                default: BotRoma.OnMessage -= MenuPers; break;
+                default: BotRoma.OnMessage -= MenuPers;
+                    break;
             }
         }
     }
