@@ -16,6 +16,7 @@ namespace WindowAppMain
         public MainWindow()
         {
             InitializeComponent();
+            HomeBox.IsSelected = true;
         }
 
         bool StateClosed = true;

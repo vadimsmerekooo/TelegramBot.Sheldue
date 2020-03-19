@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="BorderStyleButton.xaml"/>
+                <ResourceDictionary Source="Model/Style/UIElement/BorderStyleButton.xaml"/>
                 <ResourceDictionary Source="Model/Style/WindowStyle/Buttons.xaml"/>
                 <ResourceDictionary Source="Model/Style/UIElement/StyleUIElement.xaml"/>
                 <ResourceDictionary Source="Model/Style/WindowStyle/WindowAuthStyle.xaml"/>
