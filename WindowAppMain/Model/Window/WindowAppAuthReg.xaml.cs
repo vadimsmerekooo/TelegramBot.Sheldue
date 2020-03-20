@@ -235,7 +235,7 @@ namespace WindowAppMain
                 //Seccessfull Auth
                 if (goCheckLogin)
                 {
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow = new MainWindow(Name);
                     mainWindow.Show();
                     this.Close();
                 }

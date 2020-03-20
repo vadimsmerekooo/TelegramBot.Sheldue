@@ -60,24 +60,41 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition x:Name="Page" Width="*"/>
-                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
+            <Grid Grid.Column="1" Background="White">
+                <TextBlock Grid.Column="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Тут будет какой-нибудь нарисованный член!"/>
+                <Grid.Effect>
+                    <DropShadowEffect
+                      ShadowDepth="4"
+                      Direction="330"
+                      Color="Black"
+                      Opacity="0.5"
+                      BlurRadius="4"/>
+                </Grid.Effect>
+            </Grid>
         </Grid>
-        <Grid x:Name="GridHeader" Grid.Row="0">
+        <Grid x:Name="GridHeader" Grid.Row="0" Background="#585858">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40" x:Name="ColumWithToggleButton"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
-            <Canvas Grid.Column="3"  Height="35" Width="35" Margin="2 2 2 2" Cursor="Hand">
+            <Grid.Effect>
+                <DropShadowEffect
+                      ShadowDepth="4"
+                      Direction="330"
+                      Color="Black"
+                      Opacity="0.5"
+                      BlurRadius="4"/>
+            </Grid.Effect>
+            <Canvas Grid.Column="3"  Height="35" Width="35" Cursor="Hand" VerticalAlignment="Center">
                 <Image Source="Resource/logoAccount.png" Height="35"/>
-                <Ellipse Stroke="Chartreuse" StrokeThickness="2" Height="35" Width="35"/>
+                <Ellipse Stroke="Chartreuse" StrokeThickness="3" Height="35" Width="35"/>
                 <Canvas.Effect>
                     <DropShadowEffect
                       ShadowDepth="4"
@@ -88,14 +105,13 @@
                 </Canvas.Effect>
             </Canvas>
             <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
-                <TextBlock  Text="AccountName" Style="{DynamicResource TextBlockStyle}" Foreground="White" Margin="5"></TextBlock>
+                <TextBlock x:Name="UserName" Text="AccountName" Style="{DynamicResource TextBlockStyle}" Foreground="White" Margin="0 0 5 0"></TextBlock>
             </StackPanel>
         </Grid>
         <Grid x:Name="GridMenu" HorizontalAlignment="Left" Width="40" Background="#585858" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="36"/>
             </Grid.RowDefinitions>
             <Grid.Effect>
                 <DropShadowEffect
@@ -150,14 +166,6 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="SettingsButton" Text="&#xE713;" Style="{DynamicResource ItemIcon}"/>
                         <TextBlock Text="Настройки" Style="{DynamicResource TextBlockStyle}"/>
-                    </StackPanel>
-                </ListBoxItem>
-            </ListBox>
-            <ListBox x:Name="GoupBoxClose" Grid.Row="2" >
-                <ListBoxItem x:Name="Close" Style="{DynamicResource ListBoxItemStyle}">
-                    <StackPanel Orientation="Horizontal" MouseDown="CloseButtonHamburgerMenu_MouseDown" >
-                        <TextBlock x:Name="CloseButtonHamburgerMenu"  Text="&#xE7E8;" Style="{DynamicResource ItemIcon}"/>
-                        <TextBlock Text="Выход" Style="{DynamicResource TextBlockStyle}"/>
                     </StackPanel>
                 </ListBoxItem>
             </ListBox>

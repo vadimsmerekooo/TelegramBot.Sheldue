@@ -12,13 +12,17 @@ namespace WindowAppMain
     {
 
 
-
+        string _name;
         public MainWindow()
         {
             InitializeComponent();
             HomeBox.IsSelected = true;
         }
-
+        public MainWindow(string name): this()
+        {
+            _name = name;
+            UserName.Text = _name;
+        }
         bool StateClosed = true;
         private void ButtonMenu_Click(object sender, RoutedEventArgs e)
         {

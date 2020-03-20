@@ -9,23 +9,23 @@ namespace WindowAppMain.Model.Style.WindowStyle
 {
     internal static class LocalExtensions
     {
-        public static void ForWindowFromChild(this object childDependencyObject, Action<Window> action)
+        public static void ForWindowFromChild(this object childDependencyObject, Action<System.Windows.Window> action)
         {
             var element = childDependencyObject as DependencyObject;
             while (element != null)
             {
                 element = VisualTreeHelper.GetParent(element);
-                if (element is Window) { action(element as Window); break; }
+                if (element is System.Windows.Window) { action(element as System.Windows.Window); break; }
             }
         }
 
-        public static void ForWindowFromTemplate(this object templateFrameworkElement, Action<Window> action)
+        public static void ForWindowFromTemplate(this object templateFrameworkElement, Action<System.Windows.Window> action)
         {
-            Window window = ((FrameworkElement)templateFrameworkElement).TemplatedParent as Window;
+            System.Windows.Window window = ((FrameworkElement)templateFrameworkElement).TemplatedParent as System.Windows.Window;
             if (window != null) action(window);
         }
 
-        public static IntPtr GetWindowHandle(this Window window)
+        public static IntPtr GetWindowHandle(this System.Windows.Window window)
         {
             WindowInteropHelper helper = new WindowInteropHelper(window);
             return helper.Handle;
