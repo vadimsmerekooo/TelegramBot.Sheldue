@@ -5,10 +5,9 @@
     <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="FontFamily" Value="Bahnschrift"/>
-        <Setter Property="Foreground" Value="#151515"/>
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="17"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
     <Style x:Key="ItemIcon" TargetType="{x:Type TextBlock}">
@@ -64,7 +63,7 @@
                                 <Border.Background>
                                     <TemplateBinding Property="Foreground">
                                         <TemplateBinding.Converter>
-                                            <materialDesign:BrushRoundConverter HighValue="Chartreuse" LowValue="Black"/>
+                                            <materialDesign:BrushRoundConverter HighValue="#2E2E2E" LowValue="Black"/>
                                         </TemplateBinding.Converter>
                                     </TemplateBinding>
                                 </Border.Background>
@@ -73,7 +72,7 @@
                                 <Border.Background>
                                     <TemplateBinding Property="Background">
                                         <TemplateBinding.Converter>
-                                            <materialDesign:BrushRoundConverter HighValue="Chartreuse" LowValue="Black"/>
+                                            <materialDesign:BrushRoundConverter HighValue="#2E2E2E" LowValue="Black"/>
                                         </TemplateBinding.Converter>
                                     </TemplateBinding>
                                 </Border.Background>

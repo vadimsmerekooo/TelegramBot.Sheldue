@@ -4,172 +4,301 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:local="clr-namespace:WindowAppMain"
         mc:Ignorable="d"
         Icon="Resource/botRoma.png"
         WindowStartupLocation="CenterScreen"
-        MinWidth="400"
+        MinWidth="500"
         MinHeight="400"
-        Title="Student Helper"
-        WindowState="Maximized" >
+        WindowState="Maximized"
+        WindowStyle="None"
+        AllowsTransparency="False"
+        BorderThickness="0"        
+        ResizeMode="CanResizeWithGrip"
+        x:Name="MainWindowName">
     <Window.Resources>
         <Storyboard x:Key="OpenMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="43.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="43.5"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-43.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-43.5"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle2">
                 <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="40"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="150"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="250"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="StackPanelButtonMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="150"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Opacity)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="20"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="230"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="30"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="130"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ImageLogo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="ImageLogo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="50"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="CloseMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
                 <EasingDoubleKeyFrame KeyTime="0" Value="43.5"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="-43.5"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle2">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="250"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="40"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="StackPanelButtonMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="150"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="40"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Opacity)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="230"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="20"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="UserPageInfo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="130"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="10"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ImageLogo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="ImageLogo">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <SolidColorBrush x:Key="ForegroundColorUIElements" Color="Chartreuse"/>
     </Window.Resources>
 
     <Grid x:Name="MainGrid" Background="#1C1C1C">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="GridMainPage" Grid.Row="1">
+        <Grid Grid.Row="1" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition x:Name="Page" Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Column="1" Background="White">
-                <TextBlock Grid.Column="1" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Тут будет какой-нибудь нарисованный член!"/>
-                <Grid.Effect>
-                    <DropShadowEffect
-                      ShadowDepth="4"
-                      Direction="330"
-                      Color="Black"
-                      Opacity="0.5"
-                      BlurRadius="4"/>
-                </Grid.Effect>
-            </Grid>
-        </Grid>
-        <Grid x:Name="GridHeader" Grid.Row="0" Background="#585858">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" x:Name="ColumWithToggleButton"/>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid.Effect>
-                <DropShadowEffect
+            <Grid x:Name="GridMainPage" Grid.Column="1">
+                <Grid Background="#424242">
+                    <Frame x:Name="MainWindowPage" NavigationUIVisibility="Hidden"></Frame>
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0"
+                                      Color="Black"
+                                      BlurRadius="15"/>
+                    </Grid.Effect>
+                </Grid>
+            </Grid>
+            <Grid x:Name="GridMenu" Width="40" HorizontalAlignment="Left" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                </Grid.Effect>
+                <Grid x:Name="StackPanelButtonMenu"  Background="#2E2E2E" Height="50">
+                    <Grid x:Name="UserPageInfo" Grid.Row="0" Margin="10" Width="20" Height="30" Opacity="0">
+                        <Image x:Name="ImageLogo" Source="Resource/logoAccount2x2.png" Height="50" Width="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Image.Effect>
+                                <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                            </Image.Effect>
+                        </Image>
+                        <TextBlock x:Name="UserName" Text="AccountName" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource ResourceKey=TextBlockStyle}"/>
+                        <Line X1="20" Y1="75" X2="210" Y2="75" Stroke="{DynamicResource ForegroundColorUIElements}">
+                            <!-- <Line.Effect>
+                            <DropShadowEffect
                       ShadowDepth="4"
                       Direction="330"
                       Color="Black"
                       Opacity="0.5"
                       BlurRadius="4"/>
-            </Grid.Effect>
-            <Canvas Grid.Column="3"  Height="35" Width="35" Cursor="Hand" VerticalAlignment="Center">
-                <Image Source="Resource/logoAccount.png" Height="35"/>
-                <Ellipse Stroke="Chartreuse" StrokeThickness="3" Height="35" Width="35"/>
-                <Canvas.Effect>
-                    <DropShadowEffect
-                      ShadowDepth="4"
-                      Direction="330"
-                      Color="Black"
-                      Opacity="0.5"
-                      BlurRadius="4"/>
-                </Canvas.Effect>
-            </Canvas>
-            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
-                <TextBlock x:Name="UserName" Text="AccountName" Style="{DynamicResource TextBlockStyle}" Foreground="White" Margin="0 0 5 0"></TextBlock>
-            </StackPanel>
+                        </Line.Effect>!-->
+                        </Line>
+                        <TextBlock x:Name="UserStatus" Text="UserStatus" VerticalAlignment="Bottom" Margin="20 35"   Style="{DynamicResource ResourceKey=TextBlockStyle}" ToolTip="Статус пользователя"></TextBlock>
+                        <materialDesign:PackIcon Kind="AccountOffOutline" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20 0" ToolTip="Сменить пользователя" Foreground="{DynamicResource ForegroundColorUIElements}" Cursor="Hand" MouseLeftButtonUp="CloseAccount_MouseLeftButtonUp"/>
+                    </Grid>
+                    <Button x:Name="ButtonMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="50" Width="40" Click="ButtonMenu_Click">
+                        <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Height="18" Width="20" >
+                            <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        </Canvas>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Gray" Offset="0"/>
+                            <GradientStop Color="#585858" Offset="0.01"/>
+                            <GradientStop Color="#1C1C1C" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <ListBox x:Name="GroupListBox" Margin="0 30 0 0"  Grid.Row="1" SelectionChanged="GroupListBox_SelectionChanged">
+                        <ListBoxItem x:Name="HomeBox" Style="{DynamicResource ListBoxItemStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="HomeButton" Kind="HomeOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                <TextBlock Text="Главная" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="Box" Style="{DynamicResource ListBoxItemStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="AccountButton" Kind="AccountOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                <TextBlock Text="Аккаунт" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon x:Name="SettingsButton" Kind="SettingsOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                <TextBlock Text="Настройки" Margin="20 01" Style="{DynamicResource TextBlockStyle}"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </Grid>
+            </Grid>
+
         </Grid>
-        <Grid x:Name="GridMenu" HorizontalAlignment="Left" Width="40" Background="#585858" Grid.RowSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.Effect>
-                <DropShadowEffect
-                      ShadowDepth="4"
-                      Direction="330"
-                      Color="Black"
-                      Opacity="0.5"
-                      BlurRadius="4"/>
-            </Grid.Effect>
-            <StackPanel  Grid.Row="0" Orientation="Horizontal">
-                <Button x:Name="ButtonMenu" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Height="50" Width="40" Click="ButtonMenu_Click">
-                    <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Height="18" Width="20" >
-                        <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                        <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                        <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    </Canvas>
+        <Grid x:Name="GridTitleBar" Background="#2E2E2E" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="6 2 2 2">
+                <Image Source="Resource/botRoma.png">
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </Image.Effect>
+                </Image>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Student Helper" Foreground="White" FontSize="17" FontFamily="Bahnschrift">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                <Button x:Name="WindowMinimized" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="WindowMinimized_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="Chartreuse" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="White" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                    <Button.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </Button.Effect>
                 </Button>
-                <TextBlock Text="Меню" Style="{DynamicResource ResourceKey=TextBlockStyle}" Margin="5"/>
+                <Button  Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="WindowMaxNormal_Click">
+                    <materialDesign:PackIcon x:Name="WindowMaxNormal" Kind="WindowRestore"/>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="Chartreuse" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="White" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                    <Button.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </Button.Effect>
+                </Button>
+                <Button x:Name="ButtonFechar" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonFechar_Click">
+                    <materialDesign:PackIcon Kind="Power" Background="Transparent"/>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="Chartreuse" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard  TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="White" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                    <Button.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </Button.Effect>
+                </Button>
             </StackPanel>
-            <ListBox x:Name="GroupListBox" Grid.Row="1">
-                <ListBoxItem x:Name="HomeBox" Style="{DynamicResource ListBoxItemStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="HomeButton" Text="&#xE82D;" Style="{DynamicResource ItemIcon}" />
-                        <TextBlock Text="Главная" Style="{DynamicResource TextBlockStyle}"/>
-                    </StackPanel>
-                </ListBoxItem>
-                <ListBoxItem x:Name="Box" Style="{DynamicResource ListBoxItemStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="AccountButton" Text="&#xE13D;" Style="{DynamicResource ItemIcon}" />
-                        <TextBlock Text="Аккаунт" Style="{DynamicResource TextBlockStyle}"/>
-                    </StackPanel>
-                </ListBoxItem>
-                <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="SettingsButton" Text="&#xE713;" Style="{DynamicResource ItemIcon}"/>
-                        <TextBlock Text="Настройки" Style="{DynamicResource TextBlockStyle}"/>
-                    </StackPanel>
-                </ListBoxItem>
-            </ListBox>
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+            </Grid.Effect>
         </Grid>
-        
     </Grid>
 </Window>
