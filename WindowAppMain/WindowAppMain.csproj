@@ -107,6 +107,7 @@
     <Compile Include="Model\Window\MainWindowPage\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Window\MainWindowPage\Sheldue.cs" />
     <Compile Include="Model\Window\WindowAppAuthReg.xaml.cs">
       <DependentUpon>WindowAppAuthReg.xaml</DependentUpon>
     </Compile>

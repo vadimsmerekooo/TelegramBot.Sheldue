@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using WindowAppMain.Model.Style.WindowStyle;
+using WindowAppMain.Model.Window.MainWindowPage;
 
 namespace WindowAppMain
 {
@@ -21,9 +23,9 @@ namespace WindowAppMain
         {
             InitializeComponent();
             HomeBox.IsSelected = true;
-            
+
         }
-        public MainWindow(string name): this()
+        public MainWindow(string name) : this()
         {
             _name = name;
             UserName.Text = _name;
@@ -91,7 +93,7 @@ namespace WindowAppMain
         }
         private void GridTitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(this.WindowState == WindowState.Maximized)
+            if (this.WindowState == WindowState.Maximized)
                 this.WindowState = WindowState.Normal;
         }
         //!Event's TitleBar Change
