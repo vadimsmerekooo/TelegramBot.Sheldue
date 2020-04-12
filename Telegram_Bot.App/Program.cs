@@ -35,12 +35,14 @@ namespace Telegram_Bot.App
                 }
                 Console.ReadKey(true);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 loggerMain.Fatal("Throw Exception in Main Console.App");
                 loggerMain.Error("Bot: Status - Stop");
                 loggerMain.Error("Server: Status - Stop");
                 loggerMain.Debug("Close Main Console.App");
+                Console.ReadKey();
             }
         }
     }
