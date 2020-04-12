@@ -4,26 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WindowAppMain.Model.Controls"
-             mc:Ignorable="d" Height="102.985" Width="206.61">
+             xmlns:loaders="clr-namespace:Loaders;assembly=MrMitch.Loaders"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
     <UserControl.Resources>
-        <Style x:Key="StyleEllipse"   TargetType="{x:Type Ellipse}">
-            <Setter Property="Fill" Value="Chartreuse"/>
-        </Style>
-        
+        <Storyboard x:Key="LoadAnimate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LoadAnimationElement">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="StopAnimate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LoadAnimationElement">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
-
-    <Grid x:Name="Grid1" Background="Transparent" >
-        <Ellipse x:Name="EllipseLeft" Width="30" Height="30" Margin="48,36,129,37" Style="{DynamicResource StyleEllipse}"></Ellipse>
-        <Ellipse Width="30" Height="30"  Margin="78,36,99,37" Style="{DynamicResource StyleEllipse}"></Ellipse>
-        <Ellipse Width="30" Height="30" Margin="108,36,69,37" Style="{DynamicResource StyleEllipse}"></Ellipse>
-        <Ellipse x:Name="EllipseRight" Width="30" Height="30" Margin="138,36,39,37" Style="{DynamicResource StyleEllipse}"></Ellipse>
-        <Grid.Effect>
-            <DropShadowEffect
-      ShadowDepth="4"
-      Direction="330"
-      Color="Black"
-      Opacity="0.5"
-     BlurRadius="4"/>
-        </Grid.Effect>
+    <Grid>
+        <loaders:ImgurLoader x:Name="LoadAnimationElement"  Foreground="Chartreuse" RingsThickness="9" Width="200" Height="200" Opacity="1"/>
     </Grid>
 </UserControl>

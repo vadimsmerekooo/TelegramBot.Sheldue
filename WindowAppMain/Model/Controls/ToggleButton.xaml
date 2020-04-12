@@ -9,13 +9,30 @@
         <Style x:Key="ToggleEllipse" TargetType="{x:Type Ellipse}">
             <Setter Property="Fill" Value="White"/>
         </Style>
-
+        <Storyboard x:Key="Yes" Storyboard.TargetName="Dot">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
+                
+                <SplineThicknessKeyFrame KeyTime="00:00:0.3" Value="45, 6, 0, 7" />
+            </ThicknessAnimationUsingKeyFrames>
+            <Storyboard  Storyboard.TargetProperty="Fill.Color" >
+                <ColorAnimation To="Chartreuse" Duration="0:0:0.1" />
+            </Storyboard>
+        </Storyboard>
+        <Storyboard x:Key="No" Storyboard.TargetName="Dot">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
+                
+                <SplineThicknessKeyFrame KeyTime="00:00:0.3" Value="5, 6" />
+            </ThicknessAnimationUsingKeyFrames>
+            <Storyboard  Storyboard.TargetProperty="Fill.Color" >
+                <ColorAnimation To="White" Duration="0:0:0.1" />
+            </Storyboard>
+        </Storyboard>
     </UserControl.Resources>
 
     <Viewbox Margin="0,2,2,1">
         <Grid HorizontalAlignment="Left" Height="60" Margin="0" VerticalAlignment="Top" Width="100">
-            <Rectangle x:Name="Back" Fill="Black" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="96" Margin="2,2,0,0" RadiusY="29" RadiusX="29" MouseLeftButtonDown="Back_MouseLeftButtonDown"/>
-            <Ellipse x:Name="Dot"  HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" MouseLeftButtonDown="Dot_MouseLeftButtonDown" Margin="26,6" Style="{DynamicResource ToggleEllipse}"/>
+            <Rectangle x:Name="Back" Fill="Transparent" Stroke="Chartreuse" StrokeThickness="2" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="96" Margin="2,2,0,0" RadiusY="29" RadiusX="29" MouseLeftButtonDown="Back_MouseLeftButtonDown"/>
+            <Ellipse x:Name="Dot"  HorizontalAlignment="Left" Height="48" VerticalAlignment="Center" Width="48" MouseLeftButtonDown="Dot_MouseLeftButtonDown" Margin="5,6,0,7" Style="{DynamicResource ToggleEllipse}"/>
         </Grid>
     </Viewbox>
 </UserControl>

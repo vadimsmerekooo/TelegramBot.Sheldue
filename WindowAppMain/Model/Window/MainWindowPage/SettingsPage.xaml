@@ -4,11 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WindowAppMain.Model.Window.MainWindowPage"
+      xmlns:loaders="clr-namespace:Loaders;assembly=MrMitch.Loaders"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="200" d:DesignWidth="200"
       Title="SettingsPage">
 
-    <Grid Background="#FFCFCFCF">
-        <TextBlock Text="SettingsPage" FontFamily="Bahnshrift" Foreground="White" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <Grid x:Name="GridSettings" Background="Transparent" >
+        <Grid x:Name="GridSettings2" Opacity="0">
+            <TextBlock Text="2131231231313" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        </Grid>
+        <!--<MediaElement VerticalAlignment="Center" HorizontalAlignment="Center" Width="450" Height="350" Source="C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\WindowAppMain\Resource\LoadVideo.mov"></MediaElement>-->
     </Grid>
 </Page>

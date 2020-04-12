@@ -11,20 +11,13 @@ namespace WindowAppMain.Classes.WindowAuthClasses
             return isMatch.Success;
         }
 
-        public bool IsValidatePassword(string passwordOrigin, string passwordCopy)
+        public bool IsValidatePassword(string passwordOrigin)
         {
             bool check = false;
-            if (passwordOrigin == passwordCopy)
-            {
-                string patternPassword = @"(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}";
-                Match isMatch = Regex.Match(passwordOrigin, patternPassword, RegexOptions.IgnoreCase);
-                check = isMatch.Success;
-                return check;
-            }
-            else
-            {
-                return check = false;
-            }
+            string patternPassword = @"(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}";
+            Match isMatch = Regex.Match(passwordOrigin, patternPassword, RegexOptions.IgnoreCase);
+            check = isMatch.Success;
+            return check;
         }
 
     }

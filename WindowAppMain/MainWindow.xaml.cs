@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using WindowAppMain.Model.Style.WindowStyle;
+using WindowAppMain.Model.Window;
 using WindowAppMain.Model.Window.MainWindowPage;
 
 namespace WindowAppMain
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         #region Parametr's
@@ -25,10 +25,19 @@ namespace WindowAppMain
             HomeBox.IsSelected = true;
 
         }
-        public MainWindow(string name) : this()
+        public MainWindow(Dictionary<string, string> userInfo) : this()
         {
-            _name = name;
-            UserName.Text = _name;
+            switch (userInfo.Count)
+            {
+                case 3:
+                    UserName.Text = userInfo["Name"];
+                    UserStatus.Text = userInfo["Status"];
+                    break;
+                case 5:
+                    UserName.Text = userInfo["Login"];
+                    UserStatus.Text = userInfo["Status"] + " из группы " + userInfo["Group"];
+                    break;
+            }
         }
         //DoubleAnimation Open and Close UserPageInfo
         private void ButtonMenu_Click(object sender, RoutedEventArgs e)
@@ -56,7 +65,7 @@ namespace WindowAppMain
             switch (GroupListBox.SelectedIndex)
             {
                 case 0:
-                    MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/HomePage.xaml", UriKind.Relative));
+                    Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/HomePage.xaml", UriKind.Relative)); }));
                     break;
                 case 1:
                     MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountInfoPage.xaml", UriKind.Relative));
@@ -101,7 +110,26 @@ namespace WindowAppMain
         //Event's UserInfoPage
         private void CloseAccount_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
+            try
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter("bin/fileauth/SET_COOKIEUSER.xml"))
+                    {
+                        sw.WriteLine(string.Empty);
+                    }
+                }
+                catch
+                {
+
+                }
+                WindowAuthReg windowAuthReg = new WindowAuthReg(this);
+                windowAuthReg.Show();
+            }
+            catch
+            {
+
+            }
         }
         //!Event's UserInfoPage
     }

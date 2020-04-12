@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
+using WindowAppMain.Model.Controls;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
@@ -20,15 +14,47 @@ namespace WindowAppMain.Model.Window.MainWindowPage
     /// </summary>
     public partial class HomePage : Page
     {
+        private DispatcherTimer StopAnimation = new DispatcherTimer();
+        private LoadingAnimation loadedControl;
+        private List<SheldueAllDays> allSheldueList;
         public HomePage()
         {
             InitializeComponent();
-            var sheldue = GetSheldue();
-            ListViewSheldueDay.ItemsSource = sheldue;
+            loadedControl = new LoadingAnimation();
+            MainSheldueGrid.Children.Add(loadedControl);
+            loadedControl.StartAnimation();
+            Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart) delegate() { LoadAsyncMethod(); }));
         }
-        private List<SheldueAllDays> GetSheldue()
+        
+        private async void LoadAsyncMethod()
         {
-            return new List<SheldueAllDays>()
+            await Task.Run(() => GetSheldue());
+            await Task.Run(() => SetSheldueList());
+            StopAnimation.Tick += new EventHandler(StopMethodAnimation);
+            StopAnimation.Interval = new TimeSpan(0, 0, 1);
+            StopAnimation.Start();
+        }
+
+        private void StopMethodAnimation(object sender, EventArgs e)
+        {
+            Storyboard sb = this.FindResource("ShowPage") as Storyboard;
+            sb.Begin();
+            loadedControl.StopAnimation();
+            ScrollViewerSheldue.Opacity = 1;
+            StopAnimation.Stop();
+        }
+
+        private void SetSheldueList()
+        {
+            this.Dispatcher.BeginInvoke((ThreadStart) delegate
+            {
+                ListViewSheldueDay.ItemsSource = allSheldueList;
+            });
+        }
+
+        private void GetSheldue()
+        {
+            allSheldueList = new List<SheldueAllDays>()
             {
                 //Monday
                 new SheldueAllDays( 

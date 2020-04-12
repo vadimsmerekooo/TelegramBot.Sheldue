@@ -2,15 +2,20 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WindowAppMain"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Model/Window/WindowAuthReg.xaml">
+    <!-- 
+    Model/Window/WindowAuthReg.xaml 
+    !-->
+    <!-- 
+    MainWindow.xaml 
+    !-->
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Model/Style/WindowStyle/Buttons.xaml"/>
                 <ResourceDictionary Source="Model/Style/UIElement/StyleUIElement.xaml"/>
                 <ResourceDictionary Source="Model/Style/WindowStyle/WindowAuthStyle.xaml"/>
                 <ResourceDictionary Source="Model/Style/UIElement/BorderStyleButton.xaml"/>
-                <ResourceDictionary Source="Model/Style/WindowStyle/VS2012WindowStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />

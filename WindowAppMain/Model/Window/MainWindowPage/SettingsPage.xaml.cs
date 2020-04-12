@@ -1,28 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+using WindowAppMain.Model.Controls;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
-    /// <summary>
-    /// Логика взаимодействия для SettingsPage.xaml
-    /// </summary>
     public partial class SettingsPage : Page
     {
+        private DispatcherTimer StopAnimation = new DispatcherTimer();
+        private LoadingAnimation loadedControl;
         public SettingsPage()
         {
             InitializeComponent();
+            loadedControl = new LoadingAnimation();
+            GridSettings.Children.Add(loadedControl);
+            loadedControl.StartAnimation();
+            StopAnimation.Tick += new EventHandler(StopAnimate);
+            StopAnimation.Interval = new TimeSpan(0, 0, 1);
+            StopAnimation.Start();
+        }
+
+        private void StopAnimate(object sender, EventArgs e)
+        {
+            loadedControl.StopAnimation();
+            StopAnimation.Stop();
+            GridSettings2.Opacity = 1;
         }
     }
 }
