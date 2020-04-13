@@ -217,6 +217,27 @@
                 <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="OpenWindow">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="WindowAuth">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0.25"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseWindow">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="WindowAuth">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.25"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ShowWindowResetPassword">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="WindowAuth">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.5"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseWindowResetPassword">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="WindowAuth">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         <Storyboard x:Key="InfoPanelAuthReg">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Storyboard.TargetName="BorderInfoPanelAuthReg">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -288,7 +309,7 @@
                        Height="2"
                        Background="White"
                        Opacity="0.5"/>
-            <TextBlock Grid.Row="4" Style="{DynamicResource TextBlockStyle}" Text="Забыли пароль?" VerticalAlignment="Top" Opacity="0.5" FontSize="13" Margin="0 15">
+            <TextBlock Grid.Row="4" Style="{DynamicResource TextBlockStyle}" Text="Забыли пароль?" VerticalAlignment="Top" Opacity="0.5" FontSize="13" Margin="0 15" MouseDown="ShowWindowResetPassword_MouseDown">
                 <TextBlock.Triggers>
                     <EventTrigger RoutedEvent="UIElement.MouseEnter">
                         <BeginStoryboard>

@@ -127,6 +127,9 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Window\MainWindowPage\Sheldue.cs" />
+    <Compile Include="Model\Window\WindowPasswordReset.xaml.cs">
+      <DependentUpon>WindowPasswordReset.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UsersInfo.cs">
       <DependentUpon>DBManagebotModel.tt</DependentUpon>
     </Compile>
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Model\Window\WindowAuthReg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\Window\WindowPasswordReset.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

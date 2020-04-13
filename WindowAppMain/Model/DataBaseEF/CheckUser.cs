@@ -10,18 +10,21 @@ namespace WindowAppMain.Model.DataBaseEF
     class CheckUser
     {
         public List<string> userInfoList = new List<string>();
+        public List<string> checkUsers = new List<string>();
+        private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
         public async Task<bool> CheckExclusiveUser(string userLogin)
         {
             try
             {
                 using (managerbotDBContext context = new managerbotDBContext())
                 {
-                    List<string> checkUsers = new List<string>();
                     await context.UsersInfo.ForEachAsync(user =>
                     {
                         if (user.Email == userLogin)
                         {
                             checkUsers.Add(user.Email);
+                            checkUsers.Add(user.StatusUser);
+                            checkUsers.Add(user.Department);
                         }
                     });
                     return checkUsers.Count == 0 ? true : false;
@@ -39,7 +42,6 @@ namespace WindowAppMain.Model.DataBaseEF
             {
                 using (managerbotDBContext context = new managerbotDBContext())
                 {
-                    CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword(); 
                     await context.UsersInfo.ForEachAsync(user =>
                     {
                         if (user.Email == userLogin && user.Password == cryptPassword.CalculateMD5Hash(userPassword).ToString())
@@ -71,6 +73,15 @@ namespace WindowAppMain.Model.DataBaseEF
             catch
             {
                 return false;
+            }
+        }
+        public void ChangePasswordUser(string userLogin, string userNewPassword)
+        {
+            using (var context = new managerbotDBContext())
+            {
+                var usersInfo = context.UsersInfo.SingleOrDefault(user => user.Email == userLogin);
+                usersInfo.Password = cryptPassword.CalculateMD5Hash(userNewPassword).ToString();
+                context.SaveChanges();
             }
         }
     }

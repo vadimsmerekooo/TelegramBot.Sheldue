@@ -73,7 +73,7 @@ namespace WindowAppMain.Model.Window
             {
                 try
                 {
-                    using (FileStream fs = new FileStream("bin/fileauth/SET_COOKIEUSER.xml", FileMode.Open))
+                    using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
                     {
                         userInformation = new Dictionary<string, string>();
                         userInformation = ((User[])serializer.Deserialize(fs)).ToDictionary(i => i.key, i => i.value);
@@ -90,6 +90,8 @@ namespace WindowAppMain.Model.Window
             else
             {
                 InitializeComponent();
+                Storyboard sb = this.FindResource("OpenWindow") as Storyboard;
+                sb.Begin();
                 Keyboard.Focus(TextBoxLogin);
             }
         }
@@ -138,8 +140,15 @@ namespace WindowAppMain.Model.Window
         //Close Program
         private void ButtonFechar_Click(object sender, RoutedEventArgs e)
         {
+            Storyboard sb = this.FindResource("CloseWindow") as Storyboard;
+            sb.Completed += WindowClosed;
+            sb.Begin();
+        }
+        private void WindowClosed(object sender, EventArgs e)
+        {
             this.Close();
         }
+
         //Close Program
 
         //Change TextBox
@@ -246,7 +255,7 @@ namespace WindowAppMain.Model.Window
                             {
                                 try
                                 {
-                                    using (StreamWriter sw = new StreamWriter("bin/fileauth/SET_COOKIEUSER.xml"))
+                                    using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml"))
                                     {
                                         sw.WriteLine(string.Empty);
                                     }
@@ -291,11 +300,11 @@ namespace WindowAppMain.Model.Window
         {
             try
             {
-                using (StreamWriter sw = new StreamWriter("bin/fileauth/SET_COOKIEUSER.xml"))
+                using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml"))
                 {
                     sw.WriteLine(string.Empty);
                 }
-                using (FileStream fs = new FileStream("bin/fileauth/SET_COOKIEUSER.xml", FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.OpenOrCreate))
                 {
                     serializer.Serialize(fs,
                       userDic.Select(kv => new User() { key = kv.Key, value = kv.Value }).ToArray());
@@ -311,7 +320,7 @@ namespace WindowAppMain.Model.Window
             try
             {
                 string dateToday = DateTime.Today.ToShortDateString();
-                string dateChangeFile = File.GetLastWriteTime("bin/fileauth/SET_COOKIEUSER.xml").ToShortDateString();
+                string dateChangeFile = File.GetLastWriteTime("SET_COOKIEUSER.xml").ToShortDateString();
                 if (Convert.ToDateTime(dateToday) > Convert.ToDateTime(dateChangeFile))
                 {
                     return false;
@@ -455,6 +464,18 @@ namespace WindowAppMain.Model.Window
             }
         }
         //Mouse Clicl Registation
+
+        //Mouse Click Reset Password
+        private void ShowWindowResetPassword_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Storyboard sb = this.FindResource("ShowWindowResetPassword") as Storyboard;
+            sb.Begin();
+            WindowPasswordReset windowResetPassword = new WindowPasswordReset();
+            windowResetPassword.ShowDialog();
+            Storyboard sbclose = this.FindResource("CloseWindowResetPassword") as Storyboard;
+            sbclose.Begin();
+        }
+        //Mouse Click Reset Password
         //MouseEventArgs
 
         //Combobox RegGrid Changed
@@ -564,6 +585,8 @@ namespace WindowAppMain.Model.Window
             [XmlAttribute]
             public string value;
         }
+
+        
         //Class for serialize user info
     }
 }
