@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using WindowAppMain.Classes.WindowAuthClasses;
 using WindowAppMain.Model.Controls;
 using WindowAppMain.Model.DataBaseEF;
+using WindowAppMain.Model.DataBaseEF.DBManagerbot;
 
 namespace WindowAppMain.Model.Window
 {
@@ -22,8 +23,8 @@ namespace WindowAppMain.Model.Window
     {
         private LoadingAnimation loadedControl;
         private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
-        private Dictionary<string, string> userInformation;
-        private XmlSerializer serializer = new XmlSerializer(typeof(User[]), new XmlRootAttribute() { ElementName = "UserInfo" });
+        private Person userInfoList;
+        private XmlSerializer serializer = new XmlSerializer(typeof(Person), new XmlRootAttribute() { ElementName = "UserInfo" });
 
 
         #region ListPerson
@@ -75,9 +76,9 @@ namespace WindowAppMain.Model.Window
                 {
                     using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
                     {
-                        userInformation = new Dictionary<string, string>();
-                        userInformation = ((User[])serializer.Deserialize(fs)).ToDictionary(i => i.key, i => i.value);
-                        MainWindow mainWindow = new MainWindow(userInformation);
+                        userInfoList = new Person();
+                        userInfoList = (Person)serializer.Deserialize(fs);
+                        MainWindow mainWindow = new MainWindow(userInfoList);
                         mainWindow.Show();
                         this.Close();
                     }
@@ -220,61 +221,23 @@ namespace WindowAppMain.Model.Window
                 CreateLoadAnimation(MainAuthRegGrid);
                 try
                 {
-                    CheckUser users = new CheckUser();
-                    bool userMeh = await users.SearchUser(TextBoxLogin.Text, PasswordBoxPassword.Password);
+                    CheckUser user = new CheckUser();
+                    bool userMeh = await user.SearchUser(TextBoxLogin.Text, PasswordBoxPassword.Password);
                     if (userMeh)
                     {
-                        List<string> userInfo = new List<string>(users.userInfoList);
-                        if (userInfo.Count != 0)
+                        userInfoList = user.userListInformantion;
+                        if (!ToggleButtonYesNo.StateClosed)
                         {
-                            if (userInfo.Count == 3)
-                            {
-                                userInformation = new Dictionary<string, string>()
-                                 {
-                                        { "Name", userInfo[0] },
-                                        { "Login", userInfo[1] },
-                                        { "Status", userInfo[2] }
-                                 };
-                            }
-                            else if (userInfo.Count == 5)
-                            {
-                                userInformation = new Dictionary<string, string>()
-                                {
-                                    { "Name", userInfo[0] },
-                                    { "Login", userInfo[1] },
-                                    { "Status", userInfo[2] },
-                                    { "Department", userInfo[3] },
-                                    { "Group", userInfo[4] }
-                                };
-                            }
-                            if (!ToggleButtonYesNo.StateClosed)
-                            {
-                                SerializeToggleButtonCheck(userInformation);
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml"))
-                                    {
-                                        sw.WriteLine(string.Empty);
-                                    }
-                                }
-                                catch
-                                {
-
-                                }
-                            }
-                            loadedControl.StopAnimation();
-                            MainWindow mainWindow = new MainWindow(userInformation);
-                            mainWindow.Show();
-                            this.Close();
+                            SerializeToggleButtonCheck(userInfoList);
                         }
                         else
                         {
-                            loadedControl.StopAnimation();
-                            ErrorReg("Неверный логин или пароль!");
+                            try { using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml") ) { sw.WriteLine(string.Empty); } } catch {}
                         }
+                        loadedControl.StopAnimation();
+                        MainWindow mainWindow = new MainWindow(userInfoList);
+                        mainWindow.Show();
+                        this.Close();
                     }
                     else
                     {
@@ -296,7 +259,7 @@ namespace WindowAppMain.Model.Window
                     BorderPasswordPasswordBox.Background = Brushes.Red;
             }
         }
-        private void SerializeToggleButtonCheck(Dictionary<string, string> userDic)
+        private void SerializeToggleButtonCheck(Person userInfo)
         {
             try
             {
@@ -306,8 +269,7 @@ namespace WindowAppMain.Model.Window
                 }
                 using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.OpenOrCreate))
                 {
-                    serializer.Serialize(fs,
-                      userDic.Select(kv => new User() { key = kv.Key, value = kv.Value }).ToArray());
+                    serializer.Serialize(fs, userInfo);
                 }
             }
             catch
@@ -321,14 +283,7 @@ namespace WindowAppMain.Model.Window
             {
                 string dateToday = DateTime.Today.ToShortDateString();
                 string dateChangeFile = File.GetLastWriteTime("SET_COOKIEUSER.xml").ToShortDateString();
-                if (Convert.ToDateTime(dateToday) > Convert.ToDateTime(dateChangeFile))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return Convert.ToDateTime(dateToday) > Convert.ToDateTime(dateChangeFile) ? false : true;
             }
             catch
             {
@@ -355,17 +310,22 @@ namespace WindowAppMain.Model.Window
                                 {
                                     try
                                     {
-                                        var context = new managerbotDBContext();
-                                        UsersInfo user = new UsersInfo()
+                                        var context = new managerdbContext();
+                                        Users userLogin = new Users()
                                         {
                                             Email = TextBoxNameUser.Text,
-                                            Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString(),
-                                            StatusUser = PersonComboBox.SelectedValue.ToString(),
-                                            Department = TeacherNameorDepartment.SelectedValue.ToString(),
-                                            DepartmentGroup = GroupListComboBox.SelectedValue.ToString()
+                                            Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString()
                                         };
-                                        context.UsersInfo.Add(user);
+                                        UsersInfo userInfo = new UsersInfo()
+                                        {
+                                            UserStatus = PersonComboBox.SelectedValue.ToString(),
+                                            UserDepartment = TeacherNameorDepartment.SelectedValue.ToString(),
+                                            UserGroup = GroupListComboBox.SelectedValue.ToString()
+                                        };
+                                        context.Users.Add(userLogin);
+                                        context.UsersInfo.Add(userInfo);
                                         await context.SaveChangesAsync();
+
                                         loadedControl.StopAnimation();
                                         SeccessfulReg();
                                     }
@@ -416,15 +376,20 @@ namespace WindowAppMain.Model.Window
                                 {
                                     try
                                     {
-                                        var context = new managerbotDBContext();
-                                        UsersInfo user = new UsersInfo()
+                                        var context = new managerdbContext();
+                                        Users userLogin = new Users()
                                         {
-                                            Name = TeacherNameorDepartment.SelectedValue.ToString(),
                                             Email = TextBoxNameUser.Text,
                                             Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString(),
-                                            StatusUser = PersonComboBox.SelectedValue.ToString(),
                                         };
-                                        context.UsersInfo.Add(user);
+
+                                        UsersInfo userInfo = new UsersInfo()
+                                        {
+                                            UserName = TeacherNameorDepartment.SelectedValue.ToString(),
+                                            UserStatus = PersonComboBox.SelectedValue.ToString()
+                                        };
+                                        context.Users.Add(userLogin);
+                                        context.UsersInfo.Add(userInfo);
                                         await context.SaveChangesAsync();
                                         loadedControl.StopAnimation();
                                         SeccessfulReg();
@@ -585,8 +550,6 @@ namespace WindowAppMain.Model.Window
             [XmlAttribute]
             public string value;
         }
-
-        
         //Class for serialize user info
     }
 }

@@ -7,19 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowAppMain
+namespace WindowAppMain.Model.DataBaseEF.DBManagerbot
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class UsersInfo
+    public partial class UsersNotes
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string StatusUser { get; set; }
-        public string Department { get; set; }
-        public string DepartmentGroup { get; set; }
+        public int IDUser { get; set; }
+        public System.DateTime DateNote { get; set; }
+        public string Para { get; set; }
+        public int ParaNumber { get; set; }
+        public string NoteText { get; set; }
+    
+        public virtual Users Users { get; set; }
     }
 }

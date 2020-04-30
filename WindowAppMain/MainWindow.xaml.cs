@@ -7,7 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using WindowAppMain.Classes;
+using WindowAppMain.Model.DataBaseEF;
 using WindowAppMain.Model.Window;
 using WindowAppMain.Model.Window.MainWindowPage;
 
@@ -17,7 +20,8 @@ namespace WindowAppMain
     {
         #region Parametr's
         private bool StateClosed = true;
-        string _name;
+        public Person _userInfo = new Person();
+        public BitmapImage imageLogo;
         #endregion
         public MainWindow()
         {
@@ -25,17 +29,21 @@ namespace WindowAppMain
             HomeBox.IsSelected = true;
 
         }
-        public MainWindow(Dictionary<string, string> userInfo) : this()
+        public MainWindow(Person userInfo) : this()
         {
-            switch (userInfo.Count)
+            _userInfo = userInfo;
+            LoadImageLogoUser loadImage = new LoadImageLogoUser();
+            imageLogo = loadImage.SelectImage(_userInfo.Login);
+            ImageLogo.ImageSource = loadImage.SelectImage(_userInfo.Login);
+            switch (_userInfo.Status)
             {
-                case 3:
-                    UserName.Text = userInfo["Name"];
-                    UserStatus.Text = userInfo["Status"];
+                case "Преподаватель":
+                    UserName.Text = _userInfo.Name;
+                    UserStatus.Text = _userInfo.Status;
                     break;
-                case 5:
-                    UserName.Text = userInfo["Login"];
-                    UserStatus.Text = userInfo["Status"] + " из группы " + userInfo["Group"];
+                case "Студент":
+                    UserName.Text = _userInfo.Login;
+                    UserStatus.Text = _userInfo.Status + " из группы " + _userInfo.Group;
                     break;
             }
         }
@@ -68,7 +76,9 @@ namespace WindowAppMain
                     Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/HomePage.xaml", UriKind.Relative)); }));
                     break;
                 case 1:
-                    MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountInfoPage.xaml", UriKind.Relative));
+                    //MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountInfoPage.xaml", UriKind.Relative));
+                    AccountInfoPage accInfoPage = new AccountInfoPage(this);
+                    MainWindowPage.NavigationService.Navigate(accInfoPage);
                     break;
                 case 2:
                     MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/SettingsPage.xaml", UriKind.Relative));
@@ -98,7 +108,14 @@ namespace WindowAppMain
         }
         private void GridTitleBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+
+            }
         }
         private void GridTitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -114,7 +131,7 @@ namespace WindowAppMain
             {
                 try
                 {
-                    using (StreamWriter sw = new StreamWriter("bin/fileauth/SET_COOKIEUSER.xml"))
+                    using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml"))
                     {
                         sw.WriteLine(string.Empty);
                     }

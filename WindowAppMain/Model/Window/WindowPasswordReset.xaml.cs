@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,7 +16,7 @@ namespace WindowAppMain.Model.Window
     /// </summary>
     public partial class WindowPasswordReset : System.Windows.Window
     {
-
+        #region Params
         private LoadingAnimation loadedControl;
         private CheckUser methodsCheckUser = new CheckUser();
         private int stepNumber = 1;
@@ -32,6 +33,7 @@ namespace WindowAppMain.Model.Window
             "Информационное отделение", "Швейное отделение", "Электромеханическое отделение", "Отделение машиностроения"
         };
         private CheckValidateForm checkValidate = new CheckValidateForm();
+        #endregion
 
         public WindowPasswordReset()
         {
@@ -63,28 +65,6 @@ namespace WindowAppMain.Model.Window
             Grid.SetColumnSpan(loadedControl, 3);
             Grid.SetRowSpan(loadedControl, 2);
             loadedControl.StartAnimation();
-        }
-        private void SeccessfulReg()
-        {
-            //Storyboard sb = this.FindResource("InfoPanelAuthReg") as Storyboard;
-            //sb.Begin();
-            //KindIconInfoStackPanel.Kind = MaterialDesignThemes.Wpf.PackIconKind.Luck;
-            //TextBoxInfoStackPanel.FontSize = 14;
-            //TextBoxInfoStackPanel.Text = "Регистрация прошла успешно!";
-            //BorderInfoPanelAuthReg.Background = Brushes.Chartreuse;
-            //Storyboard sbauth = this.FindResource("ClickAuth") as Storyboard;
-            //sbauth.Begin();
-            //Keyboard.Focus(TextBoxLogin);
-        }
-        private void ErrorReg(string textMessagePanel)
-        {
-            //Storyboard sb = this.FindResource("InfoPanelAuthReg") as Storyboard;
-            //sb.Begin();
-            //KindIconInfoStackPanel.Kind = MaterialDesignThemes.Wpf.PackIconKind.Error;
-            //TextBoxInfoStackPanel.FontSize = 12;
-            //TextBoxInfoStackPanel.Text = textMessagePanel;
-            //BorderInfoPanelAuthReg.Background = Brushes.Red;
-            //BorderTexBoxUser.Background = Brushes.Red;
         }
 
 
@@ -126,6 +106,7 @@ namespace WindowAppMain.Model.Window
                         bool userExcl = await methodsCheckUser.CheckExclusiveUser(TextBoxLogin.Text);
                         if (!userExcl)
                         {
+                            methodsCheckUser.CollectionInformationUser(TextBoxLogin.Text);
                             Storyboard sb1 = this.FindResource("Step2") as Storyboard;
                             sb1.Begin();
                             KindStep1.Foreground = Brushes.White;
@@ -148,22 +129,47 @@ namespace WindowAppMain.Model.Window
                     }
                     break;
                 case 2:
-                    if (ComboBoxPerson.Text == methodsCheckUser.checkUsers[1] && ComboBoxNameOrGroup.Text == methodsCheckUser.checkUsers[2])
+                    switch (ComboBoxPerson.SelectedIndex)
                     {
-                        Storyboard sb2 = this.FindResource("Step3") as Storyboard;
-                        sb2.Begin();
-                        KindStep1.Foreground = Brushes.White;
-                        KindStep2.Foreground = Brushes.White;
-                        KindStep3.Foreground = Brushes.Chartreuse;
-                        stepNumber++;
-                        ButtonArrowRight.Visibility = Visibility.Hidden;
-                        ButtonresetPassword.Visibility = Visibility.Visible;
-                        ButtonresetPassword.IsEnabled = false;
-                    }
-                    else
-                    {
-                        ComboBoxPerson.Background = Brushes.Red;
-                        ComboBoxNameOrGroup.Background = Brushes.Red;
+                        case 0:
+                            if (ComboBoxPerson.Text == methodsCheckUser.userListInformantion.Status && ComboBoxNameOrGroup.Text == methodsCheckUser.userListInformantion.Department)
+                            {
+                                Storyboard sb2 = this.FindResource("Step3") as Storyboard;
+                                sb2.Begin();
+                                KindStep1.Foreground = Brushes.White;
+                                KindStep2.Foreground = Brushes.White;
+                                KindStep3.Foreground = Brushes.Chartreuse;
+                                stepNumber++;
+                                ButtonArrowRight.Visibility = Visibility.Hidden;
+                                ButtonresetPassword.Visibility = Visibility.Visible;
+                                ButtonresetPassword.IsEnabled = false;
+                            }
+                            else
+                            {
+                                ComboBoxPerson.Foreground = Brushes.Red;
+                                ComboBoxNameOrGroup.Foreground = Brushes.Red;
+                            }
+                            break;
+
+                        case 1:
+                            if (ComboBoxPerson.Text == methodsCheckUser.userListInformantion.Status && ComboBoxNameOrGroup.Text == methodsCheckUser.userListInformantion.Name)
+                            {
+                                Storyboard sb2 = this.FindResource("Step3") as Storyboard;
+                                sb2.Begin();
+                                KindStep1.Foreground = Brushes.White;
+                                KindStep2.Foreground = Brushes.White;
+                                KindStep3.Foreground = Brushes.Chartreuse;
+                                stepNumber++;
+                                ButtonArrowRight.Visibility = Visibility.Hidden;
+                                ButtonresetPassword.Visibility = Visibility.Visible;
+                                ButtonresetPassword.IsEnabled = false;
+                            }
+                            else
+                            {
+                                ComboBoxPerson.Foreground = Brushes.Red;
+                                ComboBoxNameOrGroup.Foreground = Brushes.Red;
+                            }
+                            break;
                     }
                     break;
             }
@@ -178,6 +184,8 @@ namespace WindowAppMain.Model.Window
             TextBlockNameOrGroup.Opacity = 0;
             ComboBoxNameOrGroup.SelectedValue = string.Empty;
             ComboBoxNameOrGroup.Visibility = Visibility.Hidden;
+            ComboBoxPerson.Foreground = Brushes.White;
+            ComboBoxNameOrGroup.Foreground = Brushes.White;
             if (TextBoxLogin.Text == string.Empty)
                 ButtonArrowRight.IsEnabled = false;
         }
@@ -215,11 +223,15 @@ namespace WindowAppMain.Model.Window
         private void ComboBoxNameOrGroup_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ButtonArrowRight.IsEnabled = true;
+            ComboBoxPerson.Foreground = Brushes.White;
+            ComboBoxNameOrGroup.Foreground = Brushes.White;
         }
 
         private void PasswordBoxNewPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
             ButtonresetPassword.IsEnabled = true;
+            ComboBoxPerson.Foreground = Brushes.White;
+            ComboBoxNameOrGroup.Foreground = Brushes.White;
         }
     }
 }

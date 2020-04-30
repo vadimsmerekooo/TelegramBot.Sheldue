@@ -93,23 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\DecoderBitmapImage.cs" />
+    <Compile Include="Classes\LoadImageLogoUser.cs" />
     <Compile Include="Classes\WindowAuthClasses\CheckValidateForm.cs" />
     <Compile Include="Classes\WindowAuthClasses\CryptAndDecryptPassword.cs" />
-    <Compile Include="DBManagebotModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagebotModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBManagebotModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagebotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBManagebotModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagebotModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Model\Controls\LoadingAnimation.xaml.cs">
       <DependentUpon>LoadingAnimation.xaml</DependentUpon>
     </Compile>
@@ -117,8 +104,38 @@
       <DependentUpon>ToggleButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\DataBaseEF\CheckUser.cs" />
+    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBManagerbotModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataBaseEF\DBManagerbot\Users.cs">
+      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataBaseEF\DBManagerbot\UsersInfo.cs">
+      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DataBaseEF\DBManagerbot\UsersNotes.cs">
+      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Window\MainWindowPage\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Window\MainWindowPage\AccountPages\AccountGlobePage.xaml.cs">
+      <DependentUpon>AccountGlobePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Window\MainWindowPage\AccountPages\AccountMainPage.xaml.cs">
+      <DependentUpon>AccountMainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Window\MainWindowPage\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -129,12 +146,6 @@
     <Compile Include="Model\Window\MainWindowPage\Sheldue.cs" />
     <Compile Include="Model\Window\WindowPasswordReset.xaml.cs">
       <DependentUpon>WindowPasswordReset.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UsersInfo.cs">
-      <DependentUpon>DBManagebotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UsersNotes.cs">
-      <DependentUpon>DBManagebotModel.tt</DependentUpon>
     </Compile>
     <Page Include="Model\Controls\LoadingAnimation.xaml">
       <SubType>Designer</SubType>
@@ -160,6 +171,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Model\Style\WindowStyle\ThemesStyleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Model\Style\WindowStyle\WindowAuthStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +184,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Model\Window\MainWindowPage\AccountInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\Window\MainWindowPage\AccountPages\AccountGlobePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\Window\MainWindowPage\AccountPages\AccountMainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,12 +233,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="DBManagebotModel.edmx">
+    <EntityDeploy Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBManagebotModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>DBManagerbotModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DBManagebotModel.edmx.diagram">
-      <DependentUpon>DBManagebotModel.edmx</DependentUpon>
+    <None Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.edmx.diagram">
+      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -242,19 +265,25 @@
     <Resource Include="Resource\logoAccount.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DBManagebotModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBManagebotModel.edmx</DependentUpon>
-      <LastGenOutput>DBManagebotModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="DBManagebotModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBManagebotModel.edmx</DependentUpon>
-      <LastGenOutput>DBManagebotModel.cs</LastGenOutput>
-    </Content>
+    <Resource Include="Model\Window\MainWindowPage\logoAccount2x2.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
+      <LastGenOutput>DBManagerbotModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
+      <LastGenOutput>DBManagerbotModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resource\LogoImageAccount\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

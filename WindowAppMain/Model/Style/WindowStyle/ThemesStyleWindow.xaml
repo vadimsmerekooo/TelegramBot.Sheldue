@@ -1,0 +1,163 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:WindowAppMain.Model.Style.WindowStyle">
+
+
+    <Style x:Key="BlockRectangleStyle" TargetType="{x:Type Rectangle}">
+        <Setter Property="Fill" Value="#585858"/>
+        <Setter Property="RadiusX" Value="7"/>
+        <Setter Property="RadiusY" Value="7"/>
+        <!--<Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                </Setter.Value>
+            </Setter>-->
+    </Style>
+    <Style x:Key="BlockSheldueRectangleStyle" TargetType="{x:Type Rectangle}">
+        <Setter Property="Fill" Value="WhiteSmoke"/>
+        <Setter Property="RadiusX" Value="7"/>
+        <Setter Property="RadiusY" Value="7"/>
+        <Setter Property="Stroke" Value="Chartreuse"/>
+        <!--<Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" Color="White" BlurRadius="5"/>
+                </Setter.Value>
+            </Setter>-->
+    </Style>
+    <Style x:Key="BlockGridStyle" TargetType="{x:Type Grid}">
+        <Setter Property="Width" Value="380"/>
+        <Setter Property="Height" Value="335"/>
+        <Setter Property="Margin" Value="15"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style x:Key="TextBoxTransparateStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockColorWhite}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="Control.IsFocused" Value="true">
+                            <Setter TargetName="border" Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                    <Condition Property="IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="PasswordBoxTransparateStyle" TargetType="{x:Type PasswordBox}">
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style x:Key="BorderButtonCorner" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Chartreuse"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" CornerRadius="7" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                        </Trigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard  Storyboard.TargetProperty="Foreground.Color">
+                                    <ColorAnimation To="Black" Duration="0:0:0.3" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard  Storyboard.TargetProperty="Background.Color">
+                                    <ColorAnimation To="Chartreuse" Duration="0:0:0.3" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="UIElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard  Storyboard.TargetProperty="Foreground.Color" >
+                                    <ColorAnimation To="White" Duration="0:0:0.3" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard  Storyboard.TargetProperty="Background.Color">
+                                    <ColorAnimation To="Transparent" Duration="0:0:0.3" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <SolidColorBrush x:Key="ForegroundColorUIElements" Color="Chartreuse"/>
+
+    <SolidColorBrush x:Key="MainGrayColor" Color="#424242"/>
+    <SolidColorBrush x:Key="MainBackgroundColor" Color="#1C1C1C"/>
+    <SolidColorBrush x:Key="TitleStackPanelBackgroundColor" Color="#2E2E2E"/>
+    <SolidColorBrush x:Key="TextBlockColorWhite" Color="White"/>
+    <SolidColorBrush x:Key="TextBlockColorChartreuse" Color="Chartreuse"/>
+</ResourceDictionary>

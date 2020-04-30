@@ -10,128 +10,11 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         x:Name="WindowAuth"
-        Title="WindowAuthReg"  Height="448"  Width="300" Background="{DynamicResource MainColorBackground}" Style="{DynamicResource WindowWithCornerBorder}">
+        Title="WindowAuthReg"  Height="448"  Width="300" Background="{DynamicResource TitleStackPanelBackgroundColor}" Style="{DynamicResource WindowWithCornerBorder}">
     <Window.Resources>
-        <SolidColorBrush x:Key="MainColorBackground" Color="#2E2E2E"/>
-        <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontFamily" Value="Bahnschrift"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-        <Style x:Key="TextBoxTransparateStyle" TargetType="{x:Type TextBox}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{x:Null}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="FontFamily" Value="Bahnschrift"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="AllowDrop" Value="true"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="border"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="Control.IsFocused" Value="true">
-                                <Setter TargetName="border" Property="BorderThickness" Value="0"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
-                        <Condition Property="IsSelectionActive" Value="false"/>
-                    </MultiTrigger.Conditions>
-                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="PasswordBoxTransparateStyle" TargetType="{x:Type PasswordBox}">
-            <Setter Property="FontFamily" Value="Bahnschrift"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style x:Key="BorderButtonCorner" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Chartreuse"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontFamily" Value="Bahnschrift"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" CornerRadius="7" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
-                            </Trigger>
-                            <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard  Storyboard.TargetProperty="Foreground.Color">
-                                        <ColorAnimation To="Black" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                                <BeginStoryboard>
-                                    <Storyboard  Storyboard.TargetProperty="Background.Color">
-                                        <ColorAnimation To="Chartreuse" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard  Storyboard.TargetProperty="Foreground.Color" >
-                                        <ColorAnimation To="White" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                                <BeginStoryboard>
-                                    <Storyboard  Storyboard.TargetProperty="Background.Color">
-                                        <ColorAnimation To="Transparent" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>-->
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
+        
+        
         <Storyboard x:Key="ClickAuth">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="LineAuth">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -268,7 +151,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" MouseDown="TextBlock_MouseDown_1">
                 <TextBlock Text="Регистрация" Style="{DynamicResource TextBlockStyle}" Cursor="Hand" Margin="0 15" />
-                <Line x:Name="LineReg" Opacity="0" Stroke="Chartreuse"  StrokeThickness="2" X1="0" Y1="-20" X2="90" Y2="-20"/>
+                <Line x:Name="LineReg" Opacity="0" Stroke="{DynamicResource TextBlockColorChartreuse}"  StrokeThickness="2" X1="0" Y1="-20" X2="90" Y2="-20"/>
             </StackPanel>
         </Grid>
         <Grid x:Name="GridAuth" Grid.Row="1" Grid.Column="1" Margin="15 25 15 0" Visibility="Visible" Opacity="1">
@@ -281,24 +164,24 @@
             </Grid.RowDefinitions>
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBox x:Name="TextBoxLogin" Width="180" FontWeight="Light" Background="Transparent" Foreground="White" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Логин" TextChanged="TextBox_TextChanged"></TextBox>
-                <materialDesign:PackIcon Kind="UserOutline" Foreground="Chartreuse" Width="25" Height="25"/>
+                <TextBox x:Name="TextBoxLogin" Width="180" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Логин" TextChanged="TextBox_TextChanged"></TextBox>
+                <materialDesign:PackIcon Kind="UserOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderLoginTextBox" Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 15"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <PasswordBox x:Name="PasswordBoxPassword" Width="180" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" ToolTip="Пароль" PasswordChanged="PasswordBoxPassword_PasswordChanged"/>
-                <materialDesign:PackIcon Kind="TextboxPassword" Foreground="Chartreuse" Width="25" Height="25"/>
+                <materialDesign:PackIcon Kind="TextboxPassword" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderPasswordPasswordBox" Grid.Row="1" Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 15"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
             <Button x:Name="ButtonAuth" Grid.Row="3" Style="{DynamicResource BorderButtonCorner}" Height="30" Content="Войти" Click="ButtonAuth_Click"/>
             <local:ToggleButton x:Name="ToggleButtonYesNo" Grid.Row="2" HorizontalAlignment="Left" Height="28" VerticalAlignment="Center" Width="auto" Cursor="Hand"/>
@@ -307,7 +190,7 @@
                        VerticalAlignment="Top"
                        Margin="0 0 0 15"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
             <TextBlock Grid.Row="4" Style="{DynamicResource TextBlockStyle}" Text="Забыли пароль?" VerticalAlignment="Top" Opacity="0.5" FontSize="13" Margin="0 15" MouseDown="ShowWindowResetPassword_MouseDown">
                 <TextBlock.Triggers>
@@ -359,20 +242,20 @@
 
             <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Width="208" ToolTip="Выберите личность">
                 <!--<ComboBox x:Name="TextBoxUserName" Width="180" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource ComboBoxTemplateStyle}"/>-->
-                <ComboBox x:Name="PersonComboBox" Width="180" BorderBrush="Chartreuse" BorderThickness="0" Foreground="White" FontFamily="Bahnschrift" FontSize="13" SelectionChanged="PersonComboBox_SelectionChanged"/>
-                <materialDesign:PackIcon Kind="CollegeOutline" Foreground="Chartreuse" BorderThickness="0 0 0 0" Width="25" Height="25"/>
+                <ComboBox x:Name="PersonComboBox" Width="180" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="0" Foreground="{DynamicResource TextBlockColorWhite}" FontFamily="Bahnschrift" FontSize="13" SelectionChanged="PersonComboBox_SelectionChanged"/>
+                <materialDesign:PackIcon Kind="CollegeOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" BorderThickness="0 0 0 0" Width="25" Height="25"/>
             </StackPanel>
             <Border Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 17"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
 
 
             <StackPanel x:Name="StackPanelTeacherOrDep" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Width="208">
-                <ComboBox x:Name="TeacherNameorDepartment" Width="180" BorderBrush="Chartreuse" BorderThickness="0" Foreground="White" FontFamily="Bahnschrift" FontSize="13" SelectionChanged="TeacherNameorDepartment_SelectionChanged"/>
-                <materialDesign:PackIcon Kind="PersonOutline" Foreground="Chartreuse" Width="25" Height="25"/>
+                <ComboBox x:Name="TeacherNameorDepartment" Width="180" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="0" Foreground="{DynamicResource TextBlockColorWhite}" FontFamily="Bahnschrift" FontSize="13" SelectionChanged="TeacherNameorDepartment_SelectionChanged"/>
+                <materialDesign:PackIcon Kind="PersonOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border Grid.Row="1" Width="210" 
                        VerticalAlignment="Bottom"
@@ -382,42 +265,42 @@
                        Opacity="0.5"/>
 
             <StackPanel x:Name="StackPanelGroupList" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" >
-                <ComboBox x:Name="GroupListComboBox" Width="180" Foreground="White" FontFamily="Bahnschrift" FontSize="13" BorderBrush="Chartreuse" BorderThickness="0" SelectionChanged="GroupListComboBox_SelectionChanged"/>
-                <materialDesign:PackIcon Kind="AccountGroupOutline" Foreground="Chartreuse" Width="25" Height="25"/>
+                <ComboBox x:Name="GroupListComboBox" Width="180" Foreground="{DynamicResource TextBlockColorWhite}" FontFamily="Bahnschrift" FontSize="13" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="0" SelectionChanged="GroupListComboBox_SelectionChanged"/>
+                <materialDesign:PackIcon Kind="AccountGroupOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderGroupList" Grid.Row="2" Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 17"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
             <StackPanel x:Name="TextboxUser" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBox x:Name="TextBoxNameUser" Width="180" FontWeight="Light" Background="Transparent" Foreground="White" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" IsEnabled="False" ToolTip="Введите свое имя" TextChanged="TextBoxNameser_TextChanged"/>
-                <materialDesign:PackIcon Kind="Sheep" Foreground="Chartreuse" Width="25" Height="25"/>
+                <materialDesign:PackIcon Kind="Sheep" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderTexBoxUser" Grid.Row="3" Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 17"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
 
             <StackPanel x:Name="PasswordBoxUser" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <PasswordBox x:Name="PasswordBoxPasswordOrigin" Width="180" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" ToolTip="Введите пароль" PasswordChanged="PasswordBoxPasswordOrigin_PasswordChanged"/>
-                <materialDesign:PackIcon Kind="TextboxPassword" Foreground="Chartreuse" Width="25" Height="25"/>
+                <materialDesign:PackIcon Kind="TextboxPassword" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderPasswordBoxUser" Grid.Row="4" Width="210" 
                        VerticalAlignment="Bottom"
                        Margin="0 0 0 17"
                        Height="2"
-                       Background="White"
+                       Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
 
 
             <Button x:Name="ButtonReg" Grid.Row="5" Style="{DynamicResource BorderButtonCorner}" Height="30" Content="Регистрация" IsEnabled="False" Click="ButtonReg_Click"/>
 
         </Grid>
-        <Border x:Name="BorderInfoPanelAuthReg" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Grid.Row="2" Background="Chartreuse" Height="0">
+        <Border x:Name="BorderInfoPanelAuthReg" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Grid.Row="2" Background="{DynamicResource TextBlockColorChartreuse}" Height="0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <materialDesign:PackIcon x:Name="KindIconInfoStackPanel" Kind="Error" Margin="10 0"/>
                 <TextBlock x:Name="TextBoxInfoStackPanel" Text="21314124" VerticalAlignment="Stretch" HorizontalAlignment="Center" Style="{DynamicResource TextBlockStyle}" Foreground="Black"/>

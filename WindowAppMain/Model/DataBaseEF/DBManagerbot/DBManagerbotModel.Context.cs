@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowAppMain
+namespace WindowAppMain.Model.DataBaseEF.DBManagerbot
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class managerbotDBContext : DbContext
+    public partial class managerdbContext : DbContext
     {
-        public managerbotDBContext()
-            : base("name=managerbotDBContext")
+        public managerdbContext()
+            : base("name=managerdbContext")
         {
         }
     
@@ -25,6 +25,7 @@ namespace WindowAppMain
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UsersInfo> UsersInfo { get; set; }
         public virtual DbSet<UsersNotes> UsersNotes { get; set; }
     }

@@ -4,85 +4,179 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Linq;
 using WindowAppMain.Classes.WindowAuthClasses;
+using WindowAppMain.Model.DataBaseEF.DBManagerbot;
 
 namespace WindowAppMain.Model.DataBaseEF
 {
     class CheckUser
     {
-        public List<string> userInfoList = new List<string>();
-        public List<string> checkUsers = new List<string>();
+        public Person userListInformantion;
         private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
         public async Task<bool> CheckExclusiveUser(string userLogin)
         {
+            bool checkRangeUser = true;
             try
             {
-                using (managerbotDBContext context = new managerbotDBContext())
+                using (managerdbContext context = new managerdbContext())
                 {
-                    await context.UsersInfo.ForEachAsync(user =>
+                    await context.Users.ForEachAsync(user =>
                     {
                         if (user.Email == userLogin)
                         {
-                            checkUsers.Add(user.Email);
-                            checkUsers.Add(user.StatusUser);
-                            checkUsers.Add(user.Department);
+                            checkRangeUser = false;
                         }
                     });
-                    return checkUsers.Count == 0 ? true : false;
+                    //checkUsers = context.UsersInfo.Where(user => user.Email == userLogin).ToList();
+
+                    return checkRangeUser;
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
         }
         public async Task<bool> SearchUser(string userLogin, string userPassword)
         {
-            bool userRange = false;
+            bool checkRangeUser = false;
             try
             {
-                using (managerbotDBContext context = new managerbotDBContext())
+                using (managerdbContext context = new managerdbContext())
                 {
-                    await context.UsersInfo.ForEachAsync(user =>
+                    await context.Users.ForEachAsync(user =>
                     {
                         if (user.Email == userLogin && user.Password == cryptPassword.CalculateMD5Hash(userPassword).ToString())
                         {
-                            if(user.StatusUser == "Преподаватель")
+                            checkRangeUser = true;
+                            var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
+                            switch (userInfo[0].UserStatus)
                             {
-                                userRange = true;
-                                userInfoList.Add(user.Name);
-                                userInfoList.Add(user.Email);
-                                userInfoList.Add(user.StatusUser);
+                                case "Преподаватель":
+                                    userListInformantion = new Person()
+                                    {
+                                        Login = user.Email,
+                                        Name = userInfo[0].UserName,
+                                        Status = userInfo[0].UserStatus
+                                    }; break;
+                                case "Студент":
+                                    userListInformantion = new Person()
+                                    {
+                                        Login = user.Email,
+                                        Name = userInfo[0].UserName,
+                                        Status = userInfo[0].UserStatus,
+                                        Department = userInfo[0].UserDepartment,
+                                        Group = userInfo[0].UserGroup
+                                    }; break;
                             }
-                            else
-                            {
-                                if(user.StatusUser == "Студент")
-                                {
-                                    userRange = true;
-                                    userInfoList.Add(user.Name);
-                                    userInfoList.Add(user.Email);
-                                    userInfoList.Add(user.StatusUser);
-                                    userInfoList.Add(user.Department);
-                                    userInfoList.Add(user.DepartmentGroup);
-                                }
-                            }
+                            //if(userInfo[0].UserStatus == "Преподаватель")
+                            //{
+                            //    userListInformantion = new Person()
+                            //    {
+                            //        Login = user.Email,
+                            //        Name = userInfo[0].UserName,
+                            //        Status = userInfo[0].UserStatus
+                            //    };
+                            //}
+                            //if(userInfo[0].UserStatus == "Студент")
+                            //{
+                            //    userListInformantion = new Person()
+                            //    {
+                            //        Login = user.Email,
+                            //        Name = userInfo[0].UserName,
+                            //        Status = userInfo[0].UserStatus,
+                            //        Department = userInfo[0].UserDepartment,
+                            //        Group = userInfo[0].UserGroup
+                            //    };
+                            //}
                         }
                     });
                 }
-                return userRange ? true : false;
+                return checkRangeUser;
             }
             catch
             {
                 return false;
             }
         }
+        public async void CollectionInformationUser(string userLogin)
+        {
+            try
+            {
+                using (managerdbContext context = new managerdbContext())
+                {
+                    await context.Users.ForEachAsync(user =>
+                    {
+                        if (user.Email == userLogin)
+                        {
+                            var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
+                            switch (userInfo[0].UserStatus)
+                            {
+                                case "Преподаватель":
+                                    userListInformantion = new Person()
+                                    {
+                                        Login = user.Email,
+                                        Name = userInfo[0].UserName,
+                                        Status = userInfo[0].UserStatus
+                                    }; break;
+                                case "Студент":
+                                    userListInformantion = new Person()
+                                    {
+                                        Login = user.Email,
+                                        Name = userInfo[0].UserName,
+                                        Status = userInfo[0].UserStatus,
+                                        Department = userInfo[0].UserDepartment,
+                                        Group = userInfo[0].UserGroup
+                                    }; break;
+                            }
+                        }
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void ChangePasswordUser(string userLogin, string userNewPassword)
         {
-            using (var context = new managerbotDBContext())
+            using (var context = new managerdbContext())
             {
-                var usersInfo = context.UsersInfo.SingleOrDefault(user => user.Email == userLogin);
+                var usersInfo = context.Users.SingleOrDefault(user => user.Email == userLogin);
                 usersInfo.Password = cryptPassword.CalculateMD5Hash(userNewPassword).ToString();
                 context.SaveChanges();
             }
+        }
+    }
+    [Serializable()]
+    public class Person
+    {
+        public string Name;
+        public string Login;
+        public string Status;
+        public string Department;
+        public string Group;
+
+        // Пусто конструктор, необходимый для сериализации.
+        public Person()
+        {
+        }
+
+        // Инициализация конструктора.
+        public Person(string login,
+            string status, string department, string group)
+        {
+            Login = login;
+            Status = status;
+            Department = department;
+            Group = group;
+        }
+        // Инициализация конструктора2.
+        public Person(string name, string login,
+            string status)
+        {
+            Name = name;
+            Login = login;
+            Status = status;
         }
     }
 }

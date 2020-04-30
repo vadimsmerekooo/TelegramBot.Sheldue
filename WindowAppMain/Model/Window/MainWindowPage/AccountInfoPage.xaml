@@ -4,11 +4,72 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WindowAppMain.Model.Window.MainWindowPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Title="AccountInfoPage">
-
-    <Grid Background="#FFCFCFCF">
-        <TextBlock Text="AccountInfoPage" FontFamily="Bahnshrift" Foreground="White" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      d:DesignHeight="400" d:DesignWidth="700"
+      Title="AccountInfoPage" Margin="35">
+    <Page.Resources>
+    </Page.Resources>
+    <Grid Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.ColumnSpan="2" Style="{DynamicResource BlockRectangleStyle}"/>
+        <Rectangle  Style="{DynamicResource BlockRectangleStyle}" Fill="Gray" Width="250" Margin="10" HorizontalAlignment="Left"/>
+        <Grid Grid.Column="0" Margin="10 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Ellipse Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="UserLogoImage" Stretch="UniformToFill"/>
+                </Ellipse.Fill>
+                <Ellipse.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <TextBlock x:Name="UserNameAccountPage" Text="Account Name" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5"/>
+            <Grid Grid.Row="1">
+                <!--<Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Gray" Offset="0"/>
+                        <GradientStop Color="#585858" Offset="0.01"/>
+                        <GradientStop Color="#1C1C1C" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>-->
+                <ListBox x:Name="AccountListBox" Margin="0 15 0 0"  Grid.Row="1" SelectionChanged="AccountListBox_SelectionChanged">
+                    <ListBoxItem x:Name="AccountBox" Style="{DynamicResource ListBoxItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="HomeButton" Kind="AccountOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                            <TextBlock Text="Аккаунт" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="GlobeBox" Style="{DynamicResource ListBoxItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="AccountButton" Kind="Globe" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                            <TextBlock Text="Общие" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="PasswordResetBox" Style="{DynamicResource ListBoxItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="SettingsButton" Kind="PasswordReset" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                            <TextBlock Text="Изменить пароль" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="LastNotesBox" Style="{DynamicResource ListBoxItemStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon x:Name="NotesButton" Kind="NoteOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                            <TextBlock Text="Последние заметки" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1" Margin="10">
+            <Rectangle  Grid.Column="1" Style="{DynamicResource BlockRectangleStyle}" Fill="{DynamicResource MainGrayColor}" Opacity="0.4" />
+            <Frame x:Name="AccountInfoPageFrame" NavigationUIVisibility="Hidden"/>
+        </Grid>
     </Grid>
 </Page>

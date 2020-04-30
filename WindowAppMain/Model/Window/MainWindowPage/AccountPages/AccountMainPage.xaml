@@ -1,0 +1,53 @@
+﻿<Page x:Class="WindowAppMain.Model.Window.MainWindowPage.AccountPages.AccountMainInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WindowAppMain.Model.Window.MainWindowPage.AccountPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="600"
+      Title="AccountMainInfo">
+
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Мой Аккаунт" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
+        <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="AccountLogo" Grid.Row="0" Grid.ColumnSpan="2" Margin="30 10" HorizontalAlignment="Left">
+                <Image.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="25"/>
+                </Image.Effect>
+            </Image>
+            <Ellipse Width="50" Height="50" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="ImageSmallLogo" Stretch="UniformToFill"/>
+                </Ellipse.Fill>
+                <Ellipse.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Button x:Name="SaveImageLogoButton" Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="0" Visibility="Hidden" VerticalAlignment="Center" Content="Сохранить" HorizontalAlignment="Center" ToolTip="Сохранить аватар" Click="SaveImageLogoButton_Click"/>
+            <Button Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Изменить" HorizontalAlignment="Center" ToolTip="Изменить аватар" Click="Button_Click"/>
+        </Grid>
+        <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+        <Image x:Name="TestImage" Grid.Row="2">
+            
+        </Image>
+    </Grid>
+</Page>

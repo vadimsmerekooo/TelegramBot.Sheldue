@@ -13,7 +13,7 @@
         WindowStartupLocation="CenterScreen"
         MinWidth="500"
         MinHeight="450"
-        WindowState="Maximized"
+        WindowState="Normal"
         WindowStyle="None"
         AllowsTransparency="False"
         BorderThickness="0"        
@@ -32,11 +32,9 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="40"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="250"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="StackPanelButtonMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="150"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UserPageInfo">
@@ -74,11 +72,9 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="250"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="40"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="StackPanelButtonMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="150"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="50"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UserPageInfo">
@@ -102,17 +98,12 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <SolidColorBrush x:Key="ForegroundColorUIElements" Color="Chartreuse"/>
+
         <Style x:Key="ButtonTriggerStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentForegroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBlockColorWhite}"/>
             <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="{DynamicResource PrimaryHueMidBrush}"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                </Setter.Value>
-            </Setter>
             <Style.BasedOn>
                 <Style TargetType="{x:Type ButtonBase}">
                     <Setter Property="FocusVisualStyle">
@@ -250,9 +241,10 @@
                 </Style>
             </Style.BasedOn>
         </Style>
+        
     </Window.Resources>
 
-    <Grid x:Name="MainGrid" Background="#1C1C1C">
+    <Grid x:Name="MainGrid" Background="{DynamicResource MainBackgroundColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="50"/>
@@ -264,7 +256,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="GridMainPage" Grid.Column="1">
-                <Grid Background="#424242">
+                <Grid Background="{DynamicResource MainGrayColor}">
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="0"
                                       Color="Black"
@@ -281,13 +273,16 @@
                 <Grid.Effect>
                     <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
                 </Grid.Effect>
-                <Grid x:Name="StackPanelButtonMenu"  Background="#2E2E2E" Height="50">
+                <Grid x:Name="StackPanelButtonMenu"  Background="{DynamicResource TitleStackPanelBackgroundColor}" Height="50">
                     <Grid x:Name="UserPageInfo" Grid.Row="0" Margin="10" Width="20" Height="30" Opacity="0">
-                        <Image x:Name="ImageLogo" Source="Resource/logoAccount2x2.png" Height="50" Width="50" HorizontalAlignment="Center" VerticalAlignment="Top">
-                            <Image.Effect>
+                        <Ellipse Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="ImageLogo" Stretch="UniformToFill"/>
+                            </Ellipse.Fill>
+                            <Ellipse.Effect>
                                 <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                            </Image.Effect>
-                        </Image>
+                            </Ellipse.Effect>
+                        </Ellipse>
                         <TextBlock x:Name="UserName" Text="AccountName" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource ResourceKey=TextBlockStyle}"/>
                         <Line X1="20" Y1="75" X2="210" Y2="75" Stroke="{DynamicResource ForegroundColorUIElements}"/>
                         <TextBlock x:Name="UserStatus" Text="UserStatus" VerticalAlignment="Bottom" Margin="20 35"   Style="{DynamicResource ResourceKey=TextBlockStyle}" ToolTip="Статус пользователя"/>
@@ -295,7 +290,7 @@
                     </Grid>
                     <Button x:Name="ButtonMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="50" Width="40" Click="ButtonMenu_Click">
                         <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Height="18" Width="20" >
-                            <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                            <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
                                 <Rectangle.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -305,7 +300,7 @@
                                     </TransformGroup>
                                 </Rectangle.RenderTransform>
                             </Rectangle>
-                            <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                            <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
                                 <Rectangle.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -315,7 +310,7 @@
                                     </TransformGroup>
                                 </Rectangle.RenderTransform>
                             </Rectangle>
-                            <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="Chartreuse" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         </Canvas>
                     </Button>
                 </Grid>
@@ -343,7 +338,7 @@
                         <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon x:Name="SettingsButton" Kind="SettingsOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                                <TextBlock Text="Настройки" Margin="20 01" Style="{DynamicResource TextBlockStyle}"/>
+                                <TextBlock Text="Настройки" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
                             </StackPanel>
                         </ListBoxItem>
                     </ListBox>
@@ -351,7 +346,7 @@
             </Grid>
 
         </Grid>
-        <Grid x:Name="GridTitleBar" Background="#2E2E2E" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
+        <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
             </Grid.Effect>
@@ -363,20 +358,20 @@
                 </Image>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Student Helper" Foreground="White" FontSize="17" FontFamily="Bahnschrift">
+                <TextBlock Text="Student Helper" Foreground="{DynamicResource TextBlockColorWhite}" FontSize="17" FontFamily="Bahnschrift">
                     <TextBlock.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
                     </TextBlock.Effect>
                 </TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
-                <Button x:Name="WindowMinimized" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="WindowMinimized_Click" Style="{DynamicResource ButtonTriggerStyle}">
+                <Button x:Name="WindowMinimized" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMinimized_Click" Style="{DynamicResource ButtonTriggerStyle}">
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
                 </Button>
-                <Button  Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="WindowMaxNormal_Click">
+                <Button  Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMaxNormal_Click">
                     <materialDesign:PackIcon x:Name="WindowMaxNormal" Kind="WindowRestore"/>
                 </Button>
-                <Button x:Name="ButtonFechar" Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonFechar_Click">
+                <Button x:Name="ButtonFechar" Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonFechar_Click">
                     <materialDesign:PackIcon Kind="Power" Background="Transparent"/>
                 </Button>
             </StackPanel>

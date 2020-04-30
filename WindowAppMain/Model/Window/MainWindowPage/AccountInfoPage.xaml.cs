@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using WindowAppMain.Model.Window.MainWindowPage.AccountPages;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
@@ -20,9 +10,32 @@ namespace WindowAppMain.Model.Window.MainWindowPage
     /// </summary>
     public partial class AccountInfoPage : Page
     {
-        public AccountInfoPage()
+        private MainWindow _mWindow;
+        public AccountInfoPage(MainWindow mWindow)
         {
             InitializeComponent();
+            _mWindow = mWindow;
+            UserNameAccountPage.Text = mWindow.UserName.Text;
+            UserLogoImage.ImageSource = mWindow.imageLogo;
+            AccountBox.IsSelected = true;
+        }
+
+        private void AccountListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (AccountListBox.SelectedIndex)
+            {
+                case 0:
+                    AccountMainInfo accInfoPage = new AccountMainInfo(_mWindow, this);
+                    AccountInfoPageFrame.NavigationService.Navigate(accInfoPage);
+                    break;
+                case 1:
+                    AccountInfoPageFrame.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountPages/AccountGlobePage.xaml", UriKind.Relative));
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
         }
     }
 }
