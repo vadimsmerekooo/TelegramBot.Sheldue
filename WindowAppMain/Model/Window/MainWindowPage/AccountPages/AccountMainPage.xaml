@@ -7,47 +7,123 @@
       mc:Ignorable="d" 
       d:DesignHeight="400" d:DesignWidth="600"
       Title="AccountMainInfo">
+    <Page.Resources>
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                            <Border x:Name="ScrollBarRectangle" CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="ScrollBarRectangle" Property="Width" Value="Auto" />
+                                <Setter TargetName="ScrollBarRectangle" Property="Height" Value="5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Margin" Value="0,0,-5,-5" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColorUIElements}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="5" Background="{TemplateBinding Background}">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="ScrollBarThumb" Background="{TemplateBinding Foreground}" Style="{StaticResource ScrollThumbs}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
 
-    <Grid Margin="15">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="Мой Аккаунт" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
-        <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Image x:Name="AccountLogo" Grid.Row="0" Grid.ColumnSpan="2" Margin="30 10" HorizontalAlignment="Left">
-                <Image.Effect>
-                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="25"/>
-                </Image.Effect>
-            </Image>
-            <Ellipse Width="50" Height="50" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="ImageSmallLogo" Stretch="UniformToFill"/>
-                </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                </Ellipse.Effect>
-            </Ellipse>
-            <Button x:Name="SaveImageLogoButton" Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="0" Visibility="Hidden" VerticalAlignment="Center" Content="Сохранить" HorizontalAlignment="Center" ToolTip="Сохранить аватар" Click="SaveImageLogoButton_Click"/>
-            <Button Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Изменить" HorizontalAlignment="Center" ToolTip="Изменить аватар" Click="Button_Click"/>
-        </Grid>
-        <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-        <Image x:Name="TestImage" Grid.Row="2">
-            
-        </Image>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="ScrollBarThumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="5" />
+                                <Setter TargetName="ScrollBarThumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VirtualizingPanel.ScrollUnit="Pixel">
+            <Grid Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Мой Аккаунт" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
+                <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="AccountLogo" Grid.Row="0" Grid.ColumnSpan="2" Margin="30 10" HorizontalAlignment="Left">
+                        <Image.Effect>
+                            <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="25"/>
+                        </Image.Effect>
+                    </Image>
+                    <Ellipse Width="50" Height="50" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 10">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="ImageSmallLogo" Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                        <Ellipse.Effect>
+                            <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <Button x:Name="SaveImageLogoButton" Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="0" Visibility="Hidden" VerticalAlignment="Center" Content="Сохранить" HorizontalAlignment="Center" ToolTip="Сохранить аватар" Click="SaveImageLogoButton_Click"/>
+                    <Button Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Изменить" HorizontalAlignment="Center" ToolTip="Изменить аватар" Click="Button_Click"/>
+                </Grid>
+                <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+
+                <ListView Grid.Row="2" Foreground="White" FontSize="22">
+                    <TextBlock >asdasdasd</TextBlock>
+                    <TextBlock >asdasdasd</TextBlock>
+                    <TextBlock >asdasdasd</TextBlock>
+                    <TextBlock >asdasdasd</TextBlock>
+                </ListView>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

@@ -154,7 +154,7 @@
     </Style>
 
     <SolidColorBrush x:Key="ForegroundColorUIElements" Color="Chartreuse"/>
-
+    <SolidColorBrush x:Key="ErrorForegroundColorUIElements" Color="Red"/>
     <SolidColorBrush x:Key="MainGrayColor" Color="#424242"/>
     <SolidColorBrush x:Key="MainBackgroundColor" Color="#1C1C1C"/>
     <SolidColorBrush x:Key="TitleStackPanelBackgroundColor" Color="#2E2E2E"/>

@@ -99,6 +99,25 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
+        <Storyboard x:Key="ShowMessageThrowGrid" TargetName="ThrowInfoGrid"> 
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
+                <SplineThicknessKeyFrame KeyTime="00:00:00" Value="0, -35,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:0.4" Value="0, 30,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
+                <SplineThicknessKeyFrame KeyTime="00:00:4" Value="0, 30,0,0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:4.2" Value="0, -35,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        
         <Style x:Key="ButtonTriggerStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}"/>
@@ -345,6 +364,15 @@
                 </Grid>
             </Grid>
 
+        </Grid>
+        <Grid x:Name="ThrowInfoGrid" Grid.RowSpan="3" Width="300" Height="Auto" VerticalAlignment="Top" Margin="-50" Style="{DynamicResource BlockGridStyle}" Opacity="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.ColumnSpan="2" Fill="{DynamicResource MainBackgroundColor}" Style="{DynamicResource BlockRectangleStyle}"></Rectangle>
+            <materialDesign:PackIcon x:Name="KindThrowMessage" Kind="Check" VerticalAlignment="Center" HorizontalAlignment="Center" Height="40" Width="40" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+            <TextBlock x:Name="TextBlockMessageThrow" Grid.Column="1" Style="{DynamicResource TextBlockStyle}" Text="Throw Message Exception Or Seccessful Operation Check" FontSize="15" TextWrapping="Wrap" Margin="7" TextAlignment="Center"/>
         </Grid>
         <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
             <Grid.Effect>

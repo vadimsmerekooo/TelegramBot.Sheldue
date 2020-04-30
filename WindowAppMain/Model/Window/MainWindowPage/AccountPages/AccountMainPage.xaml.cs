@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using WindowAppMain.Model.DataBaseEF;
 using System.Windows.Media;
 using WindowAppMain.Classes;
+using System.Windows.Media.Animation;
 
 namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
 {
@@ -72,11 +73,28 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                 //        fstream.Write(byteArray, 0, byteArray.Length);
                 //    }
                 //}
+
+
+
+                //здесь мы переобразуем новое изображение в массив byte и записываем юзерский файл
                 using (FileStream fstream = new FileStream($"../../Resource/LogoImageAccount/User{userInformation.Login}_Image.dat", FileMode.OpenOrCreate))
                 {
                     byte[] byteArray = decByteOrImage.ImageToByteArray(AccountLogo.Source);
                     fstream.Write(byteArray, 0, byteArray.Length);
                 }
+                _mWindow.ImageLogo.ImageSource = this.AccountLogo.Source;
+                _mWindow.imageLogo = this.AccountLogo.Source as BitmapImage;
+                _accWindow.UserLogoImage.ImageSource = this.AccountLogo.Source;
+                SaveImageLogoButton.Visibility = System.Windows.Visibility.Hidden;
+
+
+
+                _mWindow.KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
+                _mWindow.KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
+                _mWindow.TextBlockMessageThrow.Text = "Изображение успешно изменено!";
+                Storyboard sb = _mWindow.FindResource("ShowMessageThrowGrid") as Storyboard;
+                sb.Begin();
+
                 //JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
                 //jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(AccountLogo.Source as BitmapSource));
                 //if (File.Exists($"../../Resource/LogoImageAccount/User{userInformation.Login}_Image.jpg"))
@@ -96,7 +114,11 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
             }
             catch (Exception ex)
             {
-
+                _mWindow.KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
+                _mWindow.KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
+                _mWindow.TextBlockMessageThrow.Text = "Изображение не изменено! Ошибка(";
+                Storyboard sb = _mWindow.FindResource("ShowMessageThrowGrid") as Storyboard;
+                sb.Begin();
             }
         }
     }
