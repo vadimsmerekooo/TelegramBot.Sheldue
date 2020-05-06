@@ -6,10 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="11b7a504721f46bca051fd9cbd788946" Name="Diagram1">
         <EntityTypeShape EntityType="managerdbModel.Users" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="managerdbModel.UsersInfo" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="managerdbModel.UsersNotes" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
-        <AssociationConnector Association="managerdbModel.FK_UserIDNotes" ManuallyRouted="false" />
-        <AssociationConnector Association="managerdbModel.FK_UsersInfo_Users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="managerdbModel.UsersInfo" Width="1.5" PointX="3" PointY="4" />
+        <AssociationConnector Association="managerdbModel.FK_UsersInfo_Users" />
+        <EntityTypeShape EntityType="managerdbModel.UsersNotes" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="managerdbModel.FK_UsersNotes_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

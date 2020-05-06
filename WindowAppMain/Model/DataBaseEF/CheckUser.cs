@@ -54,6 +54,7 @@ namespace WindowAppMain.Model.DataBaseEF
                                 case "Преподаватель":
                                     userListInformantion = new Person()
                                     {
+                                        ID = user.ID,
                                         Login = user.Email,
                                         Name = userInfo[0].UserName,
                                         Status = userInfo[0].UserStatus
@@ -61,6 +62,7 @@ namespace WindowAppMain.Model.DataBaseEF
                                 case "Студент":
                                     userListInformantion = new Person()
                                     {
+                                        ID = user.ID,
                                         Login = user.Email,
                                         Name = userInfo[0].UserName,
                                         Status = userInfo[0].UserStatus,
@@ -114,6 +116,7 @@ namespace WindowAppMain.Model.DataBaseEF
                                 case "Преподаватель":
                                     userListInformantion = new Person()
                                     {
+                                        ID = user.ID,
                                         Login = user.Email,
                                         Name = userInfo[0].UserName,
                                         Status = userInfo[0].UserStatus
@@ -121,6 +124,7 @@ namespace WindowAppMain.Model.DataBaseEF
                                 case "Студент":
                                     userListInformantion = new Person()
                                     {
+                                        ID = user.ID,
                                         Login = user.Email,
                                         Name = userInfo[0].UserName,
                                         Status = userInfo[0].UserStatus,
@@ -150,21 +154,23 @@ namespace WindowAppMain.Model.DataBaseEF
     [Serializable()]
     public class Person
     {
+        public int ID;
         public string Name;
         public string Login;
         public string Status;
         public string Department;
         public string Group;
 
-        // Пусто конструктор, необходимый для сериализации.
+        // ПустоЙ конструктор, необходимый для сериализации.
         public Person()
         {
         }
 
         // Инициализация конструктора.
-        public Person(string login,
+        public Person(int id, string login,
             string status, string department, string group)
         {
+            ID = id;
             Login = login;
             Status = status;
             Department = department;

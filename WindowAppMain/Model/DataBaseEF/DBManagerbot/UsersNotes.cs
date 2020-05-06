@@ -14,6 +14,7 @@ namespace WindowAppMain.Model.DataBaseEF.DBManagerbot
     
     public partial class UsersNotes
     {
+        public int IDNotes { get; set; }
         public int IDUser { get; set; }
         public System.DateTime DateNote { get; set; }
         public string Para { get; set; }
