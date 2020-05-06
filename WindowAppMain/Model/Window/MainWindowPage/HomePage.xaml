@@ -379,7 +379,7 @@
                                                                     <ColumnDefinition Width="45"/>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Button Grid.Row="2" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
-                                                                    <materialDesign:PackIcon Kind="NoteAddOutline" Height="20" Width="20"/>
+                                                                    <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
@@ -401,7 +401,7 @@
                                                                     <ColumnDefinition Width="45"/>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Button Grid.Row="3" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
-                                                                    <materialDesign:PackIcon Kind="NoteAddOutline" Height="20" Width="20"/>
+                                                                    <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
@@ -423,7 +423,7 @@
                                                                     <ColumnDefinition Width="45"/>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Button Grid.Row="4" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
-                                                                    <materialDesign:PackIcon Kind="NoteAddOutline" Height="20" Width="20"/>
+                                                                    <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
@@ -445,7 +445,7 @@
                                                                     <ColumnDefinition Width="45"/>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Button Grid.Row="5" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
-                                                                    <materialDesign:PackIcon Kind="NoteAddOutline" Height="20" Width="20"/>
+                                                                    <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />

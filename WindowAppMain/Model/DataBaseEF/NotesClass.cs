@@ -34,6 +34,26 @@ namespace WindowAppMain.Model.DataBaseEF
                 return false;
             }
         }
+
+        public bool ChangeNoteUser(int idNote, string changeText)
+        {
+            try
+            {
+                using (managerdbContext context = new managerdbContext())
+                {
+                    var noteUser = context.UsersNotes.SingleOrDefault(note => note.IDNotes == idNote);
+                    noteUser.NoteText = changeText;
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception exx)
+            {
+                return false;
+            }
+        }
+
+
         public List<UsersNotes> GetAllNotesUser(int idUser)
         {
             try

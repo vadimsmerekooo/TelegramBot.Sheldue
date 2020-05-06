@@ -429,7 +429,7 @@
             <materialDesign:PackIcon x:Name="KindThrowMessage" Kind="Check" VerticalAlignment="Center" HorizontalAlignment="Center" Height="40" Width="40" Foreground="{DynamicResource ForegroundColorUIElements}"/>
             <TextBlock x:Name="TextBlockMessageThrow" Grid.Column="1" Style="{DynamicResource TextBlockStyle}" Text="Throw Message Exception Or Seccessful Operation Check" FontSize="15" TextWrapping="Wrap" Margin="7" TextAlignment="Center"/>
         </Grid>
-        <Grid x:Name="GridModalWindows" Visibility="Visible">
+        <Grid x:Name="GridModalWindows" Visibility="Hidden">
             
             <Grid x:Name="ModalWindowAddNotes" Width="350" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>

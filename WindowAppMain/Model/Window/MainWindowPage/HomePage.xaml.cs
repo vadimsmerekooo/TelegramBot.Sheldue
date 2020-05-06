@@ -23,8 +23,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
         private MainWindow _mWindow;
         private List<DateTime> listDate;
 
-
-        private const System.Windows.Visibility visibleNotes = System.Windows.Visibility.Visible;
+        
         private const MaterialDesignThemes.Wpf.PackIconKind NoteAddOutline = MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline;
         private const MaterialDesignThemes.Wpf.PackIconKind NoteMultipleOutline = MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline;
 
@@ -80,23 +79,23 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[0].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[0].Date,"Day1Para1","1","para1", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[0].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[0].Date,"Day1Para2","2","para2", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[0].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[0].Date,"Day1Para3","3","para3", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[0].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[0].Date,"Day1Para4","4","para4", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[0].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[0].Date,"Day1Para5","5","para5", "Prepod3", "3Kab")
                         })
                   }, $"Понедельник {listDate[0].Date.ToShortDateString()}"),
                   //Tuesday
@@ -106,15 +105,15 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[1].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[1].Date,"Day2Para1","1","para1", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[1].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[1].Date,"Day2Para2","2","para2", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[1].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[1].Date,"Day2Para3","3","para3", "Prepod3", "3Kab")
                         })
                   }, $"Вторник {listDate[1].Date.ToShortDateString()}"),
                   //Wednesday
@@ -124,11 +123,11 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[2].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[2].Date,"Day3Para1","1","para1", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[2].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[2].Date,"Day3Para2","2","para2", "Prepod3", "3Kab")
                         })
                   }, $"Среда {listDate[2].Date.ToShortDateString()}"),
                   //Thursday
@@ -138,7 +137,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[3].Date,"Day5Para3","1","Четверг", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[3].Date,"Day4Para1","1","Четверг", "Prepod3", "3Kab")
                         })
                   }, $"Четверг {listDate[3].Date.ToShortDateString()}"),
                   //Friday
@@ -148,7 +147,11 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[4].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[4].Date,"Day5Para1","1","para1", "Prepod3", "3Kab")
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[4].Date,"Day5Para2","2","para2", "Prepod3", "3Kab")
                         },
                         new List<Sheldue>()
                         {
@@ -156,11 +159,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[4].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[4].Date,"Day5Para4","4","para4", "Prepod3", "3Kab")
                         })
                   }, $"Пятница {listDate[4].Date.ToShortDateString()}"),
                   //Saturday
@@ -188,7 +187,12 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             {
                 kind = NoteMultipleOutline;
             }
-            return new Sheldue(visibleNotes, kind, tagNoteButton, para, work, teacher, auditoria, note);
+            System.Windows.Visibility chekParaEmpty = System.Windows.Visibility.Visible;
+            if (work == string.Empty && para == string.Empty && teacher == string.Empty && auditoria == string.Empty)
+            {
+                chekParaEmpty = System.Windows.Visibility.Hidden;
+            }
+            return new Sheldue(chekParaEmpty, kind, tagNoteButton, para, work, teacher, auditoria, note);
         }
 
         private UsersNotes GetUserNote(DateTime dateDay, string Para, string work)
@@ -250,99 +254,99 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             switch (tag)
             {
                 case "Day1Para1":
-                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para1[0].Work, int.Parse(allSheldueList[0].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para1[0].Work, int.Parse(allSheldueList[0].Day[0].Para1[0].Para), allSheldueList[0].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day1Para2":
-                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para2[0].Work, int.Parse(allSheldueList[0].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para2[0].Work, int.Parse(allSheldueList[0].Day[0].Para2[0].Para), allSheldueList[0].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day1Para3":
-                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para3[0].Work, int.Parse(allSheldueList[0].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para3[0].Work, int.Parse(allSheldueList[0].Day[0].Para3[0].Para), allSheldueList[0].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day1Para4":
-                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para4[0].Work, int.Parse(allSheldueList[0].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para4[0].Work, int.Parse(allSheldueList[0].Day[0].Para4[0].Para), allSheldueList[0].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day1Para5":
-                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para5[0].Work, int.Parse(allSheldueList[0].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[0].DayName, allSheldueList[0].Day[0].Para5[0].Work, int.Parse(allSheldueList[0].Day[0].Para4[0].Para), allSheldueList[0].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day2Para1":
-                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para1[0].Work, int.Parse(allSheldueList[1].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para1[0].Work, int.Parse(allSheldueList[1].Day[0].Para1[0].Para), allSheldueList[1].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day2Para2":
-                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para2[0].Work, int.Parse(allSheldueList[1].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para2[0].Work, int.Parse(allSheldueList[1].Day[0].Para2[0].Para), allSheldueList[1].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day2Para3":
-                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para3[0].Work, int.Parse(allSheldueList[1].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para3[0].Work, int.Parse(allSheldueList[1].Day[0].Para3[0].Para), allSheldueList[1].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day2Para4":
-                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para4[0].Work, int.Parse(allSheldueList[1].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para4[0].Work, int.Parse(allSheldueList[1].Day[0].Para4[0].Para), allSheldueList[1].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day2Para5":
-                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para5[0].Work, int.Parse(allSheldueList[1].Day[0].Para5[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[1].DayName, allSheldueList[1].Day[0].Para5[0].Work, int.Parse(allSheldueList[1].Day[0].Para5[0].Para), allSheldueList[1].Day[0].Para5[0].userNotes, ref buutonClick);
                     break;
                 case "Day3Para1":
-                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para1[0].Work, int.Parse(allSheldueList[2].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para1[0].Work, int.Parse(allSheldueList[2].Day[0].Para1[0].Para), allSheldueList[2].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day3Para2":
-                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para2[0].Work, int.Parse(allSheldueList[2].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para2[0].Work, int.Parse(allSheldueList[2].Day[0].Para2[0].Para), allSheldueList[2].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day3Para3":
-                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para3[0].Work, int.Parse(allSheldueList[2].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para3[0].Work, int.Parse(allSheldueList[2].Day[0].Para3[0].Para), allSheldueList[2].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day3Para4":
-                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para4[0].Work, int.Parse(allSheldueList[2].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para4[0].Work, int.Parse(allSheldueList[2].Day[0].Para4[0].Para), allSheldueList[2].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day3Para5":
-                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para5[0].Work, int.Parse(allSheldueList[2].Day[0].Para5[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[2].DayName, allSheldueList[2].Day[0].Para5[0].Work, int.Parse(allSheldueList[2].Day[0].Para5[0].Para), allSheldueList[2].Day[0].Para5[0].userNotes, ref buutonClick);
                     break;
                 case "Day4Para1":
-                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para1[0].Work, int.Parse(allSheldueList[3].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para1[0].Work, int.Parse(allSheldueList[3].Day[0].Para1[0].Para), allSheldueList[3].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day4Para2":
-                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para2[0].Work, int.Parse(allSheldueList[3].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para2[0].Work, int.Parse(allSheldueList[3].Day[0].Para2[0].Para), allSheldueList[3].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day4Para3":
-                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para3[0].Work, int.Parse(allSheldueList[3].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para3[0].Work, int.Parse(allSheldueList[3].Day[0].Para3[0].Para), allSheldueList[3].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day4Para4":
-                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para4[0].Work, int.Parse(allSheldueList[3].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para4[0].Work, int.Parse(allSheldueList[3].Day[0].Para4[0].Para), allSheldueList[3].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day4Para5":
-                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para5[0].Work, int.Parse(allSheldueList[3].Day[0].Para5[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[3].DayName, allSheldueList[3].Day[0].Para5[0].Work, int.Parse(allSheldueList[3].Day[0].Para5[0].Para), allSheldueList[3].Day[0].Para5[0].userNotes, ref buutonClick);
                     break;
                 case "Day5Para1":
-                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para1[0].Work, int.Parse(allSheldueList[4].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para1[0].Work, int.Parse(allSheldueList[4].Day[0].Para1[0].Para), allSheldueList[4].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day5Para2":
-                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para2[0].Work, int.Parse(allSheldueList[4].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para2[0].Work, int.Parse(allSheldueList[4].Day[0].Para2[0].Para), allSheldueList[4].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day5Para3":
-                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para3[0].Work, int.Parse(allSheldueList[4].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para3[0].Work, int.Parse(allSheldueList[4].Day[0].Para3[0].Para), allSheldueList[4].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day5Para4":
-                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para4[0].Work, int.Parse(allSheldueList[4].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para4[0].Work, int.Parse(allSheldueList[4].Day[0].Para4[0].Para), allSheldueList[4].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day5Para5":
-                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para5[0].Work, int.Parse(allSheldueList[4].Day[0].Para5[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[4].DayName, allSheldueList[4].Day[0].Para5[0].Work, int.Parse(allSheldueList[4].Day[0].Para5[0].Para), allSheldueList[4].Day[0].Para5[0].userNotes, ref buutonClick);
                     break;
                 case "Day6Para1":
-                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para1[0].Work, int.Parse(allSheldueList[5].Day[0].Para1[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para1[0].Work, int.Parse(allSheldueList[5].Day[0].Para1[0].Para), allSheldueList[5].Day[0].Para1[0].userNotes, ref buutonClick);
                     break;
                 case "Day6Para2":
-                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para2[0].Work, int.Parse(allSheldueList[5].Day[0].Para2[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para2[0].Work, int.Parse(allSheldueList[5].Day[0].Para2[0].Para), allSheldueList[5].Day[0].Para2[0].userNotes, ref buutonClick);
                     break;
                 case "Day6Para3":
-                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para3[0].Work, int.Parse(allSheldueList[5].Day[0].Para3[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para3[0].Work, int.Parse(allSheldueList[5].Day[0].Para3[0].Para), allSheldueList[5].Day[0].Para3[0].userNotes, ref buutonClick);
                     break;
                 case "Day6Para4":
-                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para4[0].Work, int.Parse(allSheldueList[5].Day[0].Para4[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para4[0].Work, int.Parse(allSheldueList[5].Day[0].Para4[0].Para), allSheldueList[5].Day[0].Para4[0].userNotes, ref buutonClick);
                     break;
                 case "Day6Para5":
-                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para5[0].Work, int.Parse(allSheldueList[5].Day[0].Para5[0].Para), ref buutonClick);
+                    ShowModalWindow(allSheldueList[5].DayName, allSheldueList[5].Day[0].Para5[0].Work, int.Parse(allSheldueList[5].Day[0].Para5[0].Para), allSheldueList[5].Day[0].Para5[0].userNotes, ref buutonClick);
                     break;
             }
 
         }
-        private void ShowModalWindow(string dateDay, string para, int paraNumber, ref Button butonClick)
+        private void ShowModalWindow(string dateDay, string para, int paraNumber,UsersNotes note, ref Button butonClick)
         {
             var kindButton = butonClick.Content as MaterialDesignThemes.Wpf.PackIcon;
             switch (kindButton.Kind)
@@ -379,9 +383,10 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                     _mWindow.DateNoteTextBlock.Text = dateDay;
                     _mWindow.ParaNoteTextBlock.Text = para;
                     _mWindow.paraNumber = paraNumber;
+                    _mWindow.NewNoteTextBox.Text = note.NoteText;
+                    _mWindow.tmpNoteUserId = note.IDNotes;
                     Storyboard sbChangeNote = _mWindow.FindResource("ShowModalWindowAddNewNote") as Storyboard;
                     sbChangeNote.Begin();
-                    _mWindow.NewNoteTextBox.Clear();
                     break;
             }
         }
