@@ -114,6 +114,14 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                         new List<Sheldue>()
                         {
                             GetShelduePara(listDate[1].Date,"Day2Para3","3","para3", "Prepod3", "3Kab")
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[1].Date,"Day2Para4",string.Empty,string.Empty,string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[1].Date,"Day2Para5",string.Empty,string.Empty,string.Empty, string.Empty)
                         })
                   }, $"Вторник {listDate[1].Date.ToShortDateString()}"),
                   //Wednesday
@@ -128,6 +136,18 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                         new List<Sheldue>()
                         {
                             GetShelduePara(listDate[2].Date,"Day3Para2","2","para2", "Prepod3", "3Kab")
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[2].Date,"Day3Para3",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[2].Date,"Day3Para4",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[2].Date,"Day3Para5",string.Empty,string.Empty, string.Empty,string.Empty)
                         })
                   }, $"Среда {listDate[2].Date.ToShortDateString()}"),
                   //Thursday
@@ -138,6 +158,22 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                         new List<Sheldue>()
                         {
                             GetShelduePara(listDate[3].Date,"Day4Para1","1","Четверг", "Prepod3", "3Kab")
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[3].Date,"Day4Para2",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[3].Date,"Day4Para3",string.Empty,string.Empty,string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[3].Date,"Day4Para4",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[3].Date,"Day4Para5",string.Empty,string.Empty, string.Empty, string.Empty)
                         })
                   }, $"Четверг {listDate[3].Date.ToShortDateString()}"),
                   //Friday
@@ -155,11 +191,15 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[4].Date,"Day5Para3","3","para3", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[4].Date,"Day5Para3",string.Empty,string.Empty, string.Empty, string.Empty)
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[4].Date,"Day5Para4","4","para4", "Prepod3", "3Kab")
+                            GetShelduePara(listDate[4].Date,"Day5Para4",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[4].Date,"Day5Para5",string.Empty,string.Empty,string.Empty, string.Empty)
                         })
                   }, $"Пятница {listDate[4].Date.ToShortDateString()}"),
                   //Saturday
@@ -169,11 +209,23 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[5].Date,"Day6Para1","1","Суббота", "Пуся", "23")
+                            GetShelduePara(listDate[5].Date,"Day6Para1",string.Empty,string.Empty, string.Empty, string.Empty)
                         },
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[5].Date,"Day6Para2","2","para2", "Prepod2", "2Kab")
+                            GetShelduePara(listDate[5].Date,"Day6Para2",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[5].Date,"Day6Para3",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[5].Date,"Day6Para4",string.Empty,string.Empty, string.Empty, string.Empty)
+                        },
+                        new List<Sheldue>()
+                        {
+                            GetShelduePara(listDate[5].Date,"Day6Para5",string.Empty,string.Empty, string.Empty, string.Empty)
                         })
                   }, $"Суббота {listDate[5].Date.ToShortDateString()}"
             )};
