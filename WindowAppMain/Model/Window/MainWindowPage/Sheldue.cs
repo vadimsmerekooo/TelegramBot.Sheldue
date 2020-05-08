@@ -3,22 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WindowAppMain.Model.DataBaseEF.DBManagerbot;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
     public class Sheldue
     {
+        public System.Windows.Visibility Notes { get; set; }
+        public MaterialDesignThemes.Wpf.PackIconKind Kind { get; set; } 
+        public string TagNoteButton { get; set; }
         public string Para { get; set; }
         public string Work { get; set; }
         public string Teacher { get; set; }
         public string Auditorya { get; set; }
+        public UsersNotes userNotes { get; set; } 
 
-        public Sheldue(string para, string work, string teacher, string auditorya)
+        public Sheldue(System.Windows.Visibility Notes, MaterialDesignThemes.Wpf.PackIconKind Kind, string TagNoteButton, string para, string work, string teacher, string auditorya, UsersNotes note)
         {
+            this.Notes = Notes;
+            this.Kind = Kind;
+            this.TagNoteButton = TagNoteButton;
             Para = para;
             Work = work;
             Teacher = teacher;
             Auditorya = auditorya;
+            userNotes = note;
         }
     }
     public class SheldueAllList
@@ -35,6 +44,32 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             Para3 = para3;
             Para4 = para4;
             Para5 = para5;
+        }
+        public SheldueAllList(List<Sheldue> para1, List<Sheldue> para2, List<Sheldue> para3, List<Sheldue> para4)
+        {
+            Para1 = para1;
+            Para2 = para2;
+            Para3 = para3;
+            Para4 = para4;
+        }
+        public SheldueAllList(List<Sheldue> para1, List<Sheldue> para2, List<Sheldue> para3)
+        {
+            Para1 = para1;
+            Para2 = para2;
+            Para3 = para3;
+        }
+        public SheldueAllList(List<Sheldue> para1, List<Sheldue> para2)
+        {
+            Para1 = para1;
+            Para2 = para2;
+        }
+        public SheldueAllList(List<Sheldue> para1)
+        {
+            Para1 = para1;
+        }
+        public SheldueAllList()
+        {
+
         }
     }
     public class SheldueAllDays

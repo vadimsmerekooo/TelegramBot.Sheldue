@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -22,30 +23,38 @@ namespace WindowAppMain
         private bool StateClosed = true;
         public Person _userInfo = new Person();
         public BitmapImage imageLogo;
+        public const string teacher = "Преподаватель";
+        public const string student = "Студент";
+        public int paraNumber;
+        public Button _buttonRefAddNote;
+        public HomePage _homePage;
+        public int tmpNoteUserId;
         #endregion
         public MainWindow()
         {
             InitializeComponent();
-            HomeBox.IsSelected = true;
 
         }
         public MainWindow(Person userInfo) : this()
         {
+            // Init Information Of User
             _userInfo = userInfo;
+            // Load User Avatar
             LoadImageLogoUser loadImage = new LoadImageLogoUser();
             imageLogo = loadImage.SelectImage(_userInfo.Login);
             ImageLogo.ImageSource = loadImage.SelectImage(_userInfo.Login);
             switch (_userInfo.Status)
             {
-                case "Преподаватель":
+                case teacher:
                     UserName.Text = _userInfo.Name;
                     UserStatus.Text = _userInfo.Status;
                     break;
-                case "Студент":
+                case student:
                     UserName.Text = _userInfo.Login;
                     UserStatus.Text = _userInfo.Status + " из группы " + _userInfo.Group;
                     break;
             }
+            HomeBox.IsSelected = true;
         }
         //DoubleAnimation Open and Close UserPageInfo
         private void ButtonMenu_Click(object sender, RoutedEventArgs e)
@@ -73,7 +82,8 @@ namespace WindowAppMain
             switch (GroupListBox.SelectedIndex)
             {
                 case 0:
-                    Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/HomePage.xaml", UriKind.Relative)); }));
+                    HomePage hmPage = new HomePage(this);
+                    Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(hmPage); }));
                     break;
                 case 1:
                     //MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountInfoPage.xaml", UriKind.Relative));
@@ -146,6 +156,133 @@ namespace WindowAppMain
             catch
             {
 
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Storyboard sb = this.FindResource("CloseModalWindowAddNewNote") as Storyboard;
+            sb.Completed += Sb_Completed;
+            sb.Begin();
+        }
+
+        private void Sb_Completed(object sender, EventArgs e)
+        {
+            GridModalWindows.Visibility = Visibility.Hidden;
+            ModalWindowAddNotes.Visibility = Visibility.Hidden;
+            DosentOpacityGrid.IsEnabled = true;
+        }
+
+        private void SaveNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                NotesClass noteClass = new NotesClass();
+                switch (NameGridChangeOrAddNotes.Text)
+                {
+                    case "Добавление заметки":
+                        try
+                        {
+                            string[] parseDate = DateNoteTextBlock.Text.Split(' ');
+                            if (noteClass.AddNewNoteUser(_userInfo.ID, NewNoteTextBox.Text, Convert.ToDateTime(parseDate[1]), ParaNoteTextBlock.Text, paraNumber))
+                            {
+                                Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
+                                sb.Begin();
+                                MaterialDesignThemes.Wpf.PackIcon kindNoteSave = new MaterialDesignThemes.Wpf.PackIcon();
+                                kindNoteSave.Kind = MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline;
+                                kindNoteSave.Width = 20;
+                                kindNoteSave.Height = 20;
+                                _buttonRefAddNote.Content = kindNoteSave;
+                                _buttonRefAddNote.ToolTip = "Изменить заметку";
+                                KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
+                                KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
+                                TextBlockMessageThrow.Text = "Заметка сохранена!";
+                                Storyboard sbShowNodalWindow = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                                sbShowNodalWindow.Begin();
+                                HomePage hmPage = new HomePage(this);
+                                Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(hmPage); }));
+                            }
+                            else
+                            {
+                                KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
+                                KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
+                                TextBlockMessageThrow.Text = "Заметка не добавлена!";
+                                Storyboard sb = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                                sb.Begin();
+                            }
+                            DosentOpacityGrid.IsEnabled = true;
+                        }
+                        catch
+                        {
+                            Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
+                            sb.Begin();
+                            KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
+                            KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
+                            TextBlockMessageThrow.Text = "Заметка не добавлена!";
+                            Storyboard sbThrowMessge = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                            sb.Begin();
+                            DosentOpacityGrid.IsEnabled = true;
+                        }
+                        break;
+                    case "Изменение заметки":
+                        try
+                        {
+                            if (!String.IsNullOrWhiteSpace(NewNoteTextBox.Text))
+                            {
+                                if (noteClass.ChangeNoteUser(tmpNoteUserId, NewNoteTextBox.Text))
+                                {
+                                    KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
+                                    KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
+                                    TextBlockMessageThrow.Text = "Заметка изменена!";
+                                    Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
+                                    sb.Begin();
+                                    Storyboard sbShowNodalWindow = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                                    sbShowNodalWindow.Begin();
+                                    HomePage hmPage = new HomePage(this);
+                                    Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(hmPage); }));
+                                }
+                                else
+                                {
+                                    KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
+                                    KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
+                                    TextBlockMessageThrow.Text = "Заметка не изменена!";
+                                    Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
+                                    sb.Begin();
+                                    Storyboard sbThrowMessge = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                                    sbThrowMessge.Begin();
+                                }
+                                DosentOpacityGrid.IsEnabled = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
+                            KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
+                            TextBlockMessageThrow.Text = "Заметка не изменена!";
+                            Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
+                            sb.Begin();
+                            Storyboard sbThrowMessge = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                            sbThrowMessge.Begin();
+                            DosentOpacityGrid.IsEnabled = true;
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void NewNoteTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CounterLengthTextBox.Text = $"{NewNoteTextBox.Text.Length}/100";
+            if (NameGridChangeOrAddNotes.Text != "Изменение заметки")
+            {
+                if (NewNoteTextBox.Text.Length > 5)
+                    SaveNoteButton.Visibility = Visibility.Visible;
+                else
+                    SaveNoteButton.Visibility = Visibility.Hidden;
             }
         }
         //!Event's UserInfoPage

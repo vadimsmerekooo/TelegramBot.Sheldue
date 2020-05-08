@@ -55,9 +55,19 @@
     <Reference Include="Telegram.Bot">
       <HintPath>..\packages\Telegram.Bot.15.3.0\lib\net45\Telegram.Bot.dll</HintPath>
     </Reference>
+    <Reference Include="Xceed.Document.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Document.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Words.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Words.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Student\ParseWord.cs" />
+    <Compile Include="DALApp\SheldueClass.cs" />
+    <Compile Include="Interfaces\IGetSheldue.cs" />
     <Compile Include="MainClassDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

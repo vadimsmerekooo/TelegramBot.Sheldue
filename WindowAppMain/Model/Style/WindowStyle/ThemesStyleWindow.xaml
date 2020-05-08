@@ -160,4 +160,14 @@
     <SolidColorBrush x:Key="TitleStackPanelBackgroundColor" Color="#2E2E2E"/>
     <SolidColorBrush x:Key="TextBlockColorWhite" Color="White"/>
     <SolidColorBrush x:Key="TextBlockColorChartreuse" Color="Chartreuse"/>
+
+
+    <Style x:Key="InfoUserTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="None"/>
+        <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Cursor" Value="Arrow"/>
+    </Style>
 </ResourceDictionary>

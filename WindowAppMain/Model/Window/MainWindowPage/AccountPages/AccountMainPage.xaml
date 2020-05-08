@@ -75,6 +75,28 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="{x:Type ListBoxItem}" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border 
+          Name="Border"
+          Padding="7"
+          SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#DDDDDD"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VirtualizingPanel.ScrollUnit="Pixel">
@@ -116,13 +138,23 @@
                     <Button Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Изменить" HorizontalAlignment="Center" ToolTip="Изменить аватар" Click="Button_Click"/>
                 </Grid>
                 <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-
-                <ListView Grid.Row="2" Foreground="White" FontSize="22">
-                    <TextBlock >asdasdasd</TextBlock>
-                    <TextBlock >asdasdasd</TextBlock>
-                    <TextBlock >asdasdasd</TextBlock>
-                    <TextBlock >asdasdasd</TextBlock>
-                </ListView>
+                <StackPanel Grid.Row="2" Orientation="Vertical">
+                    <TextBlock Grid.Row="2" Text="Ваши данные" Style="{DynamicResource InfoUserTextBlockStyle}" Margin="10" VerticalAlignment="Top"/>
+                    <ListBox x:Name="ListBoxUserInfo" Grid.Row="2" ItemsSource="{Binding UserInfoListClass}" HorizontalAlignment="Center" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="Auto" Width="230">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding ParamByName}" Grid.Column="0" VerticalAlignment="Top" Style="{DynamicResource InfoUserTextBlockStyle}"/>
+                                    <TextBlock Text="{Binding PropertiesParam}" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{DynamicResource InfoUserTextBlockStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </Grid>
         </ScrollViewer>
     </Grid>

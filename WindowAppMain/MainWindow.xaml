@@ -18,7 +18,8 @@
         AllowsTransparency="False"
         BorderThickness="0"        
         ResizeMode="CanResizeWithGrip"
-        x:Name="MainWindowName">
+        x:Name="MainWindowName"
+    Background="Black">
     <Window.Resources>
         <Storyboard x:Key="OpenMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
@@ -99,7 +100,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
-        <Storyboard x:Key="ShowMessageThrowGrid" TargetName="ThrowInfoGrid"> 
+        <Storyboard x:Key="ShowMessageThrowGrid" TargetName="ThrowInfoGrid">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
@@ -117,7 +118,29 @@
                 <SplineThicknessKeyFrame KeyTime="00:00:4.2" Value="0, -35,0,0" />
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
+
+        <Storyboard x:Key="ShowModalWindowAddNewNote">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="DosentOpacityGrid">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.5"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ModalWindowAddNotes">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseModalWindowAddNewNote">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="DosentOpacityGrid">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0.5"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ModalWindowAddNotes">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         
+
         <Style x:Key="ButtonTriggerStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{DynamicResource SecondaryAccentBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}"/>
@@ -260,110 +283,142 @@
                 </Style>
             </Style.BasedOn>
         </Style>
-        
+
     </Window.Resources>
 
     <Grid x:Name="MainGrid" Background="{DynamicResource MainBackgroundColor}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid x:Name="GridMainPage" Grid.Column="1">
-                <Grid Background="{DynamicResource MainGrayColor}">
-                    <Grid.Effect>
-                        <DropShadowEffect ShadowDepth="0"
+        <Grid x:Name="DosentOpacityGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="GridMainPage" Grid.Column="1">
+                    <Grid Background="{DynamicResource MainGrayColor}">
+                        <Grid.Effect>
+                            <DropShadowEffect ShadowDepth="0"
                                       Color="Black"
                                       BlurRadius="15"/>
-                    </Grid.Effect>
-                    <Frame x:Name="MainWindowPage" NavigationUIVisibility="Hidden"/>
+                        </Grid.Effect>
+                        <Frame x:Name="MainWindowPage" NavigationUIVisibility="Hidden"/>
+                    </Grid>
                 </Grid>
+                <Grid x:Name="GridMenu" Width="40" HorizontalAlignment="Left" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                    </Grid.Effect>
+                    <Grid x:Name="StackPanelButtonMenu"  Background="{DynamicResource TitleStackPanelBackgroundColor}" Height="50">
+                        <Grid x:Name="UserPageInfo" Grid.Row="0" Margin="10" Width="20" Height="30" Opacity="0">
+                            <Ellipse Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Ellipse.Fill>
+                                    <ImageBrush x:Name="ImageLogo" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                                <Ellipse.Effect>
+                                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                                </Ellipse.Effect>
+                            </Ellipse>
+                            <TextBlock x:Name="UserName" Text="AccountName" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource ResourceKey=TextBlockStyle}"/>
+                            <Line X1="20" Y1="75" X2="210" Y2="75" Stroke="{DynamicResource ForegroundColorUIElements}"/>
+                            <TextBlock x:Name="UserStatus" Text="UserStatus" VerticalAlignment="Bottom" Margin="20 35"   Style="{DynamicResource ResourceKey=TextBlockStyle}" ToolTip="Статус пользователя"/>
+                            <materialDesign:PackIcon Kind="AccountOffOutline" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20 0" ToolTip="Сменить пользователя" Foreground="{DynamicResource ForegroundColorUIElements}" Cursor="Hand" MouseLeftButtonUp="CloseAccount_MouseLeftButtonUp"/>
+                        </Grid>
+                        <Button x:Name="ButtonMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="50" Width="40" Click="ButtonMenu_Click">
+                            <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Height="18" Width="20" >
+                                <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            </Canvas>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Gray" Offset="0"/>
+                                <GradientStop Color="#585858" Offset="0.01"/>
+                                <GradientStop Color="#1C1C1C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <ListBox x:Name="GroupListBox" Margin="0 30 0 0"  Grid.Row="1" SelectionChanged="GroupListBox_SelectionChanged">
+                            <ListBoxItem x:Name="HomeBox" Style="{DynamicResource ListBoxItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon x:Name="HomeButton" Kind="HomeOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                    <TextBlock Text="Главная" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem x:Name="Box" Style="{DynamicResource ListBoxItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon x:Name="AccountButton" Kind="AccountOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                    <TextBlock Text="Аккаунт" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon x:Name="SettingsButton" Kind="SettingsOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                    <TextBlock Text="Настройки" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+
             </Grid>
-            <Grid x:Name="GridMenu" Width="40" HorizontalAlignment="Left" Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
                 <Grid.Effect>
                     <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
                 </Grid.Effect>
-                <Grid x:Name="StackPanelButtonMenu"  Background="{DynamicResource TitleStackPanelBackgroundColor}" Height="50">
-                    <Grid x:Name="UserPageInfo" Grid.Row="0" Margin="10" Width="20" Height="30" Opacity="0">
-                        <Ellipse Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top">
-                            <Ellipse.Fill>
-                                <ImageBrush x:Name="ImageLogo" Stretch="UniformToFill"/>
-                            </Ellipse.Fill>
-                            <Ellipse.Effect>
-                                <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                            </Ellipse.Effect>
-                        </Ellipse>
-                        <TextBlock x:Name="UserName" Text="AccountName" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource ResourceKey=TextBlockStyle}"/>
-                        <Line X1="20" Y1="75" X2="210" Y2="75" Stroke="{DynamicResource ForegroundColorUIElements}"/>
-                        <TextBlock x:Name="UserStatus" Text="UserStatus" VerticalAlignment="Bottom" Margin="20 35"   Style="{DynamicResource ResourceKey=TextBlockStyle}" ToolTip="Статус пользователя"/>
-                        <materialDesign:PackIcon Kind="AccountOffOutline" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20 0" ToolTip="Сменить пользователя" Foreground="{DynamicResource ForegroundColorUIElements}" Cursor="Hand" MouseLeftButtonUp="CloseAccount_MouseLeftButtonUp"/>
-                    </Grid>
-                    <Button x:Name="ButtonMenu" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Height="50" Width="40" Click="ButtonMenu_Click">
-                        <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Height="18" Width="20" >
-                            <Rectangle x:Name="rectangle" Width="20" Height="4" Margin="0,0,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                                <Rectangle.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Rectangle.RenderTransform>
-                            </Rectangle>
-                            <Rectangle x:Name="rectangle1" Width="20" Height="4" Margin="0, 14,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                                <Rectangle.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Rectangle.RenderTransform>
-                            </Rectangle>
-                            <Rectangle x:Name="rectangle2" Width="20" Height="4" Margin="0,7,0,0" Fill="{DynamicResource ForegroundColorUIElements}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                        </Canvas>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="6 2 2 2">
+                    <Image Source="Resource/botRoma.png">
+                        <Image.Effect>
+                            <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                        </Image.Effect>
+                    </Image>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Sheldue Helper" Foreground="{DynamicResource TextBlockColorWhite}" FontSize="17" FontFamily="Bahnschrift">
+                        <TextBlock.Effect>
+                            <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                    <Button x:Name="WindowMinimized" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMinimized_Click" Style="{DynamicResource ButtonTriggerStyle}">
+                        <materialDesign:PackIcon Kind="WindowMinimize"/>
                     </Button>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Gray" Offset="0"/>
-                            <GradientStop Color="#585858" Offset="0.01"/>
-                            <GradientStop Color="#1C1C1C" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
-                    <ListBox x:Name="GroupListBox" Margin="0 30 0 0"  Grid.Row="1" SelectionChanged="GroupListBox_SelectionChanged">
-                        <ListBoxItem x:Name="HomeBox" Style="{DynamicResource ListBoxItemStyle}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon x:Name="HomeButton" Kind="HomeOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                                <TextBlock Text="Главная" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem x:Name="Box" Style="{DynamicResource ListBoxItemStyle}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon x:Name="AccountButton" Kind="AccountOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                                <TextBlock Text="Аккаунт" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon x:Name="SettingsButton" Kind="SettingsOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                                <TextBlock Text="Настройки" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                    </ListBox>
-                </Grid>
+                    <Button  Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMaxNormal_Click">
+                        <materialDesign:PackIcon x:Name="WindowMaxNormal" Kind="WindowRestore"/>
+                    </Button>
+                    <Button x:Name="ButtonFechar" Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonFechar_Click">
+                        <materialDesign:PackIcon Kind="Power" Background="Transparent"/>
+                    </Button>
+                </StackPanel>
             </Grid>
-
         </Grid>
         <Grid x:Name="ThrowInfoGrid" Grid.RowSpan="3" Width="300" Height="Auto" VerticalAlignment="Top" Margin="-50" Style="{DynamicResource BlockGridStyle}" Opacity="0">
             <Grid.ColumnDefinitions>
@@ -374,36 +429,49 @@
             <materialDesign:PackIcon x:Name="KindThrowMessage" Kind="Check" VerticalAlignment="Center" HorizontalAlignment="Center" Height="40" Width="40" Foreground="{DynamicResource ForegroundColorUIElements}"/>
             <TextBlock x:Name="TextBlockMessageThrow" Grid.Column="1" Style="{DynamicResource TextBlockStyle}" Text="Throw Message Exception Or Seccessful Operation Check" FontSize="15" TextWrapping="Wrap" Margin="7" TextAlignment="Center"/>
         </Grid>
-        <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown">
-            <Grid.Effect>
-                <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-            </Grid.Effect>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="6 2 2 2">
-                <Image Source="Resource/botRoma.png">
-                    <Image.Effect>
-                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                    </Image.Effect>
-                </Image>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Student Helper" Foreground="{DynamicResource TextBlockColorWhite}" FontSize="17" FontFamily="Bahnschrift">
-                    <TextBlock.Effect>
-                        <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
-                    </TextBlock.Effect>
-                </TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
-                <Button x:Name="WindowMinimized" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMinimized_Click" Style="{DynamicResource ButtonTriggerStyle}">
-                    <materialDesign:PackIcon Kind="WindowMinimize"/>
-                </Button>
-                <Button  Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="WindowMaxNormal_Click">
-                    <materialDesign:PackIcon x:Name="WindowMaxNormal" Kind="WindowRestore"/>
-                </Button>
-                <Button x:Name="ButtonFechar" Style="{DynamicResource ButtonTriggerStyle}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Click="ButtonFechar_Click">
-                    <materialDesign:PackIcon Kind="Power" Background="Transparent"/>
-                </Button>
-            </StackPanel>
+        <Grid x:Name="GridModalWindows" Visibility="Hidden">
+            
+            <Grid x:Name="ModalWindowAddNotes" Width="350" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Rectangle Width="350" Height="300" Grid.RowSpan="6" Fill="{DynamicResource TitleStackPanelBackgroundColor}" Style="{DynamicResource BlockRectangleStyle}"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock x:Name="NameGridChangeOrAddNotes" Style="{DynamicResource TextBlockStyle}" Text="Добавление заметки" FontSize="21"/>
+                    <materialDesign:PackIcon x:Name="KindHeaderTextBock" Kind="NoteAddOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Margin="5" Height="21" Width="21" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0">
+                    <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Дата:"/>
+                    <TextBlock x:Name="DateNoteTextBlock" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="22.04.2020г - Среда" Margin="15 0" TextDecorations="UnderLine" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0">
+                    <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Пара:"/>
+                    <TextBlock x:Name="ParaNoteTextBlock" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Математическое моделирование" Margin="15 0" TextDecorations="UnderLine" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0">
+                    <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Текст заметки"/>
+                    <materialDesign:PackIcon Kind="ArrowBottomBold" Foreground="{DynamicResource TextBlockColorChartreuse}" Margin="5" Height="21" Width="21" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock x:Name="CounterLengthTextBox" Grid.Row="3" Text="0/100" HorizontalAlignment="Right" Style="{DynamicResource TextBlockStyle}" Opacity="0.5" FontSize="12" Margin="30 0" VerticalAlignment="Bottom"></TextBlock>
+                <Border Grid.Row="4" Margin="30 5" CornerRadius="10" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
+                    <TextBox x:Name="NewNoteTextBox" FontWeight="Light" MaxLength="100" Background="Transparent" BorderThickness="0" Padding="10" Style="{DynamicResource TextBoxTransparateStyle}" VerticalContentAlignment="Top" TextWrapping="Wrap" TextChanged="NewNoteTextBox_TextChanged"/>
+                </Border>
+
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="SaveNoteButton" Style="{DynamicResource BorderButtonCorner}" Grid.Column="0" VerticalAlignment="Center" Content="Сохранить" HorizontalAlignment="Center" Width="120" ToolTip="Сохранить заметку" Visibility="Hidden" Click="SaveNoteButton_Click"/>
+                    <Button Style="{DynamicResource BorderButtonCorner}" Grid.Column="1" VerticalAlignment="Center" Content="Отмена" HorizontalAlignment="Center" Width="120" Click="Button_Click"/>
+                </Grid>
+
+            </Grid>
         </Grid>
-        
     </Grid>
 </Window>

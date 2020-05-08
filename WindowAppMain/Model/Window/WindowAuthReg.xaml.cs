@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -74,14 +75,9 @@ namespace WindowAppMain.Model.Window
             {
                 try
                 {
-                    using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
-                    {
-                        userInfoList = new Person();
-                        userInfoList = (Person)serializer.Deserialize(fs);
-                        MainWindow mainWindow = new MainWindow(userInfoList);
-                        mainWindow.Show();
-                        this.Close();
-                    }
+                    MainWindow mainWindow = new MainWindow(userInfoList);
+                    mainWindow.Show();
+                    this.Close();
                 }
                 catch
                 {
@@ -245,7 +241,7 @@ namespace WindowAppMain.Model.Window
                         ErrorReg("Неверный логин или пароль!");
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
                     loadedControl.StopAnimation();
                     ErrorReg("Ошибка авторизации!");
@@ -283,7 +279,30 @@ namespace WindowAppMain.Model.Window
             {
                 string dateToday = DateTime.Today.ToShortDateString();
                 string dateChangeFile = File.GetLastWriteTime("SET_COOKIEUSER.xml").ToShortDateString();
-                return Convert.ToDateTime(dateToday) > Convert.ToDateTime(dateChangeFile) ? false : true;
+                if (Convert.ToDateTime(dateToday) > Convert.ToDateTime(dateChangeFile))
+                {
+                    return false;
+                }
+                else
+                {
+                    using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
+                    {
+                        userInfoList = new Person();
+                        userInfoList = (Person)serializer.Deserialize(fs);
+                    }
+                    using (managerdbContext context = new managerdbContext())
+                    {
+                        var checkUserInDB = context.Users.Where(userLogin => userLogin.Email == userInfoList.Login).ToList();
+                        if (checkUserInDB.Count != 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
             catch
             {
