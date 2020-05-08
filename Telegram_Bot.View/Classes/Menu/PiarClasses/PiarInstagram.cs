@@ -23,7 +23,7 @@ namespace Telegram_Bot.View.Classes.Menu.PiarClasses
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("Инстаграм","https://www.instagram.com/tvoy_prostoy_malchik/?hl=ru"),
+                            InlineKeyboardButton.WithUrl("Инстаграм","https://www.instagram.com/p/BzJgm4KI0Fv/?utm_source=ig_web_copy_link"),
                             InlineKeyboardButton.WithUrl("Вконтакте","https://vk.com/lovebonsticks"),
                         }
                     });
