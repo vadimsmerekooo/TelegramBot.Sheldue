@@ -286,6 +286,12 @@
   <ItemGroup>
     <Folder Include="Resource\LogoImageAccount\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Telegram_Bot.DAL\Telegram_Bot.DAL.csproj">
+      <Project>{d312dbf3-1046-49e4-bdf2-16f023d4038c}</Project>
+      <Name>Telegram_Bot.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -56,7 +56,7 @@ namespace Telegram_Bot.DAL.Classes.Student
                         filename = departmentList.Value;
 
                 doc = word.Documents.Open(ref filename, ref confConv, ref readOnly);
-                tbl = doc.Tables[1];
+                tbl = doc.Tables[0];
                 try
                 {
                     for (int i = 1; i < tbl.Rows.Count; i++)
