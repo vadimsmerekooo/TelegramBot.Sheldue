@@ -401,7 +401,7 @@
                     </Image>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Student Helper" Foreground="{DynamicResource TextBlockColorWhite}" FontSize="17" FontFamily="Bahnschrift">
+                    <TextBlock Text="Sheldue Helper" Foreground="{DynamicResource TextBlockColorWhite}" FontSize="17" FontFamily="Bahnschrift">
                         <TextBlock.Effect>
                             <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
                         </TextBlock.Effect>

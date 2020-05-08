@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using WindowAppMain.Model.Controls;
 using WindowAppMain.Model.DataBaseEF;
 using WindowAppMain.Model.DataBaseEF.DBManagerbot;
+using Telegram_Bot.DAL;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
@@ -40,6 +41,8 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             DateTime firstDate = GetFirstDateOfWeek(DayOfWeek.Monday);
             var lastDate = GetLastDateOfWeek(DayOfWeek.Saturday);
             GetListDateOfWeek(firstDate, lastDate);
+            Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
+            getWordSheldue.GetListSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group);
         }
 
         private async void LoadAsyncMethod()

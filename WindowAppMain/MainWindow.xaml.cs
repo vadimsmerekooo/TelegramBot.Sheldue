@@ -193,6 +193,7 @@ namespace WindowAppMain
                                 kindNoteSave.Width = 20;
                                 kindNoteSave.Height = 20;
                                 _buttonRefAddNote.Content = kindNoteSave;
+                                _buttonRefAddNote.ToolTip = "Изменить заметку";
                                 KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
                                 KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
                                 TextBlockMessageThrow.Text = "Заметка сохранена!";
