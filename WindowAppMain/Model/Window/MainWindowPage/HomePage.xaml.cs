@@ -212,7 +212,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                       new SheldueAllList(
                         new List<Sheldue>()
                         {
-                            GetShelduePara(listDate[5].Date,"Day6Para1",string.Empty,string.Empty, string.Empty, string.Empty)
+                            GetShelduePara(listDate[5].Date,"Day6Para1","1","ПООГИ", "asdasdasd", "15")
                         },
                         new List<Sheldue>()
                         {
