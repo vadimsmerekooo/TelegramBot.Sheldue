@@ -128,6 +128,7 @@
     <Compile Include="Model\DataBaseEF\DBManagerbot\UsersNotes.cs">
       <DependentUpon>DBManagerbotModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DataBaseEF\DeleteNotesClass.cs" />
     <Compile Include="Model\DataBaseEF\NotesClass.cs" />
     <Compile Include="Model\Window\MainWindowPage\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>

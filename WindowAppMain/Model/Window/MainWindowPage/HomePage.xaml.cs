@@ -43,6 +43,8 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             GetListDateOfWeek(firstDate, lastDate);
             Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
             getWordSheldue.GetListSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group);
+            DeleteNotesClass delNotes = new DeleteNotesClass();
+            delNotes.DeleteOldNotes(listDate[0]);
         }
 
         private async void LoadAsyncMethod()
