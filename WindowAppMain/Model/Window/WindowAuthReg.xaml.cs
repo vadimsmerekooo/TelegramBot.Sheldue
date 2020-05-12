@@ -10,10 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Xml.Serialization;
+using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Classes.WindowAuthClasses;
 using WindowAppMain.Model.Controls;
-using WindowAppMain.Model.DataBaseEF;
-using WindowAppMain.Model.DataBaseEF.DBManagerbot;
+using IFCore;
 
 namespace WindowAppMain.Model.Window
 {
@@ -24,7 +24,8 @@ namespace WindowAppMain.Model.Window
     {
         private LoadingAnimation loadedControl;
         private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
-        private Person userInfoList;
+        private IFCore.Person userInfoList;
+
         private XmlSerializer serializer = new XmlSerializer(typeof(Person), new XmlRootAttribute() { ElementName = "UserInfo" });
 
 
@@ -100,7 +101,7 @@ namespace WindowAppMain.Model.Window
             mainWindow.Close();
         }
 
-        private void CreateLoadAnimation(Grid gridName)
+        private bool CreateLoadAnimation(Grid gridName)
         {
             loadedControl = new LoadingAnimation();
             loadedControl.LoadAnimationElement.Height = 70;
@@ -109,7 +110,7 @@ namespace WindowAppMain.Model.Window
             gridName.Children.Add(loadedControl);
             Grid.SetColumnSpan(loadedControl, 3);
             Grid.SetRowSpan(loadedControl, 2);
-            loadedControl.StartAnimation();
+            return loadedControl.StartAnimation();
         }
         private void SeccessfulReg()
         {
@@ -210,41 +211,42 @@ namespace WindowAppMain.Model.Window
         //MouseClick Auth and Click Panel
 
         //Mouse Click Autorization
-        private async void ButtonAuth_Click(object sender, RoutedEventArgs e)
+        private void ButtonAuth_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(TextBoxLogin.Text) && !String.IsNullOrWhiteSpace(PasswordBoxPassword.Password))
             {
-                CreateLoadAnimation(MainAuthRegGrid);
-                try
+                if (CreateLoadAnimation(MainAuthRegGrid))
                 {
-                    CheckUser user = new CheckUser();
-                    bool userMeh = await user.SearchUser(TextBoxLogin.Text, PasswordBoxPassword.Password);
-                    if (userMeh)
+                    try
                     {
-                        userInfoList = user.userListInformantion;
-                        if (!ToggleButtonYesNo.StateClosed)
+                        Telegram_Bot.BL.Classes.App.ReferenseDALClass user = new Telegram_Bot.BL.Classes.App.ReferenseDALClass();
+                        if (user.SetConnectionDBCheckUser(TextBoxLogin.Text, PasswordBoxPassword.Password))
                         {
-                            SerializeToggleButtonCheck(userInfoList);
+                            userInfoList = user.userListInformantion;
+                            if (!ToggleButtonYesNo.StateClosed)
+                            {
+                                SerializeToggleButtonCheck(userInfoList);
+                            }
+                            else
+                            {
+                                try { using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml")) { sw.WriteLine(string.Empty); } } catch { }
+                            }
+                            loadedControl.StopAnimation();
+                            MainWindow mainWindow = new MainWindow(userInfoList);
+                            mainWindow.Show();
+                            this.Close();
                         }
                         else
                         {
-                            try { using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml") ) { sw.WriteLine(string.Empty); } } catch {}
+                            loadedControl.StopAnimation();
+                            ErrorReg("Неверный логин или пароль!");
                         }
-                        loadedControl.StopAnimation();
-                        MainWindow mainWindow = new MainWindow(userInfoList);
-                        mainWindow.Show();
-                        this.Close();
                     }
-                    else
+                    catch
                     {
                         loadedControl.StopAnimation();
-                        ErrorReg("Неверный логин или пароль!");
+                        ErrorReg("Ошибка авторизации!");
                     }
-                }
-                catch(Exception ex)
-                {
-                    loadedControl.StopAnimation();
-                    ErrorReg("Ошибка авторизации!");
                 }
             }
             else
@@ -255,7 +257,7 @@ namespace WindowAppMain.Model.Window
                     BorderPasswordPasswordBox.Background = Brushes.Red;
             }
         }
-        private void SerializeToggleButtonCheck(Person userInfo)
+        private void SerializeToggleButtonCheck(IFCore.Person userInfo)
         {
             try
             {
@@ -287,21 +289,11 @@ namespace WindowAppMain.Model.Window
                 {
                     using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
                     {
-                        userInfoList = new Person();
-                        userInfoList = (Person)serializer.Deserialize(fs);
+                        userInfoList = new IFCore.Person();
+                        userInfoList = (IFCore.Person)serializer.Deserialize(fs);
                     }
-                    using (managerdbContext context = new managerdbContext())
-                    {
-                        var checkUserInDB = context.Users.Where(userLogin => userLogin.Email == userInfoList.Login).ToList();
-                        if (checkUserInDB.Count != 0)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
+                    ReferenseDALClass refClassDAL = new ReferenseDALClass();
+                    return refClassDAL.SetConnectionDBCheckCOOKIESUser(userInfoList.Login);
                 }
             }
             catch
@@ -322,29 +314,25 @@ namespace WindowAppMain.Model.Window
                             if (checkValidate.IsValidatePassword(PasswordBoxPasswordOrigin.Password))
                             {
                                 CreateLoadAnimation(MainAuthRegGrid);
-                                CheckUser methodsCheckUser = new CheckUser();
+                                ReferenseDALClass refClassDAL = new ReferenseDALClass();
                                 //await Task.Run((Action)delegate () { this.Dispatcher.BeginInvoke((ThreadStart)delegate () { var userExcl = methodsCheckUser.CheckExclusiveUser(TextBoxLogin.Text); }); }).ConfigureAwait(true);
-                                bool userExcl = await methodsCheckUser.CheckExclusiveUser(TextBoxNameUser.Text);
+                                bool userExcl = await refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
                                 if (userExcl)
                                 {
                                     try
                                     {
-                                        var context = new managerdbContext();
-                                        Users userLogin = new Users()
+                                        IFCore.User userLogin = new IFCore.User()
                                         {
                                             Email = TextBoxNameUser.Text,
                                             Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString()
                                         };
-                                        UsersInfo userInfo = new UsersInfo()
+                                        IFCore.UserInfo userInfo = new IFCore.UserInfo()
                                         {
                                             UserStatus = PersonComboBox.SelectedValue.ToString(),
                                             UserDepartment = TeacherNameorDepartment.SelectedValue.ToString(),
                                             UserGroup = GroupListComboBox.SelectedValue.ToString()
                                         };
-                                        context.Users.Add(userLogin);
-                                        context.UsersInfo.Add(userInfo);
-                                        await context.SaveChangesAsync();
-
+                                        await refClassDAL.SetConnectionDBRegUser(userLogin, userInfo);
                                         loadedControl.StopAnimation();
                                         SeccessfulReg();
                                     }
@@ -389,27 +377,24 @@ namespace WindowAppMain.Model.Window
                             if (checkValidate.IsValidatePassword(PasswordBoxPasswordOrigin.Password))
                             {
                                 CreateLoadAnimation(MainAuthRegGrid);
-                                CheckUser methodsCheckUser = new CheckUser();
-                                bool userExcl = await methodsCheckUser.CheckExclusiveUser(TextBoxNameUser.Text);
+                                ReferenseDALClass refClassDAL = new ReferenseDALClass();
+                                bool userExcl = await refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
                                 if (userExcl)
                                 {
                                     try
                                     {
-                                        var context = new managerdbContext();
-                                        Users userLogin = new Users()
+                                        IFCore.User userLogin = new IFCore.User()
                                         {
                                             Email = TextBoxNameUser.Text,
                                             Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString(),
                                         };
 
-                                        UsersInfo userInfo = new UsersInfo()
+                                        IFCore.UserInfo userInfo = new IFCore.UserInfo()
                                         {
                                             UserName = TeacherNameorDepartment.SelectedValue.ToString(),
                                             UserStatus = PersonComboBox.SelectedValue.ToString()
                                         };
-                                        context.Users.Add(userLogin);
-                                        context.UsersInfo.Add(userInfo);
-                                        await context.SaveChangesAsync();
+                                        await refClassDAL.SetConnectionDBRegUser(userLogin, userInfo);
                                         loadedControl.StopAnimation();
                                         SeccessfulReg();
                                     }

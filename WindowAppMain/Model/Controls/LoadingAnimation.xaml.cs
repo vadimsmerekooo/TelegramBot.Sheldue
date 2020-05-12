@@ -13,10 +13,11 @@ namespace WindowAppMain.Model.Controls
         {
             InitializeComponent();
         }
-        public void StartAnimation()
+        public bool StartAnimation()
         {
             Storyboard sb = this.FindResource("LoadAnimate") as Storyboard;
-            sb.Begin(); 
+            sb.Begin();
+            return true;
         }
         public void StopAnimation()
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IFCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -10,8 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Classes;
-using WindowAppMain.Model.DataBaseEF;
 using WindowAppMain.Model.Window;
 using WindowAppMain.Model.Window.MainWindowPage;
 
@@ -177,14 +178,14 @@ namespace WindowAppMain
         {
             try
             {
-                NotesClass noteClass = new NotesClass();
+                ReferenseDALClass refClassDAL = new ReferenseDALClass();
                 switch (NameGridChangeOrAddNotes.Text)
                 {
                     case "Добавление заметки":
                         try
                         {
                             string[] parseDate = DateNoteTextBlock.Text.Split(' ');
-                            if (noteClass.AddNewNoteUser(_userInfo.ID, NewNoteTextBox.Text, Convert.ToDateTime(parseDate[1]), ParaNoteTextBlock.Text, paraNumber))
+                            if (refClassDAL.SetConnectionDBNoteAdd(_userInfo.ID, NewNoteTextBox.Text, Convert.ToDateTime(parseDate[1]), ParaNoteTextBlock.Text, paraNumber))
                             {
                                 Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
                                 sb.Begin();
@@ -229,7 +230,7 @@ namespace WindowAppMain
                         {
                             if (!String.IsNullOrWhiteSpace(NewNoteTextBox.Text))
                             {
-                                if (noteClass.ChangeNoteUser(tmpNoteUserId, NewNoteTextBox.Text))
+                                if (refClassDAL.SetConnectionDBNoteClass(tmpNoteUserId, NewNoteTextBox.Text))
                                 {
                                     KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
                                     KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
@@ -254,7 +255,7 @@ namespace WindowAppMain
                                 DosentOpacityGrid.IsEnabled = true;
                             }
                         }
-                        catch (Exception ex)
+                        catch 
                         {
                             KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
                             KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
@@ -268,7 +269,7 @@ namespace WindowAppMain
                         break;
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }

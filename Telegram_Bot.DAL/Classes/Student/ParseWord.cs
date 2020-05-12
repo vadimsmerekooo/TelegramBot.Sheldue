@@ -35,7 +35,6 @@ namespace Telegram_Bot.DAL.Classes.Student
 
         public string SelectGroupFile(string groupName, string day, string department)
         {
-            Thread openDocThread;
             string rowbuf = string.Empty;
 
             try

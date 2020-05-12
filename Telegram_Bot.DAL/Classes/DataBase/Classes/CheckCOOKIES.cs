@@ -1,0 +1,25 @@
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Telegram_Bot.DAL.Classes.DataBase.Classes
+{
+    public class CheckCOOKIES
+    {
+        public bool GetCOOKIESUser(string login)
+        {
+            using (managerdbContext context = new managerdbContext())
+            {
+                var checkUserInDB = context.Users.Where(userLogin => userLogin.Email == login).ToList();
+                if (checkUserInDB.Count != 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
+}

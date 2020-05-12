@@ -103,32 +103,6 @@
     <Compile Include="Model\Controls\ToggleButton.xaml.cs">
       <DependentUpon>ToggleButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\DataBaseEF\CheckUser.cs" />
-    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagerbotModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\DBManagerbot\Users.cs">
-      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\DBManagerbot\UsersInfo.cs">
-      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\DBManagerbot\UsersNotes.cs">
-      <DependentUpon>DBManagerbotModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DataBaseEF\NotesClass.cs" />
     <Compile Include="Model\Window\MainWindowPage\AccountInfoPage.xaml.cs">
       <DependentUpon>AccountInfoPage.xaml</DependentUpon>
     </Compile>
@@ -234,13 +208,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBManagerbotModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.edmx.diagram">
-      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -272,24 +239,16 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
-      <LastGenOutput>DBManagerbotModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\DataBaseEF\DBManagerbot\DBManagerbotModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBManagerbotModel.edmx</DependentUpon>
-      <LastGenOutput>DBManagerbotModel.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resource\LogoImageAccount\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Telegram_Bot.DAL\Telegram_Bot.DAL.csproj">
-      <Project>{d312dbf3-1046-49e4-bdf2-16f023d4038c}</Project>
-      <Name>Telegram_Bot.DAL</Name>
+    <ProjectReference Include="..\IFCore\IFCore.csproj">
+      <Project>{91e602cb-69a1-44ba-83f2-8846e6ad41e7}</Project>
+      <Name>IFCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Telegram_Bot.BL\Telegram_Bot.BL.csproj">
+      <Project>{0e81ef54-e113-4d52-9f9b-129359022e17}</Project>
+      <Name>Telegram_Bot.BL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

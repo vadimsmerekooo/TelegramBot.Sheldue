@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Model.Controls;
-using WindowAppMain.Model.DataBaseEF;
-using WindowAppMain.Model.DataBaseEF.DBManagerbot;
-using Telegram_Bot.DAL;
+using IFCore;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
@@ -20,7 +19,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
         private DispatcherTimer StopAnimation = new DispatcherTimer();
         private LoadingAnimation loadedControl;
         private List<SheldueAllDays> allSheldueList;
-        private List<UsersNotes> userNotes;
+        private List<UserNotes> userNotes;
         private MainWindow _mWindow;
         private List<DateTime> listDate;
 
@@ -35,14 +34,14 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             loadedControl = new LoadingAnimation();
             MainSheldueGrid.Children.Add(loadedControl);
             loadedControl.StartAnimation();
-            NotesClass userNoteCl = new NotesClass();
-            userNotes = new List<UsersNotes>(userNoteCl.GetAllNotesUser(_mWindow._userInfo.ID));
+            ReferenseDALClass refClassDAL = new ReferenseDALClass();
+            userNotes = new List<UserNotes>(refClassDAL.SetConnectionDBSelectAll(_mWindow._userInfo.ID));
             Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { LoadAsyncMethod(); }));
             DateTime firstDate = GetFirstDateOfWeek(DayOfWeek.Monday);
             var lastDate = GetLastDateOfWeek(DayOfWeek.Saturday);
             GetListDateOfWeek(firstDate, lastDate);
-            Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
-            getWordSheldue.GetListSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group);
+            //refClassDAL.SetConnectionDBGetSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group);
+            refClassDAL.SetConnectionDBDeleteNote(listDate[0]);
         }
 
         private async void LoadAsyncMethod()
@@ -237,7 +236,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
         private Sheldue GetShelduePara(DateTime dateDay, string tagNoteButton, string para, string work, string teacher, string auditoria)
         {
             MaterialDesignThemes.Wpf.PackIconKind kind = MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline;
-            UsersNotes note = GetUserNote(dateDay, para, work);
+            UserNotes note = GetUserNote(dateDay, para, work);
             if (note.Para != null)
             {
                 kind = NoteMultipleOutline;
@@ -250,10 +249,10 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             return new Sheldue(chekParaEmpty, kind, tagNoteButton, para, work, teacher, auditoria, note);
         }
 
-        private UsersNotes GetUserNote(DateTime dateDay, string Para, string work)
+        private UserNotes GetUserNote(DateTime dateDay, string Para, string work)
         {
-            UsersNotes noteRange = new UsersNotes();
-            foreach (UsersNotes note in userNotes)
+            UserNotes noteRange = new  UserNotes();
+            foreach ( UserNotes note in userNotes)
             {
                 if (note.Para == work && note.ParaNumber == int.Parse(Para) && note.DateNote == dateDay)
                 {
@@ -401,7 +400,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             }
 
         }
-        private void ShowModalWindow(string dateDay, string para, int paraNumber,UsersNotes note, ref Button butonClick)
+        private void ShowModalWindow(string dateDay, string para, int paraNumber, UserNotes note, ref Button butonClick)
         {
             var kindButton = butonClick.Content as MaterialDesignThemes.Wpf.PackIcon;
             switch (kindButton.Kind)

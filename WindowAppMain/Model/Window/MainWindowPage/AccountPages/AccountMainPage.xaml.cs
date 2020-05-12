@@ -3,11 +3,11 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Win32;
-using WindowAppMain.Model.DataBaseEF;
 using System.Windows.Media;
 using WindowAppMain.Classes;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
+using IFCore;
 
 namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
 {
@@ -17,7 +17,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
     public partial class AccountMainInfo : Page
     {
         private BitmapImage changeNewImageUserLogo;
-        private Person userInformation;
+        private IFCore.Person userInformation;
         private MainWindow _mWindow;
         private AccountInfoPage _accWindow;
 
@@ -125,7 +125,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                 }
                 */
             }
-            catch (Exception ex)
+            catch
             {
                 _mWindow.KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
                 _mWindow.KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
