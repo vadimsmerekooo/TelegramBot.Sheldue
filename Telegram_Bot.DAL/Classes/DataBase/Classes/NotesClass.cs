@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using WindowAppMain.Model.DataBaseEF.DBManagerbot;
-using System.Data.Entity.Migrations;
 
-namespace WindowAppMain.Model.DataBaseEF
+namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {
     public class NotesClass
     {
@@ -29,7 +25,7 @@ namespace WindowAppMain.Model.DataBaseEF
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch 
             {
                 return false;
             }
@@ -47,25 +43,26 @@ namespace WindowAppMain.Model.DataBaseEF
                 }
                 return true;
             }
-            catch (Exception exx)
+            catch 
             {
                 return false;
             }
         }
 
-
-        public List<UsersNotes> GetAllNotesUser(int idUser)
+        public List<UsersNotes> listNote;
+        public bool GetAllNotesUser(int idUser)
         {
             try
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    return context.UsersNotes.Where(note => note.IDUser == idUser).ToList();
+                    listNote = context.UsersNotes.Where(note => note.IDUser == idUser).ToList();
+                    return true;
                 }
             }
-            catch(Exception ex)
+            catch 
             {
-                return null;
+                return false;
             }
         }
         //public bool ChangeNoteUser()

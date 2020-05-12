@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using System.Linq;
-using WindowAppMain.Classes.WindowAuthClasses;
-using WindowAppMain.Model.DataBaseEF.DBManagerbot;
+using System.Threading.Tasks;
+using IFCore;
 
-namespace WindowAppMain.Model.DataBaseEF
+namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {
-    class CheckUser
+    public class CheckUser
     {
         public Person userListInformantion;
         private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
@@ -31,19 +29,41 @@ namespace WindowAppMain.Model.DataBaseEF
                     return checkRangeUser;
                 }
             }
-            catch(Exception ex)
+            catch 
             {
                 return false;
             }
         }
-        public async Task<bool> SearchUser(string userLogin, string userPassword)
+
+
+        public async Task<bool> RegistrationUser(IFCore.User user, IFCore.UserInfo userInfo)
+        {
+            try
+            {
+                using (managerdbContext context = new managerdbContext())
+                {
+                    context.Users.Add(user as Users);
+                    context.UsersInfo.Add(userInfo as UsersInfo);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+
+
+        public bool SearchUser(string userLogin, string userPassword)
         {
             bool checkRangeUser = false;
             try
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    await context.Users.ForEachAsync(user =>
+                    foreach (var user in context.Users)
                     {
                         if (user.Email == userLogin && user.Password == cryptPassword.CalculateMD5Hash(userPassword).ToString())
                         {
@@ -70,28 +90,8 @@ namespace WindowAppMain.Model.DataBaseEF
                                         Group = userInfo[0].UserGroup
                                     }; break;
                             }
-                            //if(userInfo[0].UserStatus == "Преподаватель")
-                            //{
-                            //    userListInformantion = new Person()
-                            //    {
-                            //        Login = user.Email,
-                            //        Name = userInfo[0].UserName,
-                            //        Status = userInfo[0].UserStatus
-                            //    };
-                            //}
-                            //if(userInfo[0].UserStatus == "Студент")
-                            //{
-                            //    userListInformantion = new Person()
-                            //    {
-                            //        Login = user.Email,
-                            //        Name = userInfo[0].UserName,
-                            //        Status = userInfo[0].UserStatus,
-                            //        Department = userInfo[0].UserDepartment,
-                            //        Group = userInfo[0].UserGroup
-                            //    };
-                            //}
                         }
-                    });
+                    }
                 }
                 return checkRangeUser;
             }
@@ -100,13 +100,13 @@ namespace WindowAppMain.Model.DataBaseEF
                 return false;
             }
         }
-        public async void CollectionInformationUser(string userLogin)
+        public Person CollectionInformationUser(string userLogin)
         {
             try
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    await context.Users.ForEachAsync(user =>
+                    foreach (var user in context.Users)
                     {
                         if (user.Email == userLogin)
                         {
@@ -133,13 +133,14 @@ namespace WindowAppMain.Model.DataBaseEF
                                     }; break;
                             }
                         }
-                    });
+                    }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
+            return userListInformantion;
         }
         public void ChangePasswordUser(string userLogin, string userNewPassword)
         {
@@ -149,40 +150,6 @@ namespace WindowAppMain.Model.DataBaseEF
                 usersInfo.Password = cryptPassword.CalculateMD5Hash(userNewPassword).ToString();
                 context.SaveChanges();
             }
-        }
-    }
-    [Serializable()]
-    public class Person
-    {
-        public int ID;
-        public string Name;
-        public string Login;
-        public string Status;
-        public string Department;
-        public string Group;
-
-        // ПустоЙ конструктор, необходимый для сериализации.
-        public Person()
-        {
-        }
-
-        // Инициализация конструктора.
-        public Person(int id, string login,
-            string status, string department, string group)
-        {
-            ID = id;
-            Login = login;
-            Status = status;
-            Department = department;
-            Group = group;
-        }
-        // Инициализация конструктора2.
-        public Person(string name, string login,
-            string status)
-        {
-            Name = name;
-            Login = login;
-            Status = status;
         }
     }
 }

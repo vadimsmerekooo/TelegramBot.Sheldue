@@ -7,19 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowAppMain.Model.DataBaseEF.DBManagerbot
+namespace Telegram_Bot.DAL
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class UsersInfo
+    public partial class UsersNotes: IFCore.UserNotes
     {
-        public int ID { get; set; }
-        public string UserName { get; set; }
-        public string UserStatus { get; set; }
-        public string UserDepartment { get; set; }
-        public string UserGroup { get; set; }
-    
-        public virtual Users Users { get; set; }
+        
     }
 }

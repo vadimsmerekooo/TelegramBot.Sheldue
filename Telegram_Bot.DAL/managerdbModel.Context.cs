@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowAppMain.Model.DataBaseEF.DBManagerbot
+namespace Telegram_Bot.DAL
 {
     using System;
     using System.Data.Entity;

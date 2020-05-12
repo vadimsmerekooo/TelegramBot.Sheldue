@@ -42,7 +42,7 @@ namespace WindowAppMain.Classes
                     return decByte.ByteArrayToImage(byteArray);
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 string imagePath = $"../../Resource/logoAccount.png";
                 Uri imageUri = new Uri(imagePath, UriKind.RelativeOrAbsolute);

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using WindowAppMain.Model.DataBaseEF.DBManagerbot;
 
-namespace WindowAppMain.Model.DataBaseEF
+namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {
-    class DeleteNotesClass
+    public class DeleteNotesClass
     {
         public void DeleteOldNotes(DateTime firstDayOfWeek)
         {
@@ -14,7 +10,7 @@ namespace WindowAppMain.Model.DataBaseEF
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    foreach(var note in context.UsersNotes)
+                    foreach (var note in context.UsersNotes)
                     {
                         if (note.DateNote < firstDayOfWeek)
                         {
@@ -24,7 +20,7 @@ namespace WindowAppMain.Model.DataBaseEF
                     context.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch 
             {
 
             }

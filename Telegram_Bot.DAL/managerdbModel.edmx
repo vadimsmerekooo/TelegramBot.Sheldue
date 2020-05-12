@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище managerdbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище managerdbModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="ID" />
@@ -71,7 +71,8 @@
             <End Role="UsersNotes" EntitySet="UsersNotes" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="managerdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -82,36 +83,35 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="UsersInfo" Relationship="managerdbModel.FK_UsersInfo_Users" FromRole="Users" ToRole="UsersInfo" />
-          <NavigationProperty Name="UsersNotes" Relationship="managerdbModel.FK_UsersNotes_Users" FromRole="Users" ToRole="UsersNotes" />
+          <NavigationProperty Name="UsersInfo" Relationship="Self.FK_UsersInfo_Users" FromRole="Users" ToRole="UsersInfo" />
+          <NavigationProperty Name="UsersNotes" Relationship="Self.FK_UsersNotes_Users" FromRole="Users" ToRole="UsersNotes" />
         </EntityType>
-        <EntityContainer Name="managerdbContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="UsersInfo" EntityType="managerdbModel.UsersInfo" />
-          <AssociationSet Name="FK_UsersInfo_Users" Association="managerdbModel.FK_UsersInfo_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UsersInfo" EntitySet="UsersInfo" />
-          </AssociationSet>
-          <EntitySet Name="UsersNotes" EntityType="managerdbModel.UsersNotes" />
-          <AssociationSet Name="FK_UsersNotes_Users" Association="managerdbModel.FK_UsersNotes_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UsersNotes" EntitySet="UsersNotes" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="UsersInfo">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserStatus" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserDepartment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="managerdbModel.FK_UsersInfo_Users" FromRole="UsersInfo" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UsersInfo_Users" FromRole="UsersInfo" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UsersNotes">
+          <Key>
+            <PropertyRef Name="IDNotes" />
+          </Key>
+          <Property Name="IDNotes" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUser" Type="Int32" Nullable="false" />
+          <Property Name="DateNote" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Para" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParaNumber" Type="Int32" Nullable="false" />
+          <Property Name="NoteText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UsersNotes_Users" FromRole="UsersNotes" ToRole="Users" />
         </EntityType>
         <Association Name="FK_UsersInfo_Users">
-          <End Type="managerdbModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="managerdbModel.UsersInfo" Role="UsersInfo" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersInfo" Type="Self.UsersInfo" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="ID" />
@@ -121,21 +121,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UsersNotes">
-          <Key>
-            <PropertyRef Name="IDNotes" />
-          </Key>
-          <Property Name="IDNotes" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDUser" Type="Int32" Nullable="false" />
-          <Property Name="DateNote" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Para" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParaNumber" Type="Int32" Nullable="false" />
-          <Property Name="NoteText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="managerdbModel.FK_UsersNotes_Users" FromRole="UsersNotes" ToRole="Users" />
-        </EntityType>
         <Association Name="FK_UsersNotes_Users">
-          <End Type="managerdbModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="managerdbModel.UsersNotes" Role="UsersNotes" Multiplicity="*" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersNotes" Type="Self.UsersNotes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="ID" />
@@ -145,6 +133,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="managerdbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="UsersInfo" EntityType="Self.UsersInfo" />
+          <EntitySet Name="UsersNotes" EntityType="Self.UsersNotes" />
+          <AssociationSet Name="FK_UsersInfo_Users" Association="Self.FK_UsersInfo_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersInfo" EntitySet="UsersInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersNotes_Users" Association="Self.FK_UsersNotes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersNotes" EntitySet="UsersNotes" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -163,23 +164,23 @@
           <EntitySetMapping Name="UsersInfo">
             <EntityTypeMapping TypeName="managerdbModel.UsersInfo">
               <MappingFragment StoreEntitySet="UsersInfo">
-                <ScalarProperty Name="UserGroup" ColumnName="UserGroup" />
-                <ScalarProperty Name="UserDepartment" ColumnName="UserDepartment" />
-                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="UserDepartment" ColumnName="UserDepartment" />
+                <ScalarProperty Name="UserGroup" ColumnName="UserGroup" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UsersNotes">
             <EntityTypeMapping TypeName="managerdbModel.UsersNotes">
               <MappingFragment StoreEntitySet="UsersNotes">
-                <ScalarProperty Name="NoteText" ColumnName="NoteText" />
-                <ScalarProperty Name="ParaNumber" ColumnName="ParaNumber" />
-                <ScalarProperty Name="Para" ColumnName="Para" />
-                <ScalarProperty Name="DateNote" ColumnName="DateNote" />
-                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
                 <ScalarProperty Name="IDNotes" ColumnName="IDNotes" />
+                <ScalarProperty Name="IDUser" ColumnName="IDUser" />
+                <ScalarProperty Name="DateNote" ColumnName="DateNote" />
+                <ScalarProperty Name="Para" ColumnName="Para" />
+                <ScalarProperty Name="ParaNumber" ColumnName="ParaNumber" />
+                <ScalarProperty Name="NoteText" ColumnName="NoteText" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

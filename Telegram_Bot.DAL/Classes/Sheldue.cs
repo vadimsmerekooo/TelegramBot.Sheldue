@@ -1,24 +1,24 @@
-﻿using IFCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram_Bot.DAL.Classes.DataBase;
 
-namespace WindowAppMain.Model.Window.MainWindowPage
+namespace Telegram_Bot.DAL.Classes
 {
     public class Sheldue
     {
         public System.Windows.Visibility Notes { get; set; }
-        public MaterialDesignThemes.Wpf.PackIconKind Kind { get; set; } 
+        public MaterialDesignThemes.Wpf.PackIconKind Kind { get; set; }
         public string TagNoteButton { get; set; }
         public string Para { get; set; }
         public string Work { get; set; }
         public string Teacher { get; set; }
         public string Auditorya { get; set; }
-        public UserNotes userNotes { get; set; } 
+        public UsersNotes userNotes { get; set; }
 
-        public Sheldue(System.Windows.Visibility Notes, MaterialDesignThemes.Wpf.PackIconKind Kind, string TagNoteButton, string para, string work, string teacher, string auditorya, UserNotes note)
+        public Sheldue(System.Windows.Visibility Notes, MaterialDesignThemes.Wpf.PackIconKind Kind, string TagNoteButton, string para, string work, string teacher, string auditorya, UsersNotes note)
         {
             this.Notes = Notes;
             this.Kind = Kind;

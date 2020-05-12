@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Classes.WindowAuthClasses;
 using WindowAppMain.Model.Controls;
-using WindowAppMain.Model.DataBaseEF;
 
 namespace WindowAppMain.Model.Window
 {
@@ -18,7 +18,7 @@ namespace WindowAppMain.Model.Window
     {
         #region Params
         private LoadingAnimation loadedControl;
-        private CheckUser methodsCheckUser = new CheckUser();
+        private ReferenseDALClass refDALClass = new ReferenseDALClass();
         private int stepNumber = 1;
         private List<string> personList = new List<string>()
         {
@@ -103,10 +103,10 @@ namespace WindowAppMain.Model.Window
                     if (checkValidate.IsValidateEmail(TextBoxLogin.Text))
                     {
                         CreateLoadAnimation(MainGridResetPassword);
-                        bool userExcl = await methodsCheckUser.CheckExclusiveUser(TextBoxLogin.Text);
+                        bool userExcl = await refDALClass.SetConnectionDBCheckExcluziveUser(TextBoxLogin.Text);
                         if (!userExcl)
                         {
-                            methodsCheckUser.CollectionInformationUser(TextBoxLogin.Text);
+                            refDALClass.SetConnectionDBCollectionInformationUser(TextBoxLogin.Text);
                             Storyboard sb1 = this.FindResource("Step2") as Storyboard;
                             sb1.Begin();
                             KindStep1.Foreground = Brushes.White;
@@ -132,7 +132,7 @@ namespace WindowAppMain.Model.Window
                     switch (ComboBoxPerson.SelectedIndex)
                     {
                         case 0:
-                            if (ComboBoxPerson.Text == methodsCheckUser.userListInformantion.Status && ComboBoxNameOrGroup.Text == methodsCheckUser.userListInformantion.Department)
+                            if (ComboBoxPerson.Text == refDALClass.userListInformantion.Status && ComboBoxNameOrGroup.Text == refDALClass.userListInformantion.Department)
                             {
                                 Storyboard sb2 = this.FindResource("Step3") as Storyboard;
                                 sb2.Begin();
@@ -152,7 +152,7 @@ namespace WindowAppMain.Model.Window
                             break;
 
                         case 1:
-                            if (ComboBoxPerson.Text == methodsCheckUser.userListInformantion.Status && ComboBoxNameOrGroup.Text == methodsCheckUser.userListInformantion.Name)
+                            if (ComboBoxPerson.Text == refDALClass.userListInformantion.Status && ComboBoxNameOrGroup.Text == refDALClass.userListInformantion.Name)
                             {
                                 Storyboard sb2 = this.FindResource("Step3") as Storyboard;
                                 sb2.Begin();
@@ -194,7 +194,7 @@ namespace WindowAppMain.Model.Window
         {
             if (checkValidate.IsValidatePassword(PasswordBoxNewPassword.Password))
             {
-                methodsCheckUser.ChangePasswordUser(TextBoxLogin.Text, PasswordBoxNewPassword.Password);
+                refDALClass.SetConnectionDBChangePassword(TextBoxLogin.Text, PasswordBoxNewPassword.Password);
                 this.Close();
             }
             else
