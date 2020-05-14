@@ -1,22 +1,18 @@
-﻿using IFCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace WindowAppMain.Model.Window.MainWindowPage
+namespace IFCore
 {
     public class Sheldue
     {
         public System.Windows.Visibility Notes { get; set; }
-        public MaterialDesignThemes.Wpf.PackIconKind Kind { get; set; } 
+        public MaterialDesignThemes.Wpf.PackIconKind Kind { get; set; }
         public string TagNoteButton { get; set; }
         public string Para { get; set; }
         public string Work { get; set; }
         public string Teacher { get; set; }
         public string Auditorya { get; set; }
-        public UserNotes userNotes { get; set; } 
+        public UserNotes userNotes { get; set; }
 
         public Sheldue(System.Windows.Visibility Notes, MaterialDesignThemes.Wpf.PackIconKind Kind, string TagNoteButton, string para, string work, string teacher, string auditorya, UserNotes note)
         {

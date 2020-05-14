@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Telegram_Bot.DAL.Classes.DataBase;
+using Telegram_Bot.DAL.DataBase;
 
 namespace Telegram_Bot.DAL.Classes
 {

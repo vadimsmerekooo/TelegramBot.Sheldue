@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram_Bot.DAL.DataBase;
 
 namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {

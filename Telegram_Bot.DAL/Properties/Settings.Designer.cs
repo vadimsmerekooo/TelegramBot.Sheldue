@@ -22,15 +22,5 @@ namespace Telegram_Bot.DAL.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\MANAGERBOT;Initial Catalog=managerdb;Integrated Security=True")]
-        public string DBConnection {
-            get {
-                return ((string)(this["DBConnection"]));
-            }
-        }
     }
 }

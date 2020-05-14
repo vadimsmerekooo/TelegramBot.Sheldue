@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using IFCore;
+using Telegram_Bot.DAL.DataBase;
 
 namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {

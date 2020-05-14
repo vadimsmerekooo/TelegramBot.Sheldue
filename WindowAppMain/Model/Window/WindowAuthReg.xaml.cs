@@ -219,7 +219,7 @@ namespace WindowAppMain.Model.Window
                 {
                     try
                     {
-                        Telegram_Bot.BL.Classes.App.ReferenseDALClass user = new Telegram_Bot.BL.Classes.App.ReferenseDALClass();
+                        Telegram_Bot.BL.Classes.App.ReferenseDALClass user =new Telegram_Bot.BL.Classes.App.ReferenseDALClass();
                         if (user.SetConnectionDBCheckUser(TextBoxLogin.Text, PasswordBoxPassword.Password))
                         {
                             userInfoList = user.userListInformantion;

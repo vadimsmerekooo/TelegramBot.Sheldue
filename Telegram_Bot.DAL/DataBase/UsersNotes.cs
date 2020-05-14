@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Telegram_Bot.DAL
+namespace Telegram_Bot.DAL.DataBase
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Users : IFCore.User
+    public partial class UsersNotes:IFCore.UserNotes
     {
         
     }

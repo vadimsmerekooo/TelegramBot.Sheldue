@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Telegram_Bot.DAL
+namespace Telegram_Bot.DAL.DataBase
 {
     using System;
     using System.Data.Entity;
