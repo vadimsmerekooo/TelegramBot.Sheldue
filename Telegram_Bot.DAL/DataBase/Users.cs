@@ -12,8 +12,20 @@ namespace Telegram_Bot.DAL.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Users:IFCore.User
+    public partial class Users
     {
-        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Users()
+        {
+            this.UsersNotes = new HashSet<UsersNotes>();
+        }
+    
+        public int ID { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    
+        public virtual UsersInfo UsersInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsersNotes> UsersNotes { get; set; }
     }
 }

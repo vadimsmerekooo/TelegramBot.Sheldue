@@ -12,8 +12,14 @@ namespace Telegram_Bot.DAL.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class UsersInfo:IFCore.UserInfo
+    public partial class UsersInfo
     {
-        
+        public int ID { get; set; }
+        public string UserName { get; set; }
+        public string UserStatus { get; set; }
+        public string UserDepartment { get; set; }
+        public string UserGroup { get; set; }
+    
+        public virtual Users Users { get; set; }
     }
 }

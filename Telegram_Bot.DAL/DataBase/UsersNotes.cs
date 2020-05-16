@@ -12,8 +12,15 @@ namespace Telegram_Bot.DAL.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class UsersNotes:IFCore.UserNotes
+    public partial class UsersNotes
     {
-        
+        public int IDNotes { get; set; }
+        public int IDUser { get; set; }
+        public System.DateTime DateNote { get; set; }
+        public string Para { get; set; }
+        public int ParaNumber { get; set; }
+        public string NoteText { get; set; }
+    
+        public virtual Users Users { get; set; }
     }
 }

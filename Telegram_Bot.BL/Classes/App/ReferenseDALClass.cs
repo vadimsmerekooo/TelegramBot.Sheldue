@@ -53,7 +53,15 @@ namespace Telegram_Bot.BL.Classes.App
             List<UserNotes> listNote = new List<UserNotes>();
             foreach (var item in noteClass.listNote)
             {
-                listNote.Add(item as UserNotes);
+                UserNotes user = new UserNotes()
+                {
+                   IDUser = item.IDUser,
+                   DateNote = item.DateNote,
+                   Para = item.Para,
+                   ParaNumber = item.ParaNumber,
+                   NoteText = item.NoteText 
+                };
+                listNote.Add(user);
             }
             return listNote;
         }

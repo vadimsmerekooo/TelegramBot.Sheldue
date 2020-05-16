@@ -18,13 +18,13 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    await context.Users.ForEachAsync(user =>
+                    foreach (var user in context.Users)
                     {
                         if (user.Email == userLogin)
                         {
                             checkRangeUser = false;
                         }
-                    });
+                    }
                     //checkUsers = context.UsersInfo.Where(user => user.Email == userLogin).ToList();
 
                     return checkRangeUser;
@@ -43,8 +43,20 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    context.Users.Add(user as Users);
-                    context.UsersInfo.Add(userInfo as UsersInfo);
+                    Users userEF = new Users()
+                    {
+                        Email = user.Email,
+                        Password = user.Password
+                    };
+                    UsersInfo userInfEF = new UsersInfo()
+                    {
+                        UserName = userInfo.UserName,
+                        UserStatus = userInfo.UserStatus,
+                        UserDepartment = userInfo.UserDepartment,
+                        UserGroup = userInfo.UserGroup
+                    };
+                    context.Users.Add(userEF);
+                    context.UsersInfo.Add(userInfEF);
                     await context.SaveChangesAsync();
                     return true;
                 }

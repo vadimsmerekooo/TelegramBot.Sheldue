@@ -12,14 +12,7 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             using (managerdbContext context = new managerdbContext())
             {
                 var checkUserInDB = context.Users.Where(userLogin => userLogin.Email == login).ToList();
-                if (checkUserInDB.Count != 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return checkUserInDB.Count != 0 ? true : false;
             }
         }
     }
