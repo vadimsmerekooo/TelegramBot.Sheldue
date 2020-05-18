@@ -96,29 +96,29 @@
     <Compile Include="Classes\Sheldue.cs" />
     <Compile Include="Classes\Student\ParseWord.cs" />
     <Compile Include="DALApp\SheldueClass.cs" />
-    <Compile Include="DataBase\SheldueModel.Context.cs">
+    <Compile Include="DataBase\ShelduedbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SheldueModel.Context.tt</DependentUpon>
+      <DependentUpon>ShelduedbModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\SheldueModel.cs">
+    <Compile Include="DataBase\ShelduedbModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SheldueModel.tt</DependentUpon>
+      <DependentUpon>ShelduedbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\SheldueModel.Designer.cs">
+    <Compile Include="DataBase\ShelduedbModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SheldueModel.edmx</DependentUpon>
+      <DependentUpon>ShelduedbModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataBase\Users.cs">
-      <DependentUpon>SheldueModel.tt</DependentUpon>
+      <DependentUpon>ShelduedbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\UsersInfo.cs">
-      <DependentUpon>SheldueModel.tt</DependentUpon>
+      <DependentUpon>ShelduedbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\UsersNotes.cs">
-      <DependentUpon>SheldueModel.tt</DependentUpon>
+      <DependentUpon>ShelduedbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IGetSheldue.cs" />
     <Compile Include="MainClassDAL.cs" />
@@ -141,12 +141,12 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="DataBase\SheldueModel.edmx">
+    <EntityDeploy Include="DataBase\ShelduedbModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SheldueModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ShelduedbModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DataBase\SheldueModel.edmx.diagram">
-      <DependentUpon>SheldueModel.edmx</DependentUpon>
+    <None Include="DataBase\ShelduedbModel.edmx.diagram">
+      <DependentUpon>ShelduedbModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -176,17 +176,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataBase\SheldueModel.Context.tt">
+    <Content Include="DataBase\ShelduedbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SheldueModel.edmx</DependentUpon>
-      <LastGenOutput>SheldueModel.Context.cs</LastGenOutput>
+      <DependentUpon>ShelduedbModel.edmx</DependentUpon>
+      <LastGenOutput>ShelduedbModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataBase\SheldueModel.tt">
+    <Content Include="DataBase\ShelduedbModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SheldueModel.edmx</DependentUpon>
-      <LastGenOutput>SheldueModel.cs</LastGenOutput>
+      <DependentUpon>ShelduedbModel.edmx</DependentUpon>
+      <LastGenOutput>ShelduedbModel.cs</LastGenOutput>
     </Content>
     <Content Include="managerdb.mdf" />
+    <Content Include="managerdb_log.ldf">
+      <DependentUpon>managerdb.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

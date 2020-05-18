@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Model.Controls;
 using IFCore;
+using System.Windows.Media;
 
 namespace WindowAppMain.Model.Window.MainWindowPage
 {
@@ -31,20 +32,36 @@ namespace WindowAppMain.Model.Window.MainWindowPage
         {
             InitializeComponent();
             _mWindow = mWindow;
+            ReferenseDALClass refClassDAL = new ReferenseDALClass();
+
             loadedControl = new LoadingAnimation();
             MainSheldueGrid.Children.Add(loadedControl);
             loadedControl.StartAnimation();
-            ReferenseDALClass refClassDAL = new ReferenseDALClass();
-            userNotes = new List<UserNotes>(refClassDAL.SetConnectionDBSelectAll(_mWindow._userInfo.ID));
-            Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { LoadAsyncMethod(); }));
+            allSheldueList = _mWindow.GetSheldue;
+            if (allSheldueList == null)
+            {
+                userNotes = new List<UserNotes>(refClassDAL.SetConnectionDBSelectAll(_mWindow._userInfo.ID));
+                _mWindow.KindThrowMessage.Foreground = FindResource("WarningForegroundColorUIElements") as SolidColorBrush;
+                _mWindow.KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.WarningOutline;
+                _mWindow.TextBlockMessageThrow.Text = "Расписание загружается! Не закрывайте программу!";
+                Storyboard sb = _mWindow.FindResource("ShowMessageThrowGrid") as Storyboard;
+                sb.Begin();
+                Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { LoadSheldueAsyncMethod(); }));
+            }
+            else
+            {
+                ListViewSheldueDay.ItemsSource = allSheldueList;
+                StopAnimation.Tick += new EventHandler(StopMethodAnimation);
+                StopAnimation.Interval = new TimeSpan(0, 0, 1);
+                StopAnimation.Start();
+            }
             DateTime firstDate = GetFirstDateOfWeek(DayOfWeek.Monday);
             var lastDate = GetLastDateOfWeek(DayOfWeek.Saturday);
             GetListDateOfWeek(firstDate, lastDate);
-            //refClassDAL.SetConnectionDBGetSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group);
             refClassDAL.SetConnectionDBDeleteNote(listDate[0]);
         }
 
-        private async void LoadAsyncMethod()
+        private async void LoadSheldueAsyncMethod()
         {
             await Task.Run(() => GetSheldue());
             await Task.Run(() => SetSheldueList());
@@ -68,169 +85,13 @@ namespace WindowAppMain.Model.Window.MainWindowPage
            {
                ListViewSheldueDay.ItemsSource = allSheldueList;
            });
+            _mWindow.SetSheldue = allSheldueList;
         }
 
         private void GetSheldue()
         {
-            allSheldueList = new List<SheldueAllDays>()
-            {
-                //Monday
-                new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[0].Date,"Day1Para1","1","para1", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[0].Date,"Day1Para2","2","para2", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[0].Date,"Day1Para3","3","para3", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[0].Date,"Day1Para4","4","para4", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[0].Date,"Day1Para5","5","para5", "Prepod3", "3Kab")
-                        })
-                  }, $"Понедельник {listDate[0].Date.ToShortDateString()}"),
-                  //Tuesday
-                  new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[1].Date,"Day2Para1","1","para1", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[1].Date,"Day2Para2","2","para2", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[1].Date,"Day2Para3","3","para3", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[1].Date,"Day2Para4",string.Empty,string.Empty,string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[1].Date,"Day2Para5",string.Empty,string.Empty,string.Empty, string.Empty)
-                        })
-                  }, $"Вторник {listDate[1].Date.ToShortDateString()}"),
-                  //Wednesday
-                  new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[2].Date,"Day3Para1","1","para1", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[2].Date,"Day3Para2","2","para2", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[2].Date,"Day3Para3",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[2].Date,"Day3Para4",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[2].Date,"Day3Para5",string.Empty,string.Empty, string.Empty,string.Empty)
-                        })
-                  }, $"Среда {listDate[2].Date.ToShortDateString()}"),
-                  //Thursday
-                  new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[3].Date,"Day4Para1","1","Четверг", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[3].Date,"Day4Para2",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[3].Date,"Day4Para3",string.Empty,string.Empty,string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[3].Date,"Day4Para4",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[3].Date,"Day4Para5",string.Empty,string.Empty, string.Empty, string.Empty)
-                        })
-                  }, $"Четверг {listDate[3].Date.ToShortDateString()}"),
-                  //Friday
-                  new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para1","1","para1", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para2","2","para2", "Prepod3", "3Kab")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para3",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para4",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[4].Date,"Day5Para5",string.Empty,string.Empty,string.Empty, string.Empty)
-                        })
-                  }, $"Пятница {listDate[4].Date.ToShortDateString()}"),
-                  //Saturday
-                  new SheldueAllDays(
-                  new List<SheldueAllList>()
-                  {
-                      new SheldueAllList(
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[5].Date,"Day6Para1","1","ПООГИ", "asdasdasd", "15")
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[5].Date,"Day6Para2",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[5].Date,"Day6Para3",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[5].Date,"Day6Para4",string.Empty,string.Empty, string.Empty, string.Empty)
-                        },
-                        new List<Sheldue>()
-                        {
-                            GetShelduePara(listDate[5].Date,"Day6Para5",string.Empty,string.Empty, string.Empty, string.Empty)
-                        })
-                  }, $"Суббота {listDate[5].Date.ToShortDateString()}"
-            )};
+            ReferenseDALClass refClassDAL = new ReferenseDALClass();
+            allSheldueList = refClassDAL.SetConnectionDBGetSheldue(_mWindow._userInfo.Department, _mWindow._userInfo.Group, userNotes, listDate);
         }
 
         private Sheldue GetShelduePara(DateTime dateDay, string tagNoteButton, string para, string work, string teacher, string auditoria)

@@ -1,29 +1,31 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using Telegram_Bot.DAL.DataBase;
 
 namespace Telegram_Bot.DAL.Classes.DataBase.Classes
 {
     public class DeleteNotesClass
     {
-        public void DeleteOldNotes(DateTime firstDayOfWeek)
+        public async void DeleteOldNotes(DateTime firstDayOfWeek)
         {
-            try
+            using (managerdbContext context = new managerdbContext())
             {
-                using (managerdbContext context = new managerdbContext())
+                try
                 {
-                    foreach (var note in context.UsersNotes)
+                    await context.UsersNotes.ForEachAsync(note => 
                     {
                         if (note.DateNote < firstDayOfWeek)
                         {
                             context.UsersNotes.Remove(note);
                         }
-                    }
+                    });
                     context.SaveChanges();
                 }
-            }
-            catch 
-            {
+                catch
+                {
 
+                }
             }
         }
     }

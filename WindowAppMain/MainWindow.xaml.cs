@@ -30,11 +30,13 @@ namespace WindowAppMain
         public Button _buttonRefAddNote;
         public HomePage _homePage;
         public int tmpNoteUserId;
+        private List<SheldueAllDays> sheldueList { get; set;}
+        public List<SheldueAllDays> SetSheldue { set { sheldueList = value; } }
+        public List<SheldueAllDays> GetSheldue { get { return sheldueList; } }
         #endregion
         public MainWindow()
         {
             InitializeComponent();
-
         }
         public MainWindow(Person userInfo) : this()
         {

@@ -178,7 +178,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontFamily" Value="Bahnschrift"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
         <!--ScrollBar-->
 
@@ -278,177 +278,207 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <!-- Block !-->
                         <Grid Style="{DynamicResource BlockGridStyle}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Rectangle Grid.RowSpan="2" Style="{DynamicResource BlockRectangleStyle}"/>
+                            <Rectangle Grid.RowSpan="6" Style="{DynamicResource BlockRectangleStyle}"/>
                             <TextBlock Grid.Row="0" Text="{Binding DayName}" Style="{DynamicResource DayTextBlockStyle}" />
-                            <Grid Grid.Row="1" Margin="5 0 5 5">
+                            <Grid Grid.Row="1" Grid.RowSpan="6" Margin="5 0 5 5" Height="Auto">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="35"/>
-                                    <ColumnDefinition Width="35"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="45"/>
+                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35"/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-
-                                <!-- Background Rectangle -->
                                 <Rectangle Grid.ColumnSpan="5" Grid.RowSpan="6" Style="{DynamicResource BlockSheldueRectangleStyle}"/>
-                                <!-- Background Rectangle -->
 
-                                <!-- Line Table -->
-
-                                <!-- Line Vertical -->
-                                <Line Grid.ColumnSpan="5" X1="0" Y1="35" X2="370" Y2="35" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line Grid.ColumnSpan="5" Grid.RowSpan="2" X1="0" Y1="87" X2="370" Y2="87" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line Grid.ColumnSpan="5" Grid.RowSpan="3" X1="0" Y1="140" X2="370" Y2="140" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line Grid.ColumnSpan="5" Grid.RowSpan="4" X1="0" Y1="193" X2="370" Y2="193" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line Grid.ColumnSpan="5" Grid.RowSpan="5" X1="0" Y1="246" X2="370" Y2="246" Style="{DynamicResource LineBorderStyle}"/>
-                                <!-- Line Vertical -->
-
-                                <!-- Line Horizintal !-->
-                                <Line  Grid.RowSpan="6" X1="35" Y1="0" X2="35" Y2="300" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line  Grid.RowSpan="6" Grid.Column="1" X1="35" Y1="0" X2="35" Y2="300" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line  Grid.RowSpan="6" Grid.Column="2" X1="165" Y1="0" X2="165" Y2="300" Style="{DynamicResource LineBorderStyle}"/>
-                                <Line  Grid.RowSpan="6" Grid.Column="3" X1="90" Y1="0" X2="90" Y2="300" Style="{DynamicResource LineBorderStyle}"/>
-                                <!-- Line Horizintal !-->
-
-                                <!-- Line Table -->
-
-                                <!-- Upper Textblock !-->
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Метка" Style="{DynamicResource SheldueTextStyle}" FontSize="11"/>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="   № пары" Style="{DynamicResource SheldueTextStyle}" />
                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Предмет" Style="{DynamicResource SheldueTextStyle}" />
                                 <TextBlock Grid.Row="0" Grid.Column="3" Text="Препод." Style="{DynamicResource SheldueTextStyle}" />
                                 <TextBlock Grid.Row="0" Grid.Column="4" Text="Каб." Style="{DynamicResource SheldueTextStyle}" />
-                                <!-- Upper Textblock !-->
-                                <ItemsControl x:Name="BlockNametest" Grid.RowSpan="6" Grid.ColumnSpan="5" ItemsSource="{Binding Day}">
+                                <Border
+                            Grid.Column="0"
+                        Grid.RowSpan="6"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Width="1.5"
+                        HorizontalAlignment="Right"/>
+                                <Border
+                            Grid.Column="1"
+                        Grid.RowSpan="6"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Width="1.5"
+                        HorizontalAlignment="Right"/>
+                                <Border
+                            Grid.Column="2"
+                        Grid.RowSpan="6"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Width="1.5"
+                        HorizontalAlignment="Right"/>
+                                <Border
+                            Grid.Column="3"
+                        Grid.RowSpan="6"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Width="1.5"
+                        HorizontalAlignment="Right"/>
+                                <ItemsControl x:Name="BlockNametest" Grid.ColumnSpan="5" Grid.Row="1" Grid.RowSpan="6" Height="Auto" ItemsSource="{Binding Day}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid Grid.RowSpan="6" Grid.ColumnSpan="5">
+                                            <Grid Grid.Row="1" Grid.ColumnSpan="5">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="35"/>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
-                                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Para1}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ItemsControl Grid.Row="0" Grid.ColumnSpan="5" Height="Auto" ItemsSource="{Binding Para1}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid Grid.Row="1" Height="52">
+                                                            <Grid Grid.Row="1" Height="Auto" Grid.ColumnSpan="5">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                    <ColumnDefinition Width="45"/>
+                                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                                                 </Grid.ColumnDefinitions>
+                                                                <Border
+                            Grid.ColumnSpan="5"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Height="1.5"
+                        VerticalAlignment="Top"/>
                                                                 <Button Grid.Row="1" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Visibility="{Binding Notes}" Tag="{Binding TagNoteButton}" Click="ButtonNotes_Click">
                                                                     <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
-                                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Work}"  Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
                                                                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Row="2" ItemsSource="{Binding Para2}">
+                                                <ItemsControl Grid.Row="1" Grid.ColumnSpan="5" Height="Auto"  ItemsSource="{Binding Para2}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid Grid.Row="2" Height="52">
+                                                            <Grid Grid.Row="2" Height="Auto"  Grid.ColumnSpan="5">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                    <ColumnDefinition Width="45"/>
+                                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <Button Grid.Row="2" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
+                                                                <Border
+                            Grid.ColumnSpan="5"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Height="1.5"
+                        VerticalAlignment="Top"/>
+                                                                <Button Grid.Row="2" Grid.Column="0"  Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
                                                                     <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
-                                                                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
                                                                 <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Row="3" ItemsSource="{Binding Para3}">
+                                                <ItemsControl Grid.Row="2"  Grid.ColumnSpan="5" Height="Auto"  ItemsSource="{Binding Para3}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid Grid.Row="3" Height="52">
+                                                            <Grid Grid.Row="3" Height="Auto"  Grid.ColumnSpan="5">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                    <ColumnDefinition Width="45"/>
+                                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                                                 </Grid.ColumnDefinitions>
+                                                                <Border
+                            Grid.ColumnSpan="5"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Height="1.5"
+                        VerticalAlignment="Top"/>
                                                                 <Button Grid.Row="3" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
                                                                     <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
-                                                                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
                                                                 <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Row="4" ItemsSource="{Binding Para4}">
+                                                <ItemsControl Grid.Row="3" Grid.ColumnSpan="5" Height="Auto"  ItemsSource="{Binding Para4}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid Grid.Row="4" Height="52">
+                                                            <Grid Grid.Row="4" Height="Auto"  Grid.ColumnSpan="5">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                    <ColumnDefinition Width="45"/>
+                                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                                                 </Grid.ColumnDefinitions>
+                                                                <Border
+                            Grid.ColumnSpan="5"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Height="1.5"
+                        VerticalAlignment="Top"/>
                                                                 <Button Grid.Row="4" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
                                                                     <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
-                                                                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left" />
                                                                 <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <ItemsControl Grid.Row="5" ItemsSource="{Binding Para5}">
+                                                <ItemsControl Grid.Row="4" Grid.ColumnSpan="5" Height="Auto"  ItemsSource="{Binding Para5}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid Grid.Row="5" Height="52">
+                                                            <Grid Grid.Row="5" Height="Auto" Grid.ColumnSpan="5">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="35"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="90"/>
-                                                                    <ColumnDefinition Width="45"/>
+                                                                    <ColumnDefinition x:Name="Column1" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column2" Width="35"/>
+                                                                    <ColumnDefinition x:Name="Column3" Width="*"/>
+                                                                    <ColumnDefinition x:Name="Column4" Width="90"/>
+                                                                    <ColumnDefinition x:Name="Column5" Width="45"/>
                                                                 </Grid.ColumnDefinitions>
+                                                                <Border
+                        Grid.ColumnSpan="5"
+                        Background="{DynamicResource ForegroundColorUIElements}"
+                        Height="1.5"
+                        VerticalAlignment="Top"/>
                                                                 <Button Grid.Row="5" Grid.Column="0" Style="{DynamicResource TriggersNoteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Width="Auto" Tag="{Binding TagNoteButton}" Visibility="{Binding Notes}" Click="ButtonNotes_Click">
                                                                     <materialDesign:PackIcon Kind="{Binding Kind}" Height="20" Width="20"/>
                                                                 </Button>
                                                                 <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
-                                                                <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Work}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
                                                                 <TextBlock Grid.Row="5" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="5" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>

@@ -28,7 +28,6 @@
     </Style>
     <Style x:Key="BlockGridStyle" TargetType="{x:Type Grid}">
         <Setter Property="Width" Value="380"/>
-        <Setter Property="Height" Value="335"/>
         <Setter Property="Margin" Value="15"/>
     </Style>
 
@@ -154,6 +153,7 @@
     </Style>
 
     <SolidColorBrush x:Key="ForegroundColorUIElements" Color="Chartreuse"/>
+    <SolidColorBrush x:Key="WarningForegroundColorUIElements" Color="#FFB818"/> 
     <SolidColorBrush x:Key="ErrorForegroundColorUIElements" Color="Red"/>
     <SolidColorBrush x:Key="MainGrayColor" Color="#424242"/>
     <SolidColorBrush x:Key="MainBackgroundColor" Color="#1C1C1C"/>

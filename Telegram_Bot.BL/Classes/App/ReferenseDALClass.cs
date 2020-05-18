@@ -12,7 +12,7 @@ namespace Telegram_Bot.BL.Classes.App
         public bool SetConnectionDBCheckUser(string login, string password)
         {
             CheckUser user = new CheckUser();
-            bool userMeh = Task.Run(() => user.SearchUser(login, password)).Result;
+            bool userMeh = user.SearchUser(login, password);
 
             userListInformantion = user.userListInformantion as IFCore.Person;
             return userMeh;
@@ -70,10 +70,10 @@ namespace Telegram_Bot.BL.Classes.App
             DeleteNotesClass delNotes = new DeleteNotesClass();
             delNotes.DeleteOldNotes(day);
         }
-        public void SetConnectionDBGetSheldue(string department, string group)
+        public List<SheldueAllDays> SetConnectionDBGetSheldue(string department, string group, List<UserNotes> notes, List<DateTime> dateTime)
         {
             Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
-            getWordSheldue.GetListSheldue(department, group);
+            return getWordSheldue.GetListSheldue(department, group, notes, dateTime);
         }
         public void SetConnectionDBCollectionInformationUser(string login)
         {
