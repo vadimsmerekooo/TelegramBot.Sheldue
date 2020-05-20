@@ -38,15 +38,12 @@ namespace WindowAppMain.Classes
                 {
                     byte[] byteArray = new byte[fstream.Length];
                     fstream.Read(byteArray, 0, byteArray.Length);
-                    DecoderBitmapImage decByte = new DecoderBitmapImage();
-                    return decByte.ByteArrayToImage(byteArray);
+                    return new DecoderBitmapImage().ByteArrayToImage(byteArray);
                 }
             }
             catch
             {
-                string imagePath = $"../../Resource/logoAccount.png";
-                Uri imageUri = new Uri(imagePath, UriKind.RelativeOrAbsolute);
-                return new BitmapImage(imageUri);
+                return new BitmapImage(new Uri($"../../Resource/logoAccount.png", UriKind.RelativeOrAbsolute));
             }
         }
     }

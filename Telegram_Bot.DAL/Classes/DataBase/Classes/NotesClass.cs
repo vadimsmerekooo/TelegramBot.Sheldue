@@ -13,15 +13,12 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    UsersNotes userNotes = new UsersNotes()
-                    {
-                        IDUser = userid,
-                        DateNote = dateDayNote,
-                        Para = para,
-                        ParaNumber = paraNumber,
-                        NoteText = textNote
-                    };
-                    context.UsersNotes.Add(userNotes);
+                    context.UsersNotes.Add(new UsersNotes(){IDUser = userid,
+                                                            DateNote = dateDayNote,
+                                                            Para = para,
+                                                            ParaNumber = paraNumber,
+                                                            NoteText = textNote
+                                                           });
                     context.SaveChanges();
                 }
                 return true;
@@ -38,8 +35,7 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    var noteUser = context.UsersNotes.SingleOrDefault(note => note.IDNotes == idNote);
-                    noteUser.NoteText = changeText;
+                    ((context.UsersNotes.SingleOrDefault(note => note.IDNotes == idNote)) as UsersNotes).NoteText = changeText;
                     context.SaveChanges();
                 }
                 return true;

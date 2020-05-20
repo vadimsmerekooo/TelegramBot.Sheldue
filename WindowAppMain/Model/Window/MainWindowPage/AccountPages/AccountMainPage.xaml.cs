@@ -45,9 +45,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                string imagePath = openFileDialog.FileName;
-                Uri imageUri = new Uri(imagePath, UriKind.RelativeOrAbsolute);
-                changeNewImageUserLogo = new BitmapImage(imageUri);
+                changeNewImageUserLogo = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.RelativeOrAbsolute));
                 // изменяем изображения пользователя на выбранное изображение из OpenFileDialog
                 ChangeImageLogo(changeNewImageUserLogo);
                 SaveImageLogoButton.Visibility = System.Windows.Visibility.Visible;
@@ -62,7 +60,6 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
         // Сохранение нового изображения(конфертируем в байты и сохраняем в файл)
         private void SaveImageLogoButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            DecoderBitmapImage decByteOrImage = new DecoderBitmapImage();
             try
             {
                 /*
@@ -89,7 +86,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                 //здесь мы переобразуем новое изображение в массив byte и записываем в юзерский файл
                 using (FileStream fstream = new FileStream($"../../Resource/LogoImageAccount/User{userInformation.Login}_Image.dat", FileMode.OpenOrCreate))
                 {
-                    byte[] byteArray = decByteOrImage.ImageToByteArray(AccountLogo.Source);
+                    byte[] byteArray = new DecoderBitmapImage().ImageToByteArray(AccountLogo.Source);
                     fstream.Write(byteArray, 0, byteArray.Length);
                 }
                 // изменяем в остальных окнах изображения
@@ -137,11 +134,10 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
         // метод для формирования ListBox
         private List<UserInfoListClass> userInfoList(Person userInfo)
         {
-            List<UserInfoListClass> tmpListInfo = new List<UserInfoListClass>();
             switch (userInfo.Status)
             {
                 case "Преподаватель":
-                    tmpListInfo = new List<UserInfoListClass>()
+                    return new List<UserInfoListClass>()
                     {
                         new UserInfoListClass("Имя:", userInfo.Name),
                         new UserInfoListClass("Логин:", userInfo.Login),
@@ -149,7 +145,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                     };
                     break;
                 case "Студент":
-                    tmpListInfo = new List<UserInfoListClass>()
+                    return new List<UserInfoListClass>()
                     {
                         new UserInfoListClass("Логин:", userInfo.Login),
                         new UserInfoListClass("Статус:", userInfo.Status),
@@ -158,13 +154,12 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                     };
                     break;
                 default:
-                    tmpListInfo = new List<UserInfoListClass>()
+                    return new List<UserInfoListClass>()
                     {
                         new UserInfoListClass("Данный не получены!", string.Empty)
                     };
                     break;
             }
-            return tmpListInfo;
         }
     }
 

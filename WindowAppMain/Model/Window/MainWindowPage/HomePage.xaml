@@ -371,7 +371,7 @@
                                                                 </Button>
                                                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Work}"  Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
-                                                                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Teacher}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
@@ -398,7 +398,7 @@
                                                                 </Button>
                                                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
-                                                                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding Teacher}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
@@ -425,7 +425,7 @@
                                                                 </Button>
                                                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
-                                                                <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding Teacher}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
@@ -452,7 +452,7 @@
                                                                 </Button>
                                                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left" />
-                                                                <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding Teacher}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>
@@ -479,7 +479,7 @@
                                                                 </Button>
                                                                 <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Para}" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding Work}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" HorizontalAlignment="Left"/>
-                                                                <TextBlock Grid.Row="5" Grid.Column="3" Text="{Binding Teacher}" Style="{DynamicResource SheldueTextStyle}" />
+                                                                <TextBlock Grid.Row="5" Grid.Column="3" Text="{Binding Teacher}" Margin="5 5" Style="{DynamicResource SheldueTextStyle}" />
                                                                 <TextBlock Grid.Row="5" Grid.Column="4" Text="{Binding Auditorya}" Style="{DynamicResource SheldueTextStyle}" />
                                                             </Grid>
                                                         </DataTemplate>

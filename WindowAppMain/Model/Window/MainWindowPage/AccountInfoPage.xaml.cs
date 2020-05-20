@@ -25,8 +25,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
             switch (AccountListBox.SelectedIndex)
             {
                 case 0:
-                    AccountMainInfo accInfoPage = new AccountMainInfo(_mWindow, this);
-                    AccountInfoPageFrame.NavigationService.Navigate(accInfoPage);
+                    AccountInfoPageFrame.NavigationService.Navigate(new AccountMainInfo(_mWindow, this));
                     break;
                 case 1:
                     AccountInfoPageFrame.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountPages/AccountGlobePage.xaml", UriKind.Relative));

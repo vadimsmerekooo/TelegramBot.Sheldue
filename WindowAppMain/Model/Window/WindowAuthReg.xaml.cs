@@ -37,16 +37,27 @@ namespace WindowAppMain.Model.Window
         #endregion
 
         #region ListTeacher
-        private List<string> teacherList = new List<string>()
+        private SortedSet<string> teacherList = new SortedSet<string>()
         {
-            "Толочко П.С.", "Киреня О.П.", "Воронко Л.А."
+            "Толочко П.С.", "Киреня О.П.", "Воронко Л.А.",
+            "Равбуть Л.А.", "Масько Е.Ч.", "Анисько Р.И.",
+            "Котович Н.С.", "Назарчук Т.Н.", "Шмулькштене Е.И.",
+            "Лис Н.Н.", "Петрякова Н.С.", "Воропай О.А.", "Алексейченко И.В.",
+            "Новик А.И.", "Можейко Е.А.", "Карпович Т.Я.", "Васьков Н.М.",
+            "Анищик Р.М.", "Карпович Т.Я.", "Дереченик М.А.", "Кривопуст Е.Е.",
+            "Качан Е.И.", "Авдей И.И.", "Лебедь Т.М.", "Левицкая Л.В.",
+            "Лавекль Ю.В.", "Романович А.В.", "Шиманович Т.С.", "Воропай О.А.",
+            "Шкута О.Г.", "Лис Н.Н.", "Новицкая Ю.В.", "Сакович О.И.", "Ильющеня П.И.",
+            "Аблажевич И.В.", "Гоманчук В.К.", "Юхневич Н.И.", "Трайгель В.В.",
+            "Самойло Ж.В.", "Гоманчук В.К.", "Чистобаева Н.И.", "Снацкая И.И.", "Лупач О.И."
         };
         #endregion
 
         #region ListDepartment
         private List<string> departmentList = new List<string>()
         {
-            "Информационное отделение", "Швейное отделение", "Электромеханическое отделение", "Отделение машиностроения"
+            "Информационное отделение"
+            //"Швейное отделение", "Электромеханическое отделение", "Отделение машиностроения"
         };
         #endregion
 
@@ -56,18 +67,18 @@ namespace WindowAppMain.Model.Window
             "27 тп", "29 тп", "30 тп", "31 тп", "32 тп", "33 тп", "06 шо"
         };
 
-        private List<string> sewingDepartmentGroupList = new List<string>()
-        {
-             "05 шо", "30 шо", "29 шо", "11 з", "05 мктт", "06 мктт"
-        };
-        private List<string> elektromechanicDepartmentGroupList = new List<string>()
-        {
-             "03 эс", "04 эс", "19 опс", "20 опс", "18 опс", "10 эо", "11 эо"
-        };
-        private List<string> machinebuildingDepartmentGroupList = new List<string>()
-        {
-             "01 эс", "02 эс", "26 тм", "2 м", "1 м", "3 м", "2 от", "03 от"
-        };
+        //private List<string> sewingDepartmentGroupList = new List<string>()
+        //{
+        //     "05 шо", "30 шо", "29 шо", "11 з", "05 мктт", "06 мктт"
+        //};
+        //private List<string> elektromechanicDepartmentGroupList = new List<string>()
+        //{
+        //     "03 эс", "04 эс", "19 опс", "20 опс", "18 опс", "10 эо", "11 эо"
+        //};
+        //private List<string> machinebuildingDepartmentGroupList = new List<string>()
+        //{
+        //     "01 эс", "02 эс", "26 тм", "2 м", "1 м", "3 м", "2 от", "03 от"
+        //};
         #endregion
 
         public WindowAuthReg()
@@ -76,8 +87,7 @@ namespace WindowAppMain.Model.Window
             {
                 try
                 {
-                    MainWindow mainWindow = new MainWindow(userInfoList);
-                    mainWindow.Show();
+                    new MainWindow(userInfoList).Show();
                     this.Close();
                 }
                 catch
@@ -219,7 +229,7 @@ namespace WindowAppMain.Model.Window
                 {
                     try
                     {
-                        Telegram_Bot.BL.Classes.App.ReferenseDALClass user =new Telegram_Bot.BL.Classes.App.ReferenseDALClass();
+                        ReferenseDALClass user = new ReferenseDALClass();
                         if (user.SetConnectionDBCheckUser(TextBoxLogin.Text, PasswordBoxPassword.Password))
                         {
                             userInfoList = user.userListInformantion;
@@ -232,8 +242,7 @@ namespace WindowAppMain.Model.Window
                                 try { using (StreamWriter sw = new StreamWriter("SET_COOKIEUSER.xml")) { sw.WriteLine(string.Empty); } } catch { }
                             }
                             loadedControl.StopAnimation();
-                            MainWindow mainWindow = new MainWindow(userInfoList);
-                            mainWindow.Show();
+                            new MainWindow(userInfoList).Show();
                             this.Close();
                         }
                         else
@@ -289,11 +298,10 @@ namespace WindowAppMain.Model.Window
                 {
                     using (FileStream fs = new FileStream("SET_COOKIEUSER.xml", FileMode.Open))
                     {
-                        userInfoList = new IFCore.Person();
-                        userInfoList = (IFCore.Person)serializer.Deserialize(fs);
+                        userInfoList = new Person();
+                        userInfoList = (Person)serializer.Deserialize(fs);
                     }
-                    ReferenseDALClass refClassDAL = new ReferenseDALClass();
-                    return refClassDAL.SetConnectionDBCheckCOOKIESUser(userInfoList.Login);
+                    return new ReferenseDALClass().SetConnectionDBCheckCOOKIESUser(userInfoList.Login);
                 }
             }
             catch
@@ -383,18 +391,17 @@ namespace WindowAppMain.Model.Window
                                 {
                                     try
                                     {
-                                        IFCore.User userLogin = new IFCore.User()
-                                        {
-                                            Email = TextBoxNameUser.Text,
-                                            Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString(),
-                                        };
-
-                                        IFCore.UserInfo userInfo = new IFCore.UserInfo()
-                                        {
-                                            UserName = TeacherNameorDepartment.SelectedValue.ToString(),
-                                            UserStatus = PersonComboBox.SelectedValue.ToString()
-                                        };
-                                        await refClassDAL.SetConnectionDBRegUser(userLogin, userInfo);
+                                        await refClassDAL.SetConnectionDBRegUser(
+                                            new User()
+                                            {
+                                                Email = TextBoxNameUser.Text,
+                                                Password = cryptPassword.CalculateMD5Hash(PasswordBoxPasswordOrigin.Password).ToString()
+                                            },
+                                            new UserInfo()
+                                            {
+                                                UserName = TeacherNameorDepartment.SelectedValue.ToString(),
+                                                UserStatus = PersonComboBox.SelectedValue.ToString()
+                                            });
                                         loadedControl.StopAnimation();
                                         SeccessfulReg();
                                     }
@@ -439,8 +446,7 @@ namespace WindowAppMain.Model.Window
         {
             Storyboard sb = this.FindResource("ShowWindowResetPassword") as Storyboard;
             sb.Begin();
-            WindowPasswordReset windowResetPassword = new WindowPasswordReset();
-            windowResetPassword.ShowDialog();
+            new WindowPasswordReset().ShowDialog();
             Storyboard sbclose = this.FindResource("CloseWindowResetPassword") as Storyboard;
             sbclose.Begin();
         }
@@ -518,15 +524,15 @@ namespace WindowAppMain.Model.Window
                         case 0:
                             GroupListComboBox.ItemsSource = informationDepartmentGroupList;
                             break;
-                        case 1:
-                            GroupListComboBox.ItemsSource = sewingDepartmentGroupList;
-                            break;
-                        case 2:
-                            GroupListComboBox.ItemsSource = elektromechanicDepartmentGroupList;
-                            break;
-                        case 3:
-                            GroupListComboBox.ItemsSource = machinebuildingDepartmentGroupList;
-                            break;
+                            //case 1:
+                            //    GroupListComboBox.ItemsSource = sewingDepartmentGroupList;
+                            //    break;
+                            //case 2:
+                            //    GroupListComboBox.ItemsSource = elektromechanicDepartmentGroupList;
+                            //    break;
+                            //case 3:
+                            //    GroupListComboBox.ItemsSource = machinebuildingDepartmentGroupList;
+                            //    break;
                     }
                     break;
                 case 1:
@@ -545,15 +551,5 @@ namespace WindowAppMain.Model.Window
             ButtonReg.IsEnabled = true;
         }
         //Combobox RegGrid Changed
-
-        //Class for serialize user info
-        public class User
-        {
-            [XmlAttribute]
-            public string key;
-            [XmlAttribute]
-            public string value;
-        }
-        //Class for serialize user info
     }
 }

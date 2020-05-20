@@ -4,49 +4,51 @@ using Telegram_Bot.DAL.Interfaces;
 using Microsoft.Office.Interop.Word;
 using IFCore;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Telegram_Bot.DAL.DALApp
 {
     public class SheldueClass : IGetSheldue
     {
+        string _name;
         string _department;
         string _group;
         List<DateTime> _dateTime;
 
         Dictionary<string, string> departmnetListReferensToFile = new Dictionary<string, string>()
         {
-            {"Информационное", @"C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\Telegram_Bot.DAL\Classes\Student\FileWord\ListShedule\Information.docx"},
-            {"Швейное", @"C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\Telegram_Bot.DAL\Classes\Student\FileWord\ListShedule\Sewing.docx"},
-            {"Электромеханическое", @"C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\Telegram_Bot.DAL\Classes\Student\FileWord\ListShedule\ElektroMechanic.docx"},
-            {"Машиностроения", @"C:\Users\vadim\Desktop\GitHub\Student_Bot_Assistant\Telegram_Bot.DAL\Classes\Student\FileWord\ListShedule\Mechanic.docx"}
+            {"Информационное", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Information.docx"}
+            //{"Швейное", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Sewing.docx"},
+            //{"Электромеханическое", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/ElektroMechanic.docx"},
+            //{"Отделение", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Mechanic.docx"}
         };
         private List<UserNotes> userNotes;
 
 
         public List<SheldueAllDays> GetListSheldue(string department, string group, List<UserNotes> notes, List<DateTime> dateTime)
         {
-            //string imagePath = $"../../Resource/logoAccount.png";
-            //Uri imageUri = new Uri(imagePath, UriKind.RelativeOrAbsolute);
-            //return new BitmapImage(imageUri);
-            File.Open("../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Information.docx", FileMode.Open);
-            if (File.Exists("../../Classes/Student/FileWord/ListShedule/Information.docx"))
-                return null;
-            else
-                return null;
             _department = (department.Split(' '))[0];
             _group = group;
             userNotes = notes;
             _dateTime = dateTime;
-            return GetSheldueOnDays(ParseWordFileMethod());
+            return GetSheldueOnDays(ParseWordFileStudentMethod());
+        }
+        public List<SheldueAllDays> GetListSheldue(string name, List<UserNotes> notes, List<DateTime> dateTime)
+        {
+            _name = name;
+            _dateTime = dateTime;
+            userNotes = notes;
+            return GetSheldueOnDays(ParseWordFileTeacherMethod());
         }
 
-
-
-        private List<Sheldue> ParseWordFileMethod()
+        // Get Student Sheldue
+        private List<Sheldue> ParseWordFileStudentMethod()
         {
+            string pathFileWord = Path.GetFullPath(departmnetListReferensToFile[_department]);
             Application app = new Application();
             string group = $"ГРУППА {_group.Replace(" ", "")}";
-            Document doc = app.Documents.Open(departmnetListReferensToFile[_department], Visible: false);
+            Document doc = app.Documents.Open(pathFileWord, Visible: false);
             List<Sheldue> allSheldue = new List<Sheldue>();
             try
             {
@@ -70,19 +72,19 @@ namespace Telegram_Bot.DAL.DALApp
                                                 string work = RangeText(table.Cell(i, 7).Range.Text);
                                                 string auditoria = RangeText(table.Cell(i, 8).Range.Text);
                                                 string teacher = RangeText(table.Cell(i, 9).Range.Text);
-
-                                                UserNotes note = GetUserNote(paraNumber, work);
-                                                Sheldue paraSheldue = new Sheldue(
-                                                    System.Windows.Visibility.Visible,
-                                                    note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                    $"Para{paraNumber}",
-                                                    paraNumber,
-                                                    work,
-                                                    teacher,
-                                                    auditoria,
-                                                    note
-                                                    );
-                                                allSheldue.Add(paraSheldue);
+                                                UserNotes note = new UserNotes();
+                                                if (userNotes.Count != 0)
+                                                    note = GetUserNote(paraNumber, work);
+                                                allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                note.Para != null
+                                                                ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline
+                                                                : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                $"Para{paraNumber}",
+                                                                paraNumber,
+                                                                work,
+                                                                teacher,
+                                                                auditoria,
+                                                                note));
                                             }
                                         }
                                         catch
@@ -104,18 +106,17 @@ namespace Telegram_Bot.DAL.DALApp
                                                 string auditoria = RangeText(table.Cell(i, 4).Range.Text);
                                                 string teacher = RangeText(table.Cell(i, 5).Range.Text);
 
-                                                UserNotes note = GetUserNote(paraNumber, work);
-                                                Sheldue paraSheldue = new Sheldue(
-                                                    System.Windows.Visibility.Visible,
-                                                    note != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                    $"Para{paraNumber}",
-                                                    paraNumber,
-                                                    work,
-                                                    teacher,
-                                                    auditoria,
-                                                    note
-                                                    );
-                                                allSheldue.Add(paraSheldue);
+                                                UserNotes note = new UserNotes();
+                                                if (userNotes.Count != 0)
+                                                    note = GetUserNote(paraNumber, work);
+                                                allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                            note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                            $"Para{paraNumber}",
+                                                                            paraNumber,
+                                                                            work,
+                                                                            teacher,
+                                                                            auditoria,
+                                                                            note));
                                             }
                                         }
                                         catch
@@ -146,21 +147,148 @@ namespace Telegram_Bot.DAL.DALApp
                 app.Quit();
             }
         }
+
+        // Get Teacher Sheldue
+        private List<Sheldue> ParseWordFileTeacherMethod()
+        {
+            string pathFileWord = Path.GetFullPath(departmnetListReferensToFile["Информационное"]);
+            Application app = new Application();
+            string[] nameTeacher = _name.ToUpper().Split(' ');
+            Document doc = app.Documents.Open(pathFileWord, Visible: false);
+            List<Sheldue> allSheldue = new List<Sheldue>();
+            bool twoGroupInTable = true;
+            try
+            {
+                foreach (Table table in doc.Tables)
+                {
+                    twoGroupInTable = table.Columns.Count > 7 ? true : false;
+                    switch (twoGroupInTable)
+                    {
+                        case true:
+                            try
+                            {
+                                for (int i = 3; i < table.Rows.Count; i++)
+                                {
+                                    string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
+                                    foreach (var name in teacherCellParse)
+                                    {
+                                        if (nameTeacher[0] == name)
+                                        {
+                                            string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
+                                            string work = RangeText(table.Cell(i, 3).Range.Text);
+                                            string auditoria = RangeText(table.Cell(i, 4).Range.Text);
+                                            string teacher = RangeText(table.Cell(i, 5).Range.Text);
+
+                                            UserNotes note = new UserNotes();
+                                            if (userNotes.Count != 0)
+                                                note = GetUserNote(paraNumber, work);
+                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                        $"Para{paraNumber}",
+                                                                        paraNumber,
+                                                                        work,
+                                                                        teacher,
+                                                                        auditoria,
+                                                                        note));
+                                        }
+                                    }
+                                    teacherCellParse = RangeText(table.Cell(i, 9).Range.Text).Split(new char[] { ' ', '/' });
+                                    foreach (var name in teacherCellParse)
+                                    {
+                                        if (nameTeacher[0] == name)
+                                        {
+                                            string paraNumber = RangeText(table.Cell(i, 6).Range.Text);
+                                            string work = RangeText(table.Cell(i, 7).Range.Text);
+                                            string auditoria = RangeText(table.Cell(i, 8).Range.Text);
+                                            string teacher = RangeText(table.Cell(i, 9).Range.Text);
+
+                                            UserNotes note = new UserNotes();
+                                            if (userNotes.Count != 0)
+                                                note = GetUserNote(paraNumber, work);
+                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                        $"Para{paraNumber}",
+                                                                        paraNumber,
+                                                                        work,
+                                                                        teacher,
+                                                                        auditoria,
+                                                                        note));
+                                        }
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+                            break;
+                        case false:
+                            try
+                            {
+                                for (int i = 3; i < table.Rows.Count; i++)
+                                {
+                                    string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
+                                    foreach (var name in teacherCellParse)
+                                    {
+                                        if (nameTeacher[0] == name)
+                                        {
+                                            string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
+                                            string work = RangeText(table.Cell(i, 3).Range.Text);
+                                            string auditoria = RangeText(table.Cell(i, 4).Range.Text);
+                                            string teacher = RangeText(table.Cell(i, 5).Range.Text);
+                                            UserNotes note = new UserNotes();
+                                            if (userNotes.Count != 0)
+                                                note = GetUserNote(paraNumber, work);
+
+                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                        $"Para{paraNumber}",
+                                                                        paraNumber,
+                                                                        work,
+                                                                        teacher,
+                                                                        auditoria,
+                                                                        note));
+                                        }
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+                doc.Close();
+                app.Quit();
+                return allSheldue;
+            }
+            finally
+            {
+                doc.Close();
+                app.Quit();
+            }
+
+            return allSheldue;
+        }
+
         private string RangeText(string text)
         {
             return text.Replace("\r\a", "").Replace("\r", ""); ;
         }
         private UserNotes GetUserNote(string Para, string work)
         {
-            UserNotes noteRange = new UserNotes();
             foreach (UserNotes note in userNotes)
             {
                 if (note.Para == work && note.ParaNumber == int.Parse(Para))
                 {
-                    noteRange = note;
+                    return note;
                 }
             }
-            return noteRange;
+            return new UserNotes();
         }
 
         private List<SheldueAllDays> GetSheldueOnDays(List<Sheldue> allSheldue)
@@ -184,48 +312,45 @@ namespace Telegram_Bot.DAL.DALApp
                 SheldueAllDays allDaySheldue;
                 foreach (var item in allSheldue)
                 {
+                    item.TagNoteButton = $"Day{day + 1}{item.TagNoteButton}";
                     count++;
                     if (int.Parse(item.Para) < tmp || count == allSheldue.Count)
                     {
-                        List<SheldueAllList> listAllDaySheldue = new List<SheldueAllList>()
-                        {
-                            allListSheldue
-                        };
-                        allDaySheldue = new SheldueAllDays(listAllDaySheldue, date[day] + " " + _dateTime[day].Date.ToShortDateString());
+                        allDaySheldue = new SheldueAllDays(new List<SheldueAllList>()
+                                                            {
+                                                                allListSheldue
+                                                            },
+                                                            date[day] + " " + _dateTime[day].Date.ToShortDateString());
                         allDaysSheldue.Add(allDaySheldue);
                         allListSheldue = new SheldueAllList();
                         day++;
                     }
                     tmp = int.Parse(item.Para);
-                    List<Sheldue> listSheldue = new List<Sheldue>()
-                    {
-                        item
-                    };
                     switch (tmp)
                     {
                         case 1:
-                            allListSheldue.Para1 = listSheldue;
+                            allListSheldue.Para1 = new List<Sheldue>() { item };
                             break;
                         case 2:
-                            allListSheldue.Para2 = listSheldue;
+                            allListSheldue.Para2 = new List<Sheldue>() { item };
                             break;
                         case 3:
-                            allListSheldue.Para3 = listSheldue;
+                            allListSheldue.Para3 = new List<Sheldue>() { item };
                             break;
                         case 4:
-                            allListSheldue.Para4 = listSheldue;
+                            allListSheldue.Para4 = new List<Sheldue>() { item };
                             break;
                         case 5:
-                            allListSheldue.Para5 = listSheldue;
+                            allListSheldue.Para5 = new List<Sheldue>() { item };
                             break;
                     }
                     if (count == allSheldue.Count)
                     {
-                        List<SheldueAllList> listAllDaySheldue = new List<SheldueAllList>()
-                        {
-                            allListSheldue
-                        };
-                        allDaySheldue = new SheldueAllDays(listAllDaySheldue, date[day]);
+                        allDaySheldue = new SheldueAllDays(new List<SheldueAllList>()
+                                                            {
+                                                                allListSheldue
+                                                            },
+                                                            date[day]);
                         allDaysSheldue.Add(allDaySheldue);
                     }
                 }

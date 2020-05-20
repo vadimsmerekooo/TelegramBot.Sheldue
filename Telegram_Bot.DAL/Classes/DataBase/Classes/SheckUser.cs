@@ -10,7 +10,6 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
     public class CheckUser
     {
         public Person userListInformantion;
-        private CryptAndDecryptPassword cryptPassword = new CryptAndDecryptPassword();
         public async Task<bool> CheckExclusiveUser(string userLogin)
         {
             bool checkRangeUser = true;
@@ -30,7 +29,7 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                     return checkRangeUser;
                 }
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -43,25 +42,23 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    Users userEF = new Users()
+                    context.Users.Add(new Users()
                     {
                         Email = user.Email,
                         Password = user.Password
-                    };
-                    UsersInfo userInfEF = new UsersInfo()
+                    });
+                    context.UsersInfo.Add(new UsersInfo()
                     {
                         UserName = userInfo.UserName,
                         UserStatus = userInfo.UserStatus,
                         UserDepartment = userInfo.UserDepartment,
                         UserGroup = userInfo.UserGroup
-                    };
-                    context.Users.Add(userEF);
-                    context.UsersInfo.Add(userInfEF);
+                    });
                     await context.SaveChangesAsync();
                     return true;
                 }
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -72,39 +69,54 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
         public bool SearchUser(string userLogin, string userPassword)
         {
             bool checkRangeUser = false;
+            userPassword = new CryptAndDecryptPassword().CalculateMD5Hash(userPassword).ToString();
             try
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    foreach (var user in context.Users)
+                    var userInfo = context.UsersInfo.FirstOrDefault(userinf => userinf.ID == (context.Users.FirstOrDefault(user => user.Email == userLogin && user.Password == userPassword) as Users).ID);
+                    if (userInfo != null)
                     {
-                        if (user.Email == userLogin && user.Password == cryptPassword.CalculateMD5Hash(userPassword).ToString())
+                        checkRangeUser = true;
+                        userListInformantion = new Person()
                         {
-                            checkRangeUser = true;
-                            var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
-                            switch (userInfo[0].UserStatus)
-                            {
-                                case "Преподаватель":
-                                    userListInformantion = new Person()
-                                    {
-                                        ID = user.ID,
-                                        Login = user.Email,
-                                        Name = userInfo[0].UserName,
-                                        Status = userInfo[0].UserStatus
-                                    }; break;
-                                case "Студент":
-                                    userListInformantion = new Person()
-                                    {
-                                        ID = user.ID,
-                                        Login = user.Email,
-                                        Name = userInfo[0].UserName,
-                                        Status = userInfo[0].UserStatus,
-                                        Department = userInfo[0].UserDepartment,
-                                        Group = userInfo[0].UserGroup
-                                    }; break;
-                            }
-                        }
+                            ID = (context.Users.FirstOrDefault(user => user.Email == userLogin && user.Password == userPassword) as Users).ID,
+                            Login = (context.Users.FirstOrDefault(user => user.Email == userLogin && user.Password == userPassword) as Users).Email,
+                            Name = userInfo.UserName,
+                            Status = userInfo.UserStatus,
+                            Department = userInfo.UserDepartment,
+                            Group = userInfo.UserGroup
+                        };
                     }
+                    //foreach (var user in context.Users)
+                    //{
+                    //    if (user.Email == userLogin && user.Password == new CryptAndDecryptPassword().CalculateMD5Hash(userPassword).ToString())
+                    //    {
+                    //        checkRangeUser = true;
+                    //        var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
+                    //        switch (userInfo[0].UserStatus)
+                    //        {
+                    //            case "Преподаватель":
+                    //                userListInformantion = new Person()
+                    //                {
+                    //                    ID = user.ID,
+                    //                    Login = user.Email,
+                    //                    Name = userInfo[0].UserName,
+                    //                    Status = userInfo[0].UserStatus
+                    //                }; break;
+                    //            case "Студент":
+                    //                userListInformantion = new Person()
+                    //                {
+                    //                    ID = user.ID,
+                    //                    Login = user.Email,
+                    //                    Name = userInfo[0].UserName,
+                    //                    Status = userInfo[0].UserStatus,
+                    //                    Department = userInfo[0].UserDepartment,
+                    //                    Group = userInfo[0].UserGroup
+                    //                }; break;
+                    //        }
+                    //    }
+                    //}
                 }
                 return checkRangeUser;
             }
@@ -119,37 +131,48 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             {
                 using (managerdbContext context = new managerdbContext())
                 {
-                    foreach (var user in context.Users)
+                    var userInfo = context.UsersInfo.FirstOrDefault(userinf => userinf.ID == (context.Users.FirstOrDefault(user => user.Email == userLogin) as Users).ID);
+
+                    userListInformantion = new Person()
                     {
-                        if (user.Email == userLogin)
-                        {
-                            var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
-                            switch (userInfo[0].UserStatus)
-                            {
-                                case "Преподаватель":
-                                    userListInformantion = new Person()
-                                    {
-                                        ID = user.ID,
-                                        Login = user.Email,
-                                        Name = userInfo[0].UserName,
-                                        Status = userInfo[0].UserStatus
-                                    }; break;
-                                case "Студент":
-                                    userListInformantion = new Person()
-                                    {
-                                        ID = user.ID,
-                                        Login = user.Email,
-                                        Name = userInfo[0].UserName,
-                                        Status = userInfo[0].UserStatus,
-                                        Department = userInfo[0].UserDepartment,
-                                        Group = userInfo[0].UserGroup
-                                    }; break;
-                            }
-                        }
-                    }
+                        ID = (context.Users.FirstOrDefault(user => user.Email == userLogin) as Users).ID,
+                        Login = (context.Users.FirstOrDefault(user => user.Email == userLogin) as Users).Email,
+                        Name = userInfo.UserName,
+                        Status = userInfo.UserStatus,
+                        Department = userInfo.UserDepartment,
+                        Group = userInfo.UserGroup
+                    };
+                    //foreach (var user in context.Users)
+                    //{
+                    //    if (user.Email == userLogin)
+                    //    {
+                    //        var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
+                    //        switch (userInfo[0].UserStatus)
+                    //        {
+                    //            case "Преподаватель":
+                    //                userListInformantion = new Person()
+                    //                {
+                    //                    ID = user.ID,
+                    //                    Login = user.Email,
+                    //                    Name = userInfo[0].UserName,
+                    //                    Status = userInfo[0].UserStatus
+                    //                }; break;
+                    //            case "Студент":
+                    //                userListInformantion = new Person()
+                    //                {
+                    //                    ID = user.ID,
+                    //                    Login = user.Email,
+                    //                    Name = userInfo[0].UserName,
+                    //                    Status = userInfo[0].UserStatus,
+                    //                    Department = userInfo[0].UserDepartment,
+                    //                    Group = userInfo[0].UserGroup
+                    //                }; break;
+                    //        }
+                    //    }
+                    //}
                 }
             }
-            catch 
+            catch
             {
 
             }
@@ -159,8 +182,9 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
         {
             using (var context = new managerdbContext())
             {
-                var usersInfo = context.Users.SingleOrDefault(user => user.Email == userLogin);
-                usersInfo.Password = cryptPassword.CalculateMD5Hash(userNewPassword).ToString();
+                context.Users.FirstOrDefault(user => user.Email == userLogin).Password = new CryptAndDecryptPassword().CalculateMD5Hash(userNewPassword).ToString();
+                //var usersInfo = context.Users.FirstOrDefaultOrDefault(user => user.Email == userLogin);
+                //usersInfo.Password = new CryptAndDecryptPassword().CalculateMD5Hash(userNewPassword).ToString();
                 context.SaveChanges();
             }
         }

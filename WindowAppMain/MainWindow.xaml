@@ -304,6 +304,7 @@
                                       Color="Black"
                                       BlurRadius="15"/>
                         </Grid.Effect>
+                       
                         <Frame x:Name="MainWindowPage" NavigationUIVisibility="Hidden"/>
                     </Grid>
                 </Grid>
@@ -429,12 +430,12 @@
             <TextBlock x:Name="TextBlockMessageThrow" Grid.Column="1" Style="{DynamicResource TextBlockStyle}" Text="Throw Message Exception Or Seccessful Operation Check" FontSize="15" TextWrapping="Wrap" Margin="7" TextAlignment="Center"/>
         </Grid>
         <Grid x:Name="GridModalWindows" Visibility="Hidden">
-            
-            <Grid x:Name="ModalWindowAddNotes" Width="350" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <Grid x:Name="ModalWindowAddNotes" Width="350" Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                     <RowDefinition Height="40"/>
@@ -449,8 +450,8 @@
                     <TextBlock x:Name="DateNoteTextBlock" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="22.04.2020г - Среда" Margin="15 0" TextDecorations="UnderLine" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0">
-                    <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Пара:"/>
-                    <TextBlock x:Name="ParaNoteTextBlock" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Математическое моделирование" Margin="15 0" TextDecorations="UnderLine" />
+                    <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 5" Text="Пара:"/>
+                    <TextBlock x:Name="ParaNoteTextBlock" Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Математическое моделирование"  MaxWidth="225" Margin="15 0" TextDecorations="UnderLine" TextWrapping="Wrap"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30 0">
                     <TextBlock Style="{DynamicResource TextBlockStyle}" HorizontalAlignment="Left" Text="Текст заметки"/>

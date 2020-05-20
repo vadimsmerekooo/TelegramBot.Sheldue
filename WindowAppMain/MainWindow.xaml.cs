@@ -90,8 +90,7 @@ namespace WindowAppMain
                     break;
                 case 1:
                     //MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountInfoPage.xaml", UriKind.Relative));
-                    AccountInfoPage accInfoPage = new AccountInfoPage(this);
-                    MainWindowPage.NavigationService.Navigate(accInfoPage);
+                    MainWindowPage.NavigationService.Navigate(new AccountInfoPage(this));
                     break;
                 case 2:
                     MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/SettingsPage.xaml", UriKind.Relative));
@@ -153,8 +152,7 @@ namespace WindowAppMain
                 {
 
                 }
-                WindowAuthReg windowAuthReg = new WindowAuthReg(this);
-                windowAuthReg.Show();
+                new WindowAuthReg(this).Show();
             }
             catch
             {
@@ -180,14 +178,13 @@ namespace WindowAppMain
         {
             try
             {
-                ReferenseDALClass refClassDAL = new ReferenseDALClass();
                 switch (NameGridChangeOrAddNotes.Text)
                 {
                     case "Добавление заметки":
                         try
                         {
                             string[] parseDate = DateNoteTextBlock.Text.Split(' ');
-                            if (refClassDAL.SetConnectionDBNoteAdd(_userInfo.ID, NewNoteTextBox.Text, Convert.ToDateTime(parseDate[1]), ParaNoteTextBlock.Text, paraNumber))
+                            if (new ReferenseDALClass().SetConnectionDBNoteAdd(_userInfo.ID, NewNoteTextBox.Text, Convert.ToDateTime(parseDate[1]), ParaNoteTextBlock.Text, paraNumber))
                             {
                                 Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
                                 sb.Begin();
@@ -202,8 +199,7 @@ namespace WindowAppMain
                                 TextBlockMessageThrow.Text = "Заметка сохранена!";
                                 Storyboard sbShowNodalWindow = this.FindResource("ShowMessageThrowGrid") as Storyboard;
                                 sbShowNodalWindow.Begin();
-                                HomePage hmPage = new HomePage(this);
-                                Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(hmPage); }));
+                                _homePage.notes.NoteText = NewNoteTextBox.Text;
                             }
                             else
                             {
@@ -222,7 +218,7 @@ namespace WindowAppMain
                             KindThrowMessage.Foreground = FindResource("ErrorForegroundColorUIElements") as SolidColorBrush;
                             KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Close;
                             TextBlockMessageThrow.Text = "Заметка не добавлена!";
-                            Storyboard sbThrowMessge = this.FindResource("ShowMessageThrowGrid") as Storyboard;
+                            Storyboard sbThrowMessge = FindResource("ShowMessageThrowGrid") as Storyboard;
                             sb.Begin();
                             DosentOpacityGrid.IsEnabled = true;
                         }
@@ -232,7 +228,7 @@ namespace WindowAppMain
                         {
                             if (!String.IsNullOrWhiteSpace(NewNoteTextBox.Text))
                             {
-                                if (refClassDAL.SetConnectionDBNoteClass(tmpNoteUserId, NewNoteTextBox.Text))
+                                if (new ReferenseDALClass().SetConnectionDBNoteClass(tmpNoteUserId, NewNoteTextBox.Text))
                                 {
                                     KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
                                     KindThrowMessage.Kind = MaterialDesignThemes.Wpf.PackIconKind.Check;
@@ -241,8 +237,8 @@ namespace WindowAppMain
                                     sb.Begin();
                                     Storyboard sbShowNodalWindow = this.FindResource("ShowMessageThrowGrid") as Storyboard;
                                     sbShowNodalWindow.Begin();
-                                    HomePage hmPage = new HomePage(this);
-                                    Task.Run(() => this.Dispatcher.BeginInvoke((ThreadStart)delegate () { MainWindowPage.NavigationService.Navigate(hmPage); }));
+                                    _homePage.notes.NoteText = NewNoteTextBox.Text;
+                                    _homePage.ListViewSheldueDay.ItemsSource = _homePage.allSheldueList;
                                 }
                                 else
                                 {

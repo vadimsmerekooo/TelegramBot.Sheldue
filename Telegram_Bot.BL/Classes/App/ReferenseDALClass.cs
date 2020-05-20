@@ -13,38 +13,32 @@ namespace Telegram_Bot.BL.Classes.App
         {
             CheckUser user = new CheckUser();
             bool userMeh = user.SearchUser(login, password);
-
             userListInformantion = user.userListInformantion as IFCore.Person;
             return userMeh;
         }
 
         public async Task<bool> SetConnectionDBCheckExcluziveUser(string login)
         {
-            CheckUser user = new CheckUser();
-            return await user.CheckExclusiveUser(login);
+            return await new CheckUser().CheckExclusiveUser(login);
         }
 
         public bool SetConnectionDBCheckCOOKIESUser(string login)
         {
-            CheckCOOKIES cookies = new CheckCOOKIES();
-            return cookies.GetCOOKIESUser(login);
+            return new CheckCOOKIES().GetCOOKIESUser(login);
         }
 
         public async Task<bool> SetConnectionDBRegUser(User user, UserInfo userInfo)
         {
-            CheckUser checkUser = new CheckUser();
-            return await checkUser.RegistrationUser(user, userInfo);
+            return await new CheckUser().RegistrationUser(user, userInfo);
         }
 
         public bool SetConnectionDBNoteClass(int noteUserID, string noteText)
         {
-            NotesClass noteClass = new NotesClass();
-            return noteClass.ChangeNoteUser(noteUserID, noteText);
+            return new NotesClass().ChangeNoteUser(noteUserID, noteText);
         }
         public bool SetConnectionDBNoteAdd(int userID, string newTextNote, DateTime date, string work, int para)
         {
-            NotesClass noteClass = new NotesClass();
-            return noteClass.AddNewNoteUser(userID, newTextNote, date, work, para);
+            return new NotesClass().AddNewNoteUser(userID, newTextNote, date, work, para);
         }
         public List<UserNotes> SetConnectionDBSelectAll(int userID)
         {
@@ -55,6 +49,7 @@ namespace Telegram_Bot.BL.Classes.App
             {
                 UserNotes user = new UserNotes()
                 {
+                   IDNotes = item.IDNotes,
                    IDUser = item.IDUser,
                    DateNote = item.DateNote,
                    Para = item.Para,
@@ -75,15 +70,18 @@ namespace Telegram_Bot.BL.Classes.App
             Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
             return getWordSheldue.GetListSheldue(department, group, notes, dateTime);
         }
+        public List<SheldueAllDays> SetConnectionDBGetSheldue(string name, List<UserNotes> notes, List<DateTime> dateTime)
+        {
+            Telegram_Bot.DAL.Interfaces.IGetSheldue getWordSheldue = new Telegram_Bot.DAL.DALApp.SheldueClass();
+            return getWordSheldue.GetListSheldue(name, notes, dateTime);
+        }
         public void SetConnectionDBCollectionInformationUser(string login)
         {
-            CheckUser checkUserClass = new CheckUser();
-            userListInformantion = checkUserClass.CollectionInformationUser(login) as Person;
+            userListInformantion = new CheckUser().CollectionInformationUser(login) as Person;
         }
         public void SetConnectionDBChangePassword(string login, string password)
         {
-            CheckUser checkUser = new CheckUser();
-            checkUser.ChangePasswordUser(login, password);
+            new CheckUser().ChangePasswordUser(login, password);
         }
     }
 }
