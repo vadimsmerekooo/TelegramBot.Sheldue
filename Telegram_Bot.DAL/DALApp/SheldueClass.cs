@@ -62,7 +62,7 @@ namespace Telegram_Bot.DAL.DALApp
                             {
                                 if (j > 4)
                                 {
-                                    for (int i = 3; i < table.Rows.Count; i++)
+                                    for (int i = 3; i <= table.Rows.Count; i++)
                                     {
                                         try
                                         {
@@ -95,7 +95,7 @@ namespace Telegram_Bot.DAL.DALApp
                                 }
                                 else
                                 {
-                                    for (int i = 3; i < table.Rows.Count - 1; i++)
+                                    for (int i = 3; i <= table.Rows.Count - 1; i++)
                                     {
                                         try
                                         {

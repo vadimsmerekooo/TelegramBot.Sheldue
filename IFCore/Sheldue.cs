@@ -26,6 +26,21 @@ namespace IFCore
             userNotes = note;
         }
     }
+    public class SheldueTelegram
+    {
+        public string Para { get; set; }
+        public string Work { get; set; }
+        public string Teacher { get; set; }
+        public string Auditorya { get; set; }
+
+        public SheldueTelegram(string para, string work, string teacher, string auditorya)
+        {
+            Para = para;
+            Work = work;
+            Teacher = teacher;
+            Auditorya = auditorya;
+        }
+    }
     public class SheldueAllList
     {
         public List<Sheldue> Para1 { get; set; }
@@ -68,11 +83,68 @@ namespace IFCore
 
         }
     }
+    public class SheldueAllListTelegram
+    {
+        public string ChangeSheldue { get; set; }
+        public List<SheldueTelegram> Para1 { get; set; }
+        public List<SheldueTelegram> Para2 { get; set; }
+        public List<SheldueTelegram> Para3 { get; set; }
+        public List<SheldueTelegram> Para4 { get; set; }
+        public List<SheldueTelegram> Para5 { get; set; }
+        public SheldueAllListTelegram(List<SheldueTelegram> para1, List<SheldueTelegram> para2, List<SheldueTelegram> para3, List<SheldueTelegram> para4, List<SheldueTelegram> para5)
+        {
+            Para1 = para1;
+            Para2 = para2;
+            Para3 = para3;
+            Para4 = para4;
+            Para5 = para5;
+        }
+        public SheldueAllListTelegram(List<SheldueTelegram> para1, List<SheldueTelegram> para2, List<SheldueTelegram> para3, List<SheldueTelegram> para4)
+        {
+            Para1 = para1;
+            Para2 = para2;
+            Para3 = para3;
+            Para4 = para4;
+        }
+        public SheldueAllListTelegram(List<SheldueTelegram> para1, List<SheldueTelegram> para2, List<SheldueTelegram> para3)
+        {
+            Para1 = para1;
+            Para2 = para2;
+            Para3 = para3;
+        }
+        public SheldueAllListTelegram(List<SheldueTelegram> para1, List<SheldueTelegram> para2)
+        {
+            Para1 = para1;
+            Para2 = para2;
+        }
+        public SheldueAllListTelegram(List<SheldueTelegram> para1)
+        {
+            Para1 = para1;
+        }
+        public SheldueAllListTelegram(string changeSheldue)
+        {
+            ChangeSheldue = changeSheldue;
+        }
+        public SheldueAllListTelegram()
+        {
+
+        }
+    }
     public class SheldueAllDays
     {
         public List<SheldueAllList> Day { get; set; }
         public string DayName { get; set; }
         public SheldueAllDays(List<SheldueAllList> day, string dayName)
+        {
+            Day = day;
+            DayName = dayName;
+        }
+    }
+    public class SheldueAllDaysTelegram
+    {
+        public List<SheldueAllListTelegram> Day { get; set; }
+        public string DayName { get; set; }
+        public SheldueAllDaysTelegram(List<SheldueAllListTelegram> day, string dayName)
         {
             Day = day;
             DayName = dayName;

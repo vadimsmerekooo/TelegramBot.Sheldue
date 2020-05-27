@@ -12,7 +12,7 @@
         <Storyboard x:Key="Yes" Storyboard.TargetName="Dot">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 
-                <SplineThicknessKeyFrame KeyTime="00:00:0.3" Value="45, 6, 0, 7" />
+                <SplineThicknessKeyFrame KeyTime="00:00:0.2" Value="45, 6, 0, 7" />
             </ThicknessAnimationUsingKeyFrames>
             <Storyboard  Storyboard.TargetProperty="Fill.Color" >
                 <ColorAnimation To="Chartreuse" Duration="0:0:0.1" />
@@ -21,7 +21,7 @@
         <Storyboard x:Key="No" Storyboard.TargetName="Dot">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 
-                <SplineThicknessKeyFrame KeyTime="00:00:0.3" Value="5, 6" />
+                <SplineThicknessKeyFrame KeyTime="00:00:0.2" Value="5, 6" />
             </ThicknessAnimationUsingKeyFrames>
             <Storyboard  Storyboard.TargetProperty="Fill.Color" >
                 <ColorAnimation To="White" Duration="0:0:0.1" />

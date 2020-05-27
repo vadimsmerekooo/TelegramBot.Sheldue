@@ -57,6 +57,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\GetShelduePL.cs" />
     <Compile Include="Classes\Menu\Keyboards.cs" />
     <Compile Include="Classes\Menu\ListDayWeak.cs" />
     <Compile Include="Classes\Menu\MenuEMDepartment\ListElectoMechanicDepartmentGroups.cs" />
@@ -67,8 +68,9 @@
     <Compile Include="Classes\Menu\MenuStudent.cs" />
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
     <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
-    <Compile Include="Interface\IStepsForWorkFile.cs" />
-    <Compile Include="Interface\IStepsOnMenu.cs" />
+    <Compile Include="Classes\Menu\Weather.cs" />
+    <Compile Include="Interface\IMainMenu.cs" />
+    <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Resource\Emoji.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,6 +83,10 @@
     <Content Include="Resource\Piar\InstagramPhoto.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IFCore\IFCore.csproj">
+      <Project>{91E602CB-69A1-44BA-83F2-8846E6AD41E7}</Project>
+      <Name>IFCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Telegram_Bot.BL\Telegram_Bot.BL.csproj">
       <Project>{0e81ef54-e113-4d52-9f9b-129359022e17}</Project>
       <Name>Telegram_Bot.BL</Name>

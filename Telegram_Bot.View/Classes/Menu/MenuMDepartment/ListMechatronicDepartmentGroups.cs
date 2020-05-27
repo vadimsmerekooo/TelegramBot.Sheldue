@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
@@ -7,19 +8,21 @@ using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
 {
-    class ListMechatronicDepartmentGroups : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
+    class ListMechatronicDepartmentGroups : MainMenu, IMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         private string department;
-        public ListMechatronicDepartmentGroups(TelegramBotClient Bot, string api) : base(Bot, api)
+        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
+        public ListMechatronicDepartmentGroups(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
-        }
-        public async void ViewListGroups(object sender, MessageEventArgs e, string department)
-        {
+            this.sheldue = sheldue;
             this.department = department;
+        }
+        public override async void SendMessage(object sender, MessageEventArgs e)
+        {
             var message = e.Message;
             if (message.Type != MessageType.Text || message.Text == null)
                 return;
@@ -45,14 +48,14 @@ namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
             };
             await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Список групп машиностроительного отделения:
 
-{convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} 01 эс
-{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} 02 эс
-{convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} 26 тм
-{convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} 2 м
-{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} 1 м
-{convertEmoji = new Emoji(new int[] { 0x0036, 0x20E3 })} 3 м
-{convertEmoji = new Emoji(new int[] { 0x0037, 0x20E3 })} 2 от
-{convertEmoji = new Emoji(new int[] { 0x0038, 0x20E3 })} 03 от", ParseMode.Default, false, false, 0, keyboardNumberGroupMachine);
+{new Emoji(new int[] { 0x0031, 0x20E3 })} 01 эс
+{new Emoji(new int[] { 0x0032, 0x20E3 })} 02 эс
+{new Emoji(new int[] { 0x0033, 0x20E3 })} 26 тм
+{new Emoji(new int[] { 0x0034, 0x20E3 })} 2 м
+{new Emoji(new int[] { 0x0035, 0x20E3 })} 1 м
+{new Emoji(new int[] { 0x0036, 0x20E3 })} 3 м
+{new Emoji(new int[] { 0x0037, 0x20E3 })} 2 от
+{new Emoji(new int[] { 0x0038, 0x20E3 })} 03 от", ParseMode.Default, false, false, 0, keyboardNumberGroupMachine);
             BotRoma.OnMessage += ButtonGroups;
         }
         public async void ButtonGroups(object sender, MessageEventArgs e)
@@ -101,8 +104,8 @@ namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
 
         public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
         {
-            IStepsOnMenu selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName);
-            selectDayKeyBoard.ListDay(sender, e, department);
+            IMenu selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department);
+            selectDayKeyBoard.SendMessage(sender, e);
         }
     }
 }

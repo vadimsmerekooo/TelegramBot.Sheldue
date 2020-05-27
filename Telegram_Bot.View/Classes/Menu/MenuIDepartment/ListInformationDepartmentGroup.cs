@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -9,19 +10,21 @@ using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
 {
-    class ListInformationDepartmentGroup : MainMenu, IStepsForWorkFile, IStepsForWorkFileInList
+    class ListInformationDepartmentGroup : MainMenu, IMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         private string department;
-        public ListInformationDepartmentGroup(TelegramBotClient Bot, string api) : base(Bot, api)
+        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
+        public ListInformationDepartmentGroup(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
-        }
-        public async void ViewListGroups(object sender, MessageEventArgs e, string department)
-        {
+            this.sheldue = sheldue;
             this.department = department;
+        }
+        public override async void SendMessage(object sender, MessageEventArgs e)
+        {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
                 return;
@@ -49,13 +52,13 @@ namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
             };
             await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Список групп информационного отделения:
 
-{convertEmoji = new Emoji(new int[] { 0x0031, 0x20E3 })} 27 тп
-{convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} 29 тп
-{convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} 30 тп
-{convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} 31 тп
-{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} 32 тп
-{convertEmoji = new Emoji(new int[] { 0x0036, 0x20E3 })} 33 тп
-{convertEmoji = new Emoji(new int[] { 0x0037, 0x20E3 })} 06 шо",ParseMode.Default, false, false, 0, keyboardNumberGroupInform);
+{new Emoji(new int[] { 0x0031, 0x20E3 })} 27 тп
+{new Emoji(new int[] { 0x0032, 0x20E3 })} 29 тп
+{new Emoji(new int[] { 0x0033, 0x20E3 })} 30 тп
+{new Emoji(new int[] { 0x0034, 0x20E3 })} 31 тп
+{new Emoji(new int[] { 0x0035, 0x20E3 })} 32 тп
+{new Emoji(new int[] { 0x0036, 0x20E3 })} 33 тп
+{new Emoji(new int[] { 0x0037, 0x20E3 })} 06 шо",ParseMode.Default, false, false, 0, keyboardNumberGroupInform);
             
             BotRoma.OnMessage += ButtonGroups1;
         }
@@ -67,31 +70,31 @@ namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
             switch (message.Text)
             {
                 case "27 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "27 тп", department);
                     break;
                 case "29 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "29 тп", department);
                     break;
                 case "30 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "30 тп", department);
                     break;
                 case "31 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "31 тп", department);
                     break;
                 case "32 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "32 тп", department);
                     break;
                 case "33 тп":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "33 тп", department);
                     break;
                 case "06 шо":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
                     NextStepSelectDay(sender, e, "06 шо", department);
                     break;
                 default: BotRoma.OnMessage -= this.ButtonGroups1;
@@ -101,8 +104,8 @@ namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
 
         public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
         {
-            IStepsOnMenu selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName);
-            selectDayKeyBoard.ListDay(sender, e, department);
+            IMenu selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department);
+            selectDayKeyBoard.SendMessage(sender, e);
         }
     }
 }

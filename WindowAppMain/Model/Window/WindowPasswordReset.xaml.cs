@@ -106,7 +106,7 @@ namespace WindowAppMain.Model.Window
                     break;
             }
         }
-        public async void ClickRightArrow(object sender, RoutedEventArgs e)
+        public void ClickRightArrow(object sender, RoutedEventArgs e)
         {
             switch (stepNumber)
             {
@@ -114,7 +114,7 @@ namespace WindowAppMain.Model.Window
                     if (checkValidate.IsValidateEmail(TextBoxLogin.Text))
                     {
                         CreateLoadAnimation(MainGridResetPassword);
-                        bool userExcl = await refDALClass.SetConnectionDBCheckExcluziveUser(TextBoxLogin.Text);
+                        bool userExcl = refDALClass.SetConnectionDBCheckExcluziveUser(TextBoxLogin.Text);
                         if (!userExcl)
                         {
                             refDALClass.SetConnectionDBCollectionInformationUser(TextBoxLogin.Text);

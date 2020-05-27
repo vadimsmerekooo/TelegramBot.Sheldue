@@ -1,24 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes
 {
-    class MenuPersonality : MainMenu
+    class MenuPersonality : MainMenu, IMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
-
-        public MenuPersonality(TelegramBotClient BotSet, string api) : base(BotSet, api)
+        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
+        public MenuPersonality(TelegramBotClient BotSet, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue):base(BotSet, api, sheldue)
         {
             this.BotRoma = BotSet;
             this.ApiKeyBot = api;
+            this.sheldue = sheldue;
         }
 
-        public async void ViewkeyBoardButton(object sender, MessageEventArgs e)
+        public override async void SendMessage(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -29,12 +32,12 @@ namespace Telegram_Bot.View.Classes
                                                 new[]
                                                 {
                                                     new KeyboardButton($"Преподаватель 👨‍🏫"),
-                                                    new KeyboardButton($"Учащийся {convertEmoji = new Emoji( 0x1F393 )}")
+                                                    new KeyboardButton($"Учащийся {new Emoji( 0x1F393 )}")
                                                 }
                                             },
                 ResizeKeyboard = true
             };
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {convertEmoji = new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardPersonality);
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardPersonality);
             BotRoma.OnMessage += MenuPers;
         }
 
@@ -46,16 +49,16 @@ namespace Telegram_Bot.View.Classes
             switch (message.Text)
             {
                 case "Преподаватель 👨‍🏫":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    Teacher.MenuWithListTeacher menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot);
-                    menuSelectTeacher.ViewListWithTeacher(sender, e);
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
+                    IMenu menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot, sheldue);
+                    menuSelectTeacher.SendMessage(sender, e);
                     break;
                 case "Учащийся 🎓":
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1);
-                    await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    Student.MenuStudent menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot);
-                    menuSelectStudentDepartment.ListDepartment(sender, e);
+                    try{ await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
+                    try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
+                    IMenu menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot, sheldue);
+                    menuSelectStudentDepartment.SendMessage(sender, e);
                     break;
                 default: BotRoma.OnMessage -= MenuPers;
                     break;

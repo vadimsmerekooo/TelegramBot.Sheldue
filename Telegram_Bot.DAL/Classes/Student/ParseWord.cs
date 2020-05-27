@@ -19,11 +19,12 @@ namespace Telegram_Bot.DAL.Classes.Student
 
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
-
-        public ParseWord(TelegramBotClient Bot, string api) : base(Bot, api)
+        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
+        public ParseWord(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
+            this.sheldue = sheldue;
         }
 
         WordText.Application word = new WordText.Application();

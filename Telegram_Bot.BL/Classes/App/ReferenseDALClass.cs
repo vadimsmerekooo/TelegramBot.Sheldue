@@ -17,9 +17,9 @@ namespace Telegram_Bot.BL.Classes.App
             return userMeh;
         }
 
-        public async Task<bool> SetConnectionDBCheckExcluziveUser(string login)
+        public bool SetConnectionDBCheckExcluziveUser(string login)
         {
-            return await new CheckUser().CheckExclusiveUser(login);
+            return new CheckUser().CheckExclusiveUser(login);
         }
 
         public bool SetConnectionDBCheckCOOKIESUser(string login)

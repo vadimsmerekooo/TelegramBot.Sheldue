@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\App\ReferenseDALClass.cs" />
+    <Compile Include="Classes\GetSheldueBL.cs" />
     <Compile Include="Classes\Student\CollectionInformationParseText.cs" />
     <Compile Include="MainClassBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

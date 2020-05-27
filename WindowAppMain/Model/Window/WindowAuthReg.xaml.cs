@@ -324,7 +324,7 @@ namespace WindowAppMain.Model.Window
                                 CreateLoadAnimation(MainAuthRegGrid);
                                 ReferenseDALClass refClassDAL = new ReferenseDALClass();
                                 //await Task.Run((Action)delegate () { this.Dispatcher.BeginInvoke((ThreadStart)delegate () { var userExcl = methodsCheckUser.CheckExclusiveUser(TextBoxLogin.Text); }); }).ConfigureAwait(true);
-                                bool userExcl = await refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
+                                bool userExcl = refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
                                 if (userExcl)
                                 {
                                     try
@@ -386,7 +386,7 @@ namespace WindowAppMain.Model.Window
                             {
                                 CreateLoadAnimation(MainAuthRegGrid);
                                 ReferenseDALClass refClassDAL = new ReferenseDALClass();
-                                bool userExcl = await refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
+                                bool userExcl = refClassDAL.SetConnectionDBCheckExcluziveUser(TextBoxNameUser.Text);
                                 if (userExcl)
                                 {
                                     try

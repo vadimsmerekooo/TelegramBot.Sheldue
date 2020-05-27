@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -60,6 +63,7 @@
       <HintPath>..\packages\Telegram.Bot.15.3.0\lib\net45\Telegram.Bot.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Const.cs" />
@@ -68,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="favicon.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -77,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IFCore\IFCore.csproj">
+      <Project>{91e602cb-69a1-44ba-83f2-8846e6ad41e7}</Project>
+      <Name>IFCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Telegram_Bot.View\Telegram_Bot.PL.csproj">
       <Project>{a7d38e0c-296a-457a-bc28-f85ac775ae76}</Project>
       <Name>Telegram_Bot.PL</Name>

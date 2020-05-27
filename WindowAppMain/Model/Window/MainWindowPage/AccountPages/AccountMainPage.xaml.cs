@@ -143,7 +143,6 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                         new UserInfoListClass("Логин:", userInfo.Login),
                         new UserInfoListClass("Статус:", userInfo.Status)
                     };
-                    break;
                 case "Студент":
                     return new List<UserInfoListClass>()
                     {
@@ -152,13 +151,11 @@ namespace WindowAppMain.Model.Window.MainWindowPage.AccountPages
                         new UserInfoListClass("Отделение:", userInfo.Department),
                         new UserInfoListClass("Группа:", userInfo.Group)
                     };
-                    break;
                 default:
                     return new List<UserInfoListClass>()
                     {
-                        new UserInfoListClass("Данный не получены!", string.Empty)
+                        new UserInfoListClass("Данные не получены!", string.Empty)
                     };
-                    break;
             }
         }
     }

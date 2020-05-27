@@ -10,7 +10,7 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
     public class CheckUser
     {
         public Person userListInformantion;
-        public async Task<bool> CheckExclusiveUser(string userLogin)
+        public bool CheckExclusiveUser(string userLogin)
         {
             bool checkRangeUser = true;
             try

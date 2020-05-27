@@ -7,6 +7,7 @@ namespace Telegram_Bot.BL.Classes.Student
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
+        
 
         public CollectionInformationParseText(TelegramBotClient Bot, string api)
         {
@@ -16,7 +17,7 @@ namespace Telegram_Bot.BL.Classes.Student
 
         public string SearchShedule(string groupName, string day, string department)
         {
-            ParseWord pw = new ParseWord(BotRoma, ApiKeyBot);
+            ParseWord pw = new ParseWord(BotRoma, ApiKeyBot, null);
             return pw.SelectGroupFile(groupName, day, department);
         }
     }

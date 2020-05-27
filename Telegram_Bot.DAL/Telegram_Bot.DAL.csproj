@@ -93,7 +93,8 @@
     <Compile Include="Classes\DataBase\Classes\DeleteNotesClass.cs" />
     <Compile Include="Classes\DataBase\Classes\NotesClass.cs" />
     <Compile Include="Classes\DataBase\Classes\SheckUser.cs" />
-    <Compile Include="Classes\Sheldue.cs" />
+    <Compile Include="Classes\GetShledueFolder\GetChangesForSheldue.cs" />
+    <Compile Include="Classes\GetShledueFolder\GetSheldueDAL.cs" />
     <Compile Include="Classes\Student\ParseWord.cs" />
     <Compile Include="DALApp\SheldueClass.cs" />
     <Compile Include="DataBase\ShelduedbModel.Context.cs">
