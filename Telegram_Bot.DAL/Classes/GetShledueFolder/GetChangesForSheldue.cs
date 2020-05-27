@@ -90,7 +90,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                             {
                                 var splitCell = table.Cell(i, j).Range.Text.Split('\r');
                                 var groupSplit = splitCell[0].Split(' ');
-                                changesSheldue?.Add(
+                                changesSheldue.Add(
                                     groupSplit[2],
                                     FormatedChangesSheldue(new List<string>(splitCell)));
                             }
