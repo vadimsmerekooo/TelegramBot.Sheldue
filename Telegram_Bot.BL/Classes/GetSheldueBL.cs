@@ -11,9 +11,9 @@ namespace Telegram_Bot.BL.Classes
         {
             return new Telegram_Bot.DAL.Classes.GetShledueFolder.GetSheldueDAL().GetSheldueAllGroup();
         }
-        public Dictionary<string, List<SheldueAllDaysTelegram>> GetChangesSheldue()
+        public Dictionary<string, List<SheldueAllDaysTelegram>> GetChangesSheldue(out string week, out string dayNewSheldue)
         {
-            return new Telegram_Bot.DAL.Classes.GetShledueFolder.GetChangesForSheldue().GetChangesSheldue();
-        }
+            return new Telegram_Bot.DAL.Classes.GetShledueFolder.GetChangesForSheldue().GetChangesSheldue(out week, out dayNewSheldue);
+        }        
     }
 }

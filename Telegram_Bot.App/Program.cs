@@ -10,6 +10,7 @@ using IFCore;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Threading;
+using System.Globalization;
 
 namespace Telegram_Bot.App
 {
@@ -20,6 +21,8 @@ namespace Telegram_Bot.App
         private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldue;
         private static Dictionary<string, List<SheldueAllDaysTelegram>> changeSheldue;
         private static int counter = 0;
+        private static string weekCheck = string.Empty;
+        private static string dayNewSheldue = string.Empty;
         static void Main(string[] args)
         {
             Console.Title = "Запуск Telegram бота: бот Рома";
@@ -48,17 +51,19 @@ namespace Telegram_Bot.App
                             Console.WriteLine("Расписание загружено\n");
                             Console.ResetColor();
                             Console.WriteLine("Загрузка файла, изменение к расписанию, с сайта\n");
-                            changeSheldue = new Telegram_Bot.View.Classes.GetShelduePL().GetChangesSheldue();
-                            if(changeSheldue != null)
+                            changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck, out dayNewSheldue);
+                            var sad = dayNewSheldue;
+                            if (changeSheldue != null)
                             {
+                                allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, changeSheldue);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Изменение к расписание загружено\n");
+                                Console.WriteLine("Изменение к расписанию загружено\n");
                                 Console.ResetColor();
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Изменение к расписание не загружено\n");
+                                Console.WriteLine("Изменение к расписанию не загружено\n");
                                 Console.ResetColor();
                             }
                             StartBotMethod();
@@ -140,7 +145,7 @@ namespace Telegram_Bot.App
             }
             catch (Exception ex)
             {
-                if (ex == null)
+                if (ex != null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Введен не верный формат!\n");
@@ -212,6 +217,7 @@ namespace Telegram_Bot.App
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 bw = new BackgroundWorker();
                 MainMenu menuLibriary = new MainMenu(Const.GetsetBot, Const.GetSetApiKey, allSheldue);
+                MainMenu.week = weekCheck;
                 bw.DoWork += menuLibriary.StartedMenu;
                 Const.GetsetBot = new TelegramBotClient(Const.GetSetApiKey);
                 if (bw.IsBusy != true)
@@ -245,6 +251,43 @@ namespace Telegram_Bot.App
                 DefaultlPrint();
                 return false;
             }
+        }
+        public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
+               Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
+               Dictionary<string, List<SheldueAllDaysTelegram>> shangeSheldue)
+        {
+            foreach (var itemChange in shangeSheldue)
+            {
+                foreach (var itemMain in mainSheldue)
+                {
+                    if (itemChange.Key == itemMain.Key.Split(' ')[1])
+                    {
+                        foreach (var itemMainValue in itemMain.Value)
+                        {
+                            if(itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
+                            {
+                                foreach (var itemChangeValue in itemChange.Value)
+                                {
+                                    try
+                                    {
+                                        itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0].ChangeSheldue;
+                                        itemMainValue.Day[0].Para1[0] = null;
+                                        itemMainValue.Day[0].Para2[0] = null;
+                                        itemMainValue.Day[0].Para3[0] = null;
+                                        itemMainValue.Day[0].Para4[0] = null;
+                                        itemMainValue.Day[0].Para5[0] = null;
+                                    }
+                                    catch
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return mainSheldue;
         }
     }
 }

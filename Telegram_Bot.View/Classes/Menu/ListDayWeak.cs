@@ -32,7 +32,10 @@ namespace Telegram_Bot.View.Classes.Menu
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
+            {
+                await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
+            }
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 2); } catch { }
             var keyboardDays = new ReplyKeyboardMarkup
             {
@@ -64,7 +67,10 @@ namespace Telegram_Bot.View.Classes.Menu
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
+            {
+                await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
+            }
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
             switch (message.Text.ToLower())
@@ -88,18 +94,14 @@ namespace Telegram_Bot.View.Classes.Menu
                     NextStepParseFile(sender, e, "суббота", department);
                     break;
                 case "на сегодня":
-                    var dayToday = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(new DateTime().DayOfWeek);
+                    var dayToday = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
                     NextStepParseFile(sender, e, dayToday.ToLower(), department);
                     break;
                 case "на завтра":
-                    var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(new DateTime().DayOfWeek);
+                    var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
                     if(dayTomorow == "суббота")
                     {
-                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(new DateTime().AddDays(2).DayOfWeek);
-                    }
-                    else
-                    {
-                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(new DateTime().AddDays(1).DayOfWeek);
+                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
                     }
                     NextStepParseFile(sender, e, dayTomorow.ToLower(), department);
                     break;
@@ -145,7 +147,9 @@ namespace Telegram_Bot.View.Classes.Menu
                                  * получем погоду
                                  */
                                 return $@"Твое, расписание, на {day}📚
+Неделя: {MainMenu.week}
 
+{itemSheldueDay?.ChangeSheldue}
 {ListParaToString(itemSheldueDay.Para1)}
 {ListParaToString(itemSheldueDay.Para2)}
 {ListParaToString(itemSheldueDay.Para3)}
@@ -167,13 +171,13 @@ namespace Telegram_Bot.View.Classes.Menu
             else
                 //  Возвращаем номер пары, название урока и аудиторию
                 // LongStringInShort метод для укорачивания названия урока
-                return $"{para[0].Para}. {LongStringInShort(para[0].Work)} {para[0].Auditorya}";
+                return $"{para[0]?.Para}. {LongStringInShort(para[0]?.Work)} {para[0]?.Auditorya}";
         }
 
         private string LongStringInShort(string text)
         {
             // Если название длиннее 25 символов, укарачиваем строку
-            if (text.Length > 25)
+            if (text?.Length > 25)
             {
                 string newText = string.Empty;
                 string[] splitText = text.Split(' ');

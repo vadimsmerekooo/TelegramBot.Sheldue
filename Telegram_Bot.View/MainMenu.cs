@@ -21,9 +21,9 @@ namespace Telegram_Bot.View
         private Keyboards keyboard = new Keyboards();
         private Logger logger;
         private Dictionary<string, List<SheldueAllDaysTelegram>> sheldue = new Dictionary<string, List<SheldueAllDaysTelegram>>();
-
+        public static string week { get; set; }
         public Dictionary<string, List<SheldueAllDaysTelegram>> GetSheldue { get { return sheldue; } }
-
+        
 
         public MainMenu(TelegramBotClient Bot, string api, Dictionary<string, List<SheldueAllDaysTelegram>> sheldue)
         {
@@ -58,7 +58,10 @@ namespace Telegram_Bot.View
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null )
+            {
+                await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
+            }
             switch (message.Text)
             {
                 case "/start":
