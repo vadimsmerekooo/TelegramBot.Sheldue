@@ -96,7 +96,8 @@ namespace Telegram_Bot.View.Classes.Teacher
             switch (checkUserInList)
             {
                 case true:
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Препод найден", ParseMode.MarkdownV2, replyMarkup: new Keyboards().Personality());
+                    IMenu selectDayKeyBoard = new ListDayWeekTeacher(BotRoma, ApiKeyBot, sheldue, message.Text.ToUpper());
+                    selectDayKeyBoard.SendMessage(sender, e);
                     break;
                 case false:
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Преподаватель с такой фамилией, не записан в базу🥺", ParseMode.MarkdownV2);
@@ -105,6 +106,7 @@ namespace Telegram_Bot.View.Classes.Teacher
                     BotRoma.OnMessage -= TeacherMethod;
                     break;
             }
+            BotRoma.OnMessage -= TeacherMethod;
         }
     }
 }

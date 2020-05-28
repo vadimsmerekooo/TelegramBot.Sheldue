@@ -1,31 +1,28 @@
-﻿using System;
+﻿using IFCore;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Telegram_Bot.View.Interface;
-using Telegram_Bot.BL.Classes.Student;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Globalization;
 
 namespace Telegram_Bot.View.Classes.Menu
 {
-    class ListDayWeak : MainMenu, IMenu
+    public class ListDayWeekTeacher : MainMenu, IMenu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         private string groupName;
-        private string department;
-        private Keyboards keyboard = new Keyboards();
+        private string surname;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, sheldue)
+        public ListDayWeekTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string surname) : base(Bot, api, sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
-            groupName = group;
             this.sheldue = sheldue;
-            this.department = department;
+            this.surname = surname;
         }
 
         public override async void SendMessage(object sender, MessageEventArgs e)
@@ -60,7 +57,7 @@ namespace Telegram_Bot.View.Classes.Menu
                                             },
                 ResizeKeyboard = true
             };
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери день {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardDays);
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выберите день {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardDays);
             BotRoma.OnMessage += SelectDay;
         }
         public async void SelectDay(object sender, MessageEventArgs e)
@@ -76,34 +73,34 @@ namespace Telegram_Bot.View.Classes.Menu
             switch (message.Text.ToLower())
             {
                 case "пн":
-                    NextStepParseFile(sender, e, "понедельник", department);
+                    NextStepParseFile(sender, e, "понедельник", surname);
                     break;
                 case "вт":
-                    NextStepParseFile(sender, e, "вторник", department);
+                    NextStepParseFile(sender, e, "вторник", surname);
                     break;
                 case "ср":
-                    NextStepParseFile(sender, e, "среда", department);
+                    NextStepParseFile(sender, e, "среда", surname);
                     break;
                 case "чт":
-                    NextStepParseFile(sender, e, "четверг", department);
+                    NextStepParseFile(sender, e, "четверг", surname);
                     break;
                 case "пт":
-                    NextStepParseFile(sender, e, "пятница", department);
+                    NextStepParseFile(sender, e, "пятница", surname);
                     break;
                 case "сб":
-                    NextStepParseFile(sender, e, "суббота", department);
+                    NextStepParseFile(sender, e, "суббота", surname);
                     break;
                 case "на сегодня":
                     var dayToday = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
-                    NextStepParseFile(sender, e, dayToday.ToLower(), department);
+                    NextStepParseFile(sender, e, dayToday.ToLower(), surname);
                     break;
                 case "на завтра":
                     var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
-                    if(dayTomorow == "суббота")
+                    if (dayTomorow == "суббота")
                     {
                         dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
                     }
-                    NextStepParseFile(sender, e, dayTomorow.ToLower(), department);
+                    NextStepParseFile(sender, e, dayTomorow.ToLower(), surname);
                     break;
                 default:
                     BotRoma.OnMessage -= SelectDay;
@@ -111,58 +108,76 @@ namespace Telegram_Bot.View.Classes.Menu
             }
         }
 
-        public async void NextStepParseFile(object sender, MessageEventArgs e, string day, string department)
+        public async void NextStepParseFile(object sender, MessageEventArgs e, string day, string surname)
         {
             var message = e.Message;
             await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Заргузка...");
             // Вызываем метод для получения расписания на выбранный день
-            string parseTextWithoutWordFile = SerachShldueForUser(day);
+            string parseTextWithoutWordFile = SearchSheldueForTeacher(day);
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId + 1); } catch { }
-
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, parseTextWithoutWordFile, replyMarkup: keyboard.Personality());
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, parseTextWithoutWordFile, replyMarkup: new Keyboards().Personality());
         }
 
-        private string SerachShldueForUser(string day)
+
+        private string SearchSheldueForTeacher(string day)
         {
-            // Проходимся по всему полученному расписанию
-            foreach (var item in sheldue)
+            string changesSheldueString = string.Empty;
+            var para1 = new SheldueAllListTelegram().Para1;
+            var para2 = new SheldueAllListTelegram().Para2;
+            var para3 = new SheldueAllListTelegram().Para3;
+            var para4 = new SheldueAllListTelegram().Para4;
+            var para5 = new SheldueAllListTelegram().Para5;
+            foreach (var itemSheldue in sheldue)
             {
-                if (item.Key == "ГРУППА " + groupName.Replace(" ", ""))
+                foreach (var itemSheldueValue in itemSheldue.Value)
                 {
-                    // Проходимся по расписанию группы
-                    foreach (var itemSheldue in item.Value)
+                    if(itemSheldueValue.DayName.ToLower() == day.ToLower())
                     {
-                        if (itemSheldue.DayName.ToLower() == day.ToLower())
+                        foreach (var itemSheldueDay in itemSheldueValue.Day)
                         {
-                            // Проходимся по расписанию во дне 
-                            foreach (var itemSheldueDay in itemSheldue.Day)
+                            if(itemSheldueDay.ChangeSheldue != null)
                             {
-                                // Составляем расписание с помощью метода ListParaToString
-
-
-                                /*
-                                 * Если одной из пар не будет, проблеов в выводе сообщения не будет
-                                 * Загоняем все пары в сообщение
-                                 * В конце вызываем метод => Weather
-                                 * получем погоду
-                                 */
-                                return $@"Твое, расписание, на {day}📚
-Неделя: {MainMenu.week}
-
-Замены к расписанию:
-{itemSheldueDay?.ChangeSheldue} -
-{ListParaToString(itemSheldueDay.Para1)}
-{ListParaToString(itemSheldueDay.Para2)}
-{ListParaToString(itemSheldueDay.Para3)}
-{ListParaToString(itemSheldueDay.Para4)}
-{ListParaToString(itemSheldueDay.Para5)}
-Погода: {new Weather().GetInfoAboutWeather()}";
+                                var splitChangeSheldue = itemSheldueDay.ChangeSheldue.Split('\r');
+                                foreach (var itemSplit in splitChangeSheldue)
+                                {
+                                    itemSplit.Replace('\a', ' ');
+                                    if (itemSplit.Contains(surname.ToUpper()))
+                                    {
+                                        changesSheldueString += itemSplit;
+                                    }
+                                }
                             }
+                            if (itemSheldueDay.Para1 != null && itemSheldueDay.Para1[0] != null && itemSheldueDay.Para1[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                                para1 = itemSheldueDay?.Para1;
+
+                            if (itemSheldueDay.Para2 != null && itemSheldueDay.Para2[0] != null && itemSheldueDay.Para2[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                                para2 = itemSheldueDay?.Para2;
+
+                            if (itemSheldueDay.Para3 != null && itemSheldueDay.Para3[0] != null && itemSheldueDay.Para3[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                                para3 = itemSheldueDay?.Para3;
+
+                            if (itemSheldueDay.Para4 != null && itemSheldueDay.Para4[0] != null && itemSheldueDay.Para4[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                                para4 = itemSheldueDay?.Para4;
+
+                            if (itemSheldueDay.Para5 != null && itemSheldueDay.Para5[0] != null && itemSheldueDay.Para5[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                                para5 = itemSheldueDay?.Para5;
+
                         }
                     }
                 }
             }
-            return $"Список с раписанием пуст. Обратитесь к разработчику!";
+
+            return $@"Твое, расписание, на {day}📚
+Неделя: {MainMenu.week}
+
+Замены к расписанию:
+{changesSheldueString} -
+{ListParaToString(para1)}
+{ListParaToString(para2)}
+{ListParaToString(para3)}
+{ListParaToString(para4)}
+{ListParaToString(para5)}
+Погода: {new Weather().GetInfoAboutWeather()}";
         }
 
         private string ListParaToString(List<IFCore.SheldueTelegram> para)
@@ -174,7 +189,6 @@ namespace Telegram_Bot.View.Classes.Menu
                 // LongStringInShort метод для укорачивания названия урока
                 return $"{para[0]?.Para}. {LongStringInShort(para[0]?.Work)} {para[0]?.Auditorya}";
         }
-
         private string LongStringInShort(string text)
         {
             // Если название длиннее 25 символов, укарачиваем строку
@@ -185,7 +199,7 @@ namespace Telegram_Bot.View.Classes.Menu
                 foreach (var word in splitText)
                 {
                     newText += word[0].ToString().ToUpper();
-                    if(word[word.Length - 1].ToString() == "/")
+                    if (word[word.Length - 1].ToString() == "/")
                     {
                         newText += " / ";
                     }
@@ -197,6 +211,5 @@ namespace Telegram_Bot.View.Classes.Menu
                 return text;
             }
         }
-
     }
 }

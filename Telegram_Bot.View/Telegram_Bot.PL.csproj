@@ -60,6 +60,7 @@
     <Compile Include="Classes\GetShelduePL.cs" />
     <Compile Include="Classes\Menu\Keyboards.cs" />
     <Compile Include="Classes\Menu\ListDayWeak.cs" />
+    <Compile Include="Classes\Menu\ListDayWeekTeacher.cs" />
     <Compile Include="Classes\Menu\MenuEMDepartment\ListElectoMechanicDepartmentGroups.cs" />
     <Compile Include="Classes\Menu\MenuIDepartment\ListInformationDepartmentGroup.cs" />
     <Compile Include="Classes\Menu\MenuMDepartment\ListMechatronicDepartmentGroups.cs" />
