@@ -25,7 +25,10 @@ namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
+            {
+                await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
+            }
             var keyboardNumberGroupShvei = new ReplyKeyboardMarkup
             {
                 Keyboard = new[] {
