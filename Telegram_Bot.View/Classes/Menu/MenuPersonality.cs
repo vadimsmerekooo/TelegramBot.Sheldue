@@ -14,7 +14,7 @@ namespace Telegram_Bot.View.Classes
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public MenuPersonality(TelegramBotClient BotSet, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue):base(BotSet, api, sheldue)
+        public MenuPersonality(TelegramBotClient BotSet, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue):base(BotSet, api, ref sheldue)
         {
             this.BotRoma = BotSet;
             this.ApiKeyBot = api;

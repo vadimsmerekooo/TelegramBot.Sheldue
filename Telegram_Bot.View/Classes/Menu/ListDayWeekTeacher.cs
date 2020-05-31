@@ -14,10 +14,9 @@ namespace Telegram_Bot.View.Classes.Menu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
-        private string groupName;
         private string surname;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListDayWeekTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string surname) : base(Bot, api, sheldue)
+        public ListDayWeekTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string surname) : base(Bot, api, ref sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
@@ -123,10 +122,15 @@ namespace Telegram_Bot.View.Classes.Menu
         {
             string changesSheldueString = string.Empty;
             var para1 = new SheldueAllListTelegram().Para1;
+            string para1Group = string.Empty;
             var para2 = new SheldueAllListTelegram().Para2;
+            string para2Group = string.Empty;
             var para3 = new SheldueAllListTelegram().Para3;
+            string para3Group = string.Empty;
             var para4 = new SheldueAllListTelegram().Para4;
+            string para4Group = string.Empty;
             var para5 = new SheldueAllListTelegram().Para5;
+            string para5Group = string.Empty;
             foreach (var itemSheldue in sheldue)
             {
                 foreach (var itemSheldueValue in itemSheldue.Value)
@@ -148,35 +152,46 @@ namespace Telegram_Bot.View.Classes.Menu
                                 }
                             }
                             if (itemSheldueDay.Para1 != null && itemSheldueDay.Para1[0] != null && itemSheldueDay.Para1[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            {
                                 para1 = itemSheldueDay?.Para1;
-
+                                para1Group = itemSheldue.Key;
+                            }
                             if (itemSheldueDay.Para2 != null && itemSheldueDay.Para2[0] != null && itemSheldueDay.Para2[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            {
                                 para2 = itemSheldueDay?.Para2;
-
+                                para2Group = itemSheldue.Key;
+                            }
                             if (itemSheldueDay.Para3 != null && itemSheldueDay.Para3[0] != null && itemSheldueDay.Para3[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            {
                                 para3 = itemSheldueDay?.Para3;
-
+                                para3Group = itemSheldue.Key;
+                            }
                             if (itemSheldueDay.Para4 != null && itemSheldueDay.Para4[0] != null && itemSheldueDay.Para4[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            {
                                 para4 = itemSheldueDay?.Para4;
-
+                                para4Group = itemSheldue.Key;
+                            }
                             if (itemSheldueDay.Para5 != null && itemSheldueDay.Para5[0] != null && itemSheldueDay.Para5[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            {
                                 para5 = itemSheldueDay?.Para5;
-
+                                para5Group = itemSheldue.Key;
+                            }
                         }
                     }
                 }
             }
 
-            return $@"Твое, расписание, на {day}📚
+            return $@"Ваше, расписание, на {day}📚
 Неделя: {MainMenu.week}
 
 Замены к расписанию:
 {changesSheldueString} -
-{ListParaToString(para1)}
-{ListParaToString(para2)}
-{ListParaToString(para3)}
-{ListParaToString(para4)}
-{ListParaToString(para5)}
+Основное расписание:
+{ListParaToString(para1)} {para1Group}
+{ListParaToString(para2)} {para2Group}
+{ListParaToString(para3)} {para3Group}
+{ListParaToString(para4)} {para4Group}
+{ListParaToString(para5)} {para5Group}
 Погода: {new Weather().GetInfoAboutWeather()}";
         }
 
@@ -198,10 +213,13 @@ namespace Telegram_Bot.View.Classes.Menu
                 string[] splitText = text.Split(' ');
                 foreach (var word in splitText)
                 {
-                    newText += word[0].ToString().ToUpper();
-                    if (word[word.Length - 1].ToString() == "/")
+                    if (word != string.Empty)
                     {
-                        newText += " / ";
+                        newText += word[0].ToString().ToUpper();
+                        if (word[word.Length - 1].ToString() == "/")
+                        {
+                            newText += " / ";
+                        }
                     }
                 }
                 return newText;

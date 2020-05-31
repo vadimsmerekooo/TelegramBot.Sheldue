@@ -34,10 +34,7 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -59,6 +56,8 @@
   <ItemGroup>
     <Compile Include="Classes\GetShelduePL.cs" />
     <Compile Include="Classes\Menu\Keyboards.cs" />
+    <Compile Include="Classes\Menu\ListCallsLessons.cs" />
+    <Compile Include="Classes\Menu\ListCollegeWorker.cs" />
     <Compile Include="Classes\Menu\ListDayWeak.cs" />
     <Compile Include="Classes\Menu\ListDayWeekTeacher.cs" />
     <Compile Include="Classes\Menu\MenuEMDepartment\ListElectoMechanicDepartmentGroups.cs" />
@@ -69,6 +68,7 @@
     <Compile Include="Classes\Menu\MenuStudent.cs" />
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
     <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
+    <Compile Include="Classes\Menu\SendAlertAllUsers.cs" />
     <Compile Include="Classes\Menu\Weather.cs" />
     <Compile Include="Interface\IMainMenu.cs" />
     <Compile Include="Interface\IMenu.cs" />

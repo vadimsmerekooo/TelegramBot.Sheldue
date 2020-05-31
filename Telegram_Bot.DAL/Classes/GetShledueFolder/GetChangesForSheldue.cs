@@ -35,59 +35,70 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
 
         private Dictionary<string, List<SheldueAllDaysTelegram>> ParseWordFileChangeSheldueMethod(string fullPathToFileChangesFile, out string week, out string dayNewSheldue)
         {
+            List<SheldueTelegram> allChangesSheldueForGroup = new List<SheldueTelegram>();
             week = string.Empty;
             dayNewSheldue = string.Empty;
-            // Выделяем память для word прии=ложения
-            Application app = new Application();
-            // Загружаем документ
-            Document doc = app.Documents.Open(fullPathToFileChangesFile, Visible: false);
-
-            List<SheldueTelegram> allChangesSheldueForGroup = new List<SheldueTelegram>();
             try
             {
-                // Определение недели\
-                foreach (Paragraph parag in doc.Paragraphs)
+                // Выделяем память для word прии=ложения
+                Application app = new Application();
+                // Загружаем документ
+                Document doc = app.Documents.Open(fullPathToFileChangesFile, Visible: false);
+
+                try
                 {
-                    var paragSplit = RangeText(parag.Range.Text).Split(new char[] { ' ', '(', ')' });
-
-
-                    string today = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
-                    string tomorrow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
-                    string tomorrow1 = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
-
-
-                    foreach (string word in paragSplit)
+                    // Определение недели\
+                    foreach (Paragraph parag in doc.Paragraphs)
                     {
-                        if (word.Contains(today) || word.Contains(tomorrow) || word.Contains(tomorrow1))
+                        var paragSplit = RangeText(parag.Range.Text).Split(new char[] { ' ', '(', ')' });
+
+
+                        string today = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
+                        string tomorrow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
+                        string tomorrow1 = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
+
+
+                        foreach (string word in paragSplit)
                         {
-                            dayNewSheldue = word.Contains(today) ? today
-                                : word.Contains(tomorrow) ? tomorrow
-                                : word.Contains(tomorrow1) ? tomorrow1
-                                : string.Empty;
+                            if (word.Contains(today) || word.Contains(tomorrow) || word.Contains(tomorrow1))
+                            {
+                                dayNewSheldue = word.Contains(today) ? today
+                                    : word.Contains(tomorrow) ? tomorrow
+                                    : word.Contains(tomorrow1) ? tomorrow1
+                                    : string.Empty;
+                            }
+                        }
+                        foreach (string word in paragSplit)
+                        {
+                            if (word.Contains("нечётная") || word.Contains("чётная"))
+                            {
+                                week = word;
+                                return ParseCellsRanegTextTable(doc.Tables);
+                            }
                         }
                     }
-                    foreach (string word in paragSplit)
-                    {
-                        if (word.Contains("нечётная") || word.Contains("чётная"))
-                        {
-                            week = word;
-                            return ParseCellsRanegTextTable(doc.Tables);
-                        }
-                    }
+                    return allChangesSheldue;
                 }
-                return allChangesSheldue;
+                catch(Exception ex)
+                {
+                    doc.Close();
+                    app.Quit();
+                    int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileChangeSheldueMethod class " + ex.ToString() + lineEx);
+                    return allChangesSheldue;
+                }
+                finally
+                {
+                    doc.Close();
+                    app.Quit();
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                doc.Close();
-                app.Quit();
-                return allChangesSheldue;
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileChangeSheldueMethod class " + ex.ToString() + lineEx);
             }
-            finally
-            {
-                doc.Close();
-                app.Quit();
-            }
+            return allChangesSheldue;
         }
 
         private Dictionary<string, List<SheldueAllDaysTelegram>> ParseCellsRanegTextTable(Tables tables)
@@ -118,9 +129,10 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => ParseCellsRanegTextTable class " + ex.ToString() + lineEx);
             }
             return allChangesSheldue;
         }

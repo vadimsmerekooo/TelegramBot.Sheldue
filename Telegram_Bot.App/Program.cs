@@ -3,40 +3,90 @@ using Telegram_Bot.View;
 using Telegram.Bot;
 using System.ComponentModel;
 using System.Net;
-using NLog;
 using System.IO;
 using System.Collections.Generic;
 using IFCore;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Threading;
 using System.Windows.Threading;
 using System.Globalization;
+using System.Xml.Serialization;
+using Telegram_Bot.View.Classes.Menu;
+using System.Security.Policy;
 
 namespace Telegram_Bot.App
 {
     class Program
     {
         private static BackgroundWorker bw;
-        private static Logger loggerMain = LogManager.GetCurrentClassLogger();
         private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldue;
         private static Dictionary<string, List<SheldueAllDaysTelegram>> changeSheldue;
+        private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldueCopy;
+        private static List<int> idMessageClients;
+        private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static int counter = 0;
         private static string weekCheck = string.Empty;
         private static string dayNewSheldue = string.Empty;
+        private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(300000);
+
+        private static void TimerIntervalParseFile(object sender, ElapsedEventArgs e)
+        {
+            if (bw == null && bw.IsBusy == true)
+            {
+                timerChangesSheldue.Elapsed -= TimerIntervalParseFile;
+                timerChangesSheldue.Stop();
+            }
+            var dayOldSheldue = string.Empty;
+            var newSheldueAtTimer = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck, out dayOldSheldue);
+            if (dayOldSheldue.ToLower() != dayNewSheldue.ToLower())
+            {
+                Console.WriteLine("\nПрисутствуют замены к расписанию!");
+                allSheldue = allSheldueCopy;
+                allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
+                new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨На сайте появились замены к расписанию🌐 Узнай свое новое расписание на завтра⚡");
+                Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+            }
+            else
+            {
+                Console.WriteLine("\nЗамены к расписанию отсутствуют!");
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.Title = "Запуск Telegram бота: бот Рома";
-            loggerMain.Debug("Console Application: Status - Run");
             Console.ForegroundColor = ConsoleColor.Green;
             PrintCenterText("Консоль запуска бота!\n");
             Console.ResetColor();
+            IFCore.IFCore.loggerMain.Debug("Start Application Bot");
+            try
+            {
+                using (FileStream fs = new FileStream("ListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClients = new List<int>();
+                    idMessageClients = (List<int>)serializer.Deserialize(fs);
+                }
+            }
+            catch
+            {
+
+            }
             DefaultlPrint();
             Console.ReadKey();
         }
 
         private static void DefaultlPrint()
         {
-            Console.WriteLine("Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n0. Выход\n");
+            if (bw != null && bw.IsBusy != true)
+            {
+                Console.WriteLine("Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Оповестить всех пользователей\n0. Выход\n");
+            }
+            else
+            {
+
+                Console.WriteLine("Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n0. Выход\n");
+            }
             try
             {
                 Console.Write("Ваш выбор -> ");
@@ -45,6 +95,7 @@ namespace Telegram_Bot.App
                     case 1:
                         Console.WriteLine("Загрузка расписания. Не закрывайте консоль!!!");
                         allSheldue = new Telegram_Bot.View.Classes.GetShelduePL().GetSheldueAllGroup();
+                        allSheldueCopy = allSheldue;
                         if (allSheldue != null)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
@@ -52,7 +103,6 @@ namespace Telegram_Bot.App
                             Console.ResetColor();
                             Console.WriteLine("Загрузка файла, изменение к расписанию, с сайта\n");
                             changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck, out dayNewSheldue);
-                            var sad = dayNewSheldue;
                             if (changeSheldue != null)
                             {
                                 allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, changeSheldue);
@@ -67,6 +117,7 @@ namespace Telegram_Bot.App
                                 Console.ResetColor();
                             }
                             StartBotMethod();
+
                         }
                         else
                         {
@@ -83,6 +134,11 @@ namespace Telegram_Bot.App
                         {
                             case 1:
                                 string[] allLogs = File.ReadAllLines("../../Resource/NLog/Logs_project.log");
+                                if (allLogs == null)
+                                {
+                                    Console.WriteLine("Файл с логами пуст!");
+                                    break;
+                                }
                                 foreach (var item in allLogs)
                                 {
                                     if (item.Contains("DEBUG"))
@@ -120,10 +176,16 @@ namespace Telegram_Bot.App
                         DefaultlPrint();
                         break;
                     case 3:
-                        if (bw.IsBusy != true)
+                        if (bw != null && bw.IsBusy != true)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("Бот запущен\n");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Бот не запущен\n");
                             Console.ResetColor();
                         }
                         DefaultlPrint();
@@ -133,6 +195,64 @@ namespace Telegram_Bot.App
                         Console.ForegroundColor = ConsoleColor.Green;
                         PrintCenterText("Консоль запуска бота!\n");
                         Console.ResetColor();
+                        DefaultlPrint();
+                        break;
+                    case 5:
+                        Console.Write("Вы действительно хотите удалить ВСЕ логи?! ( Y/N ) => ");
+                        if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
+                        {
+                            try { File.WriteAllText("../../Resource/NLog/Logs_project.log", string.Empty); } catch { }
+                        }
+                        DefaultlPrint();
+                        break;
+                    case 6:
+                        if (bw != null && bw.IsBusy != true)
+                        {
+                            Console.Write("1. Сообщение c изображения\n2. Сообщение без изображения\n0. Отмена\nВаш выбор => ");
+                            switch (Convert.ToInt32(Console.ReadLine()))
+                            {
+                                case 1:
+                                    Console.Write("Введите текст, для оповещения, в одну строку => ");
+                                    string allertTextWithPhoto = Console.ReadLine();
+                                    Console.Write("Введите ссылку на фотографию => ");
+                                    string allertTextWithPhotoRef = Console.ReadLine();
+                                    if (String.IsNullOrEmpty(allertTextWithPhotoRef))
+                                        break;
+                                    WebRequest request = WebRequest.Create(allertTextWithPhotoRef);
+                                    try
+                                    {
+                                        HttpWebResponse res = request.GetResponse() as HttpWebResponse;
+
+                                        if (res.StatusDescription == "OK")
+                                        {
+                                            Console.Write("Вы действительно хотите оповестить всех?! ( Y/N ) => ");
+                                            if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
+                                            {
+                                                new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage(allertTextWithPhoto, allertTextWithPhotoRef);
+                                                Console.WriteLine("Сообщения отправляются!/");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Ссылка не валидна!");
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+                                    break;
+                                case 2:
+                                    Console.Write("Введите текст, для оповещения, в одну строку => ");
+                                    string allertText = Console.ReadLine();
+                                    Console.Write("Вы действительно хотите оповестить всех?! ( Y/N ) => ");
+                                    if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
+                                    {
+                                        new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage(allertText);
+                                        Console.WriteLine("Сообщения отправляются!/");
+                                    }
+                                    break;
+                            }
+                        }
                         DefaultlPrint();
                         break;
                     case 0:
@@ -149,12 +269,6 @@ namespace Telegram_Bot.App
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Введен не верный формат!\n");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Бот не запущен\n");
                     Console.ResetColor();
                 }
                 DefaultlPrint();
@@ -216,18 +330,21 @@ namespace Telegram_Bot.App
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 bw = new BackgroundWorker();
-                MainMenu menuLibriary = new MainMenu(Const.GetsetBot, Const.GetSetApiKey, allSheldue);
+                MainMenu menuLibriary = new MainMenu(Const.GetsetBot, Const.GetSetApiKey, ref allSheldue);
                 MainMenu.week = weekCheck;
                 bw.DoWork += menuLibriary.StartedMenu;
                 Const.GetsetBot = new TelegramBotClient(Const.GetSetApiKey);
                 if (bw.IsBusy != true)
                 {
+                    if (idMessageClients != null)
+                        menuLibriary.idMessageClients = idMessageClients;
                     bw.RunWorkerAsync(Const.GetSetApiKey);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Бот запущен...\n");
                     Console.ResetColor();
-                    loggerMain.Debug("Server: Status - Run");
-                    loggerMain.Debug("Bot: Status - Run");
+                    IFCore.IFCore.loggerMain.Debug("Bot: Status - Run");
+                    timerChangesSheldue.Elapsed += TimerIntervalParseFile;
+                    timerChangesSheldue.Start();
                     return true;
                 }
                 else
@@ -235,7 +352,7 @@ namespace Telegram_Bot.App
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Бот не запущен\n");
                     Console.ResetColor();
-                    loggerMain.Debug("Bot: Status - Stop");
+                    IFCore.IFCore.loggerMain.Debug("Bot: Status - Stop");
                     DefaultlPrint();
                     return false;
                 }
@@ -243,18 +360,17 @@ namespace Telegram_Bot.App
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Ошибка: " + ex);
+                Console.WriteLine("Ошибка: " + ex.ToString());
                 Console.ResetColor();
-                loggerMain.Fatal("Throw Exception in Main Console.App");
-                loggerMain.Error("Bot: Status - Stop");
-                loggerMain.Error("Server: Status - Stop");
+                IFCore.IFCore.loggerMain.Fatal("Throw Exception in Main Console.App");
+                IFCore.IFCore.loggerMain.Error("Bot: Status - Stop");
                 DefaultlPrint();
                 return false;
             }
         }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
-               Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
-               Dictionary<string, List<SheldueAllDaysTelegram>> shangeSheldue)
+                      Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
+                      Dictionary<string, List<SheldueAllDaysTelegram>> shangeSheldue)
         {
             foreach (var itemChange in shangeSheldue)
             {
@@ -264,7 +380,7 @@ namespace Telegram_Bot.App
                     {
                         foreach (var itemMainValue in itemMain.Value)
                         {
-                            if(itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
+                            if (itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
                             {
                                 foreach (var itemChangeValue in itemChange.Value)
                                 {

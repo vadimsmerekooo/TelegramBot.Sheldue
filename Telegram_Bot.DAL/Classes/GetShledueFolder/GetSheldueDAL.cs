@@ -24,169 +24,179 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
         }
         private Dictionary<string, List<SheldueAllDaysTelegram>> ParseWordFileStudentMethod()
         {
-            // Берем путь к файлу
-            string pathFileWord = Path.GetFullPath(departmnetListReferensToFile["Информационное"]);
-            // Выделяем память для word прии=ложения
-            Application app = new Application();
-            // Загружаем документ
-            Document doc = app.Documents.Open(pathFileWord, Visible: false);
             Dictionary<string, List<SheldueAllDaysTelegram>> allSheldue = new Dictionary<string, List<SheldueAllDaysTelegram>>();
-            List<SheldueTelegram> allSheldueForGroup = new List<SheldueTelegram>();
             try
             {
-                foreach (Table table in doc.Tables)
+                // Берем путь к файлу
+                string pathFileWord = Path.GetFullPath(departmnetListReferensToFile["Информационное"]);
+                // Выделяем память для word прии=ложения
+                Application app = new Application();
+                // Загружаем документ
+                Document doc = app.Documents.Open(pathFileWord, Visible: false);
+                List<SheldueTelegram> allSheldueForGroup = new List<SheldueTelegram>();
+                try
                 {
-                    try
+                    foreach (Table table in doc.Tables)
                     {
-                        // Чекаем, если таблица состоит из двух колонок или одной колонки
-                        switch (table.Columns.Count > 6 ? true : false)
+                        try
                         {
-                            case true:
-                                try
-                                {
-                                    allSheldueForGroup = new List<SheldueTelegram>();
-                                    string groupTwoColumns = string.Empty;
-                                    // Проходимся циклом по второй колонке
-                                    for (int i = table.Columns.Count / 2; i <= table.Columns.Count; i++)
+                            // Чекаем, если таблица состоит из двух колонок или одной колонки
+                            switch (table.Columns.Count > 6 ? true : false)
+                            {
+                                case true:
+                                    try
                                     {
-                                        // Чекаем на группу
-                                        if ((RangeText(table.Cell(1, i).Range.Text).Split(' '))[0] == "ГРУППА")
+                                        allSheldueForGroup = new List<SheldueTelegram>();
+                                        string groupTwoColumns = string.Empty;
+                                        // Проходимся циклом по второй колонке
+                                        for (int i = table.Columns.Count / 2; i <= table.Columns.Count; i++)
                                         {
-                                            groupTwoColumns = RangeText(table.Cell(1, i).Range.Text);
-                                            // Проходимся по колонке, и выписываем все строки
-                                            for (int ii = 3; ii <= table.Rows.Count; ii++)
+                                            // Чекаем на группу
+                                            if ((RangeText(table.Cell(1, i).Range.Text).Split(' '))[0] == "ГРУППА")
                                             {
-                                                try
+                                                groupTwoColumns = RangeText(table.Cell(1, i).Range.Text);
+                                                // Проходимся по колонке, и выписываем все строки
+                                                for (int ii = 3; ii <= table.Rows.Count; ii++)
                                                 {
-                                                    if (RangeText(table.Cell(ii, 6).Range.Text) != string.Empty)
+                                                    try
                                                     {
-                                                        string paraNumber = RangeText(table.Cell(ii, 6).Range.Text);
-                                                        string work = RangeText(table.Cell(ii, 7).Range.Text);
-                                                        string auditoria = RangeText(table.Cell(ii, 8).Range.Text);
-                                                        string teacher = RangeText(table.Cell(ii, 9).Range.Text);
+                                                        if (RangeText(table.Cell(ii, 6).Range.Text) != string.Empty)
+                                                        {
+                                                            string paraNumber = RangeText(table.Cell(ii, 6).Range.Text);
+                                                            string work = RangeText(table.Cell(ii, 7).Range.Text);
+                                                            string auditoria = RangeText(table.Cell(ii, 8).Range.Text);
+                                                            string teacher = RangeText(table.Cell(ii, 9).Range.Text);
 
-                                                        allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
-                                                                                    work,
-                                                                                    teacher,
-                                                                                    auditoria));
+                                                            allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
+                                                                                        work,
+                                                                                        teacher,
+                                                                                        auditoria));
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        continue;
                                                     }
                                                 }
-                                                catch
-                                                {
-                                                    continue;
-                                                }
+                                                allSheldue.Add(groupTwoColumns, GetSheldueOnDays(allSheldueForGroup));
+                                                allSheldueForGroup = new List<SheldueTelegram>();
+                                                break;
                                             }
-                                            allSheldue.Add(groupTwoColumns, GetSheldueOnDays(allSheldueForGroup));
-                                            allSheldueForGroup = new List<SheldueTelegram>();
-                                            break;
                                         }
-                                    }
-                                    // Проходимся циклом по первой колонке
-                                    for (int i = 1; i <= table.Columns.Count / 2 + 1; i++)
-                                    {
-                                        // Чекаем на группу
-                                        if (RangeText(table.Cell(1, i).Range.Text).Split(' ')[0] == "ГРУППА")
+                                        // Проходимся циклом по первой колонке
+                                        for (int i = 1; i <= table.Columns.Count / 2 + 1; i++)
                                         {
-                                            groupTwoColumns = RangeText(table.Cell(1, i).Range.Text);
-                                            // Проходимся по колонке, и выписываем все строки
-                                            for (int ii = 3; ii <= table.Rows.Count; ii++)
+                                            // Чекаем на группу
+                                            if (RangeText(table.Cell(1, i).Range.Text).Split(' ')[0] == "ГРУППА")
                                             {
-                                                try
+                                                groupTwoColumns = RangeText(table.Cell(1, i).Range.Text);
+                                                // Проходимся по колонке, и выписываем все строки
+                                                for (int ii = 3; ii <= table.Rows.Count; ii++)
                                                 {
-                                                    if (RangeText(table.Cell(ii, 2).Range.Text) != string.Empty)
+                                                    try
                                                     {
-                                                        string paraNumber = RangeText(table.Cell(ii, 2).Range.Text);
-                                                        string work = RangeText(table.Cell(ii, 3).Range.Text);
-                                                        string auditoria = RangeText(table.Cell(ii, 4).Range.Text);
-                                                        string teacher = RangeText(table.Cell(ii, 5).Range.Text);
+                                                        if (RangeText(table.Cell(ii, 2).Range.Text) != string.Empty)
+                                                        {
+                                                            string paraNumber = RangeText(table.Cell(ii, 2).Range.Text);
+                                                            string work = RangeText(table.Cell(ii, 3).Range.Text);
+                                                            string auditoria = RangeText(table.Cell(ii, 4).Range.Text);
+                                                            string teacher = RangeText(table.Cell(ii, 5).Range.Text);
 
-                                                        allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
-                                                                                    work,
-                                                                                    teacher,
-                                                                                    auditoria));
+                                                            allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
+                                                                                        work,
+                                                                                        teacher,
+                                                                                        auditoria));
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        continue;
                                                     }
                                                 }
-                                                catch
-                                                {
-                                                    continue;
-                                                }
+                                                allSheldue.Add(groupTwoColumns, GetSheldueOnDays(allSheldueForGroup));
+                                                allSheldueForGroup = new List<SheldueTelegram>();
+                                                break;
                                             }
-                                            allSheldue.Add(groupTwoColumns, GetSheldueOnDays(allSheldueForGroup));
-                                            allSheldueForGroup = new List<SheldueTelegram>();
-                                            break;
                                         }
                                     }
-                                }
-                                catch
-                                {
-
-                                }
-                                break;
-                            case false:
-                                try
-                                {
-                                    allSheldueForGroup = new List<SheldueTelegram>();
-                                    // Проходимся циклом по первой колонке
-                                    for (int i = 1; i <= table.Columns.Count; i++)
+                                    catch
                                     {
-                                        // Чекаем на группу
-                                        if (RangeText(table.Cell(1, i).Range.Text).Split(' ')[0] == "ГРУППА")
-                                        {
-                                            string groupOneColums = RangeText(table.Cell(1, i).Range.Text);
-                                            // Проходимся по колонке, и выписываем все строки
-                                            for (int ii = 3; ii <= table.Rows.Count; ii++)
-                                            {
-                                                try
-                                                {
-                                                    if (RangeText(table.Cell(ii, 2).Range.Text) != string.Empty)
-                                                    {
-                                                        string paraNumber = RangeText(table.Cell(ii, 2).Range.Text);
-                                                        string work = RangeText(table.Cell(ii, 3).Range.Text);
-                                                        string auditoria = RangeText(table.Cell(ii, 4).Range.Text);
-                                                        string teacher = RangeText(table.Cell(ii, 5).Range.Text);
 
-                                                        allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
-                                                                                    work,
-                                                                                    teacher,
-                                                                                    auditoria));
+                                    }
+                                    break;
+                                case false:
+                                    try
+                                    {
+                                        allSheldueForGroup = new List<SheldueTelegram>();
+                                        // Проходимся циклом по первой колонке
+                                        for (int i = 1; i <= table.Columns.Count; i++)
+                                        {
+                                            // Чекаем на группу
+                                            if (RangeText(table.Cell(1, i).Range.Text).Split(' ')[0] == "ГРУППА")
+                                            {
+                                                string groupOneColums = RangeText(table.Cell(1, i).Range.Text);
+                                                // Проходимся по колонке, и выписываем все строки
+                                                for (int ii = 3; ii <= table.Rows.Count; ii++)
+                                                {
+                                                    try
+                                                    {
+                                                        if (RangeText(table.Cell(ii, 2).Range.Text) != string.Empty)
+                                                        {
+                                                            string paraNumber = RangeText(table.Cell(ii, 2).Range.Text);
+                                                            string work = RangeText(table.Cell(ii, 3).Range.Text);
+                                                            string auditoria = RangeText(table.Cell(ii, 4).Range.Text);
+                                                            string teacher = RangeText(table.Cell(ii, 5).Range.Text);
+
+                                                            allSheldueForGroup.Add(new SheldueTelegram(paraNumber,
+                                                                                        work,
+                                                                                        teacher,
+                                                                                        auditoria));
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        continue;
                                                     }
                                                 }
-                                                catch
-                                                {
-                                                    continue;
-                                                }
+                                                allSheldue.Add(groupOneColums, GetSheldueOnDays(allSheldueForGroup));
+                                                allSheldueForGroup = new List<SheldueTelegram>();
+                                                break;
                                             }
-                                            allSheldue.Add(groupOneColums, GetSheldueOnDays(allSheldueForGroup));
-                                            allSheldueForGroup = new List<SheldueTelegram>();
-                                            break;
                                         }
                                     }
-                                }
-                                catch
-                                {
+                                    catch
+                                    {
 
-                                }
-                                break;
+                                    }
+                                    break;
+                            }
+                        }
+                        catch
+                        {
+
                         }
                     }
-                    catch
-                    {
-
-                    }
+                    return allSheldue;
                 }
-                return allSheldue;
+                catch (Exception ex)
+                {
+                    doc.Close();
+                    app.Quit();
+                    return allSheldue;
+                }
+                finally
+                {
+                    doc.Close();
+                    app.Quit();
+                }
+
             }
-            catch
+            catch(Exception ex)
             {
-                doc.Close();
-                app.Quit();
-                return allSheldue;
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileStudentMethod class " + ex.ToString() + lineEx);
             }
-            finally
-            {
-                doc.Close();
-                app.Quit();
-            }
+            return allSheldue;
         }
 
         // Очистка текста от лишних символов
@@ -260,9 +270,10 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => GetSheldueOnDays class " + ex.ToString() + lineEx);
             }
             return allDaysSheldue;
         }

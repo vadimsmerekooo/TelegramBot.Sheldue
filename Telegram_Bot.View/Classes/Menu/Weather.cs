@@ -14,17 +14,26 @@ namespace Telegram_Bot.View.Classes.Menu
 
         public Weather()
         {
-            WebRequest request;
-            request = WebRequest.Create(@"https://legacy.meteoservice.ru/weather/now/grodno");
-            using (var response = request.GetResponse())
+            try
             {
-                using (var stream = response.GetResponseStream())
-                using (var reader = new StreamReader(stream))
+                WebRequest request;
+                request = WebRequest.Create(@"https://legacy.meteoservice.ru/weather/now/grodno");
+                using (var response = request.GetResponse())
                 {
-                    string data = reader.ReadToEnd();
-                    temp = (new Regex(@"<span class=""temperature"">(?<temp>[^<]+)</span>").Match(data).Groups["temp"].Value).Replace("&deg;C", "");
-                    osadki = (new Regex(@"<td class=""title"">Облачность:</td>[^<]*?<td>(?<osadki>[^<]+)</td>").Match(data).Groups["osadki"].Value).Replace("&deg;C", "");                    
+                    using (var stream = response.GetResponseStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string data = reader.ReadToEnd();
+                        temp = (new Regex(@"<span class=""temperature"">(?<temp>[^<]+)</span>").Match(data).Groups["temp"].Value).Replace("&deg;C", "");
+                        osadki = (new Regex(@"<td class=""title"">Облачность:</td>[^<]*?<td>(?<osadki>[^<]+)</td>").Match(data).Groups["osadki"].Value).Replace("&deg;C", "");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("Weather class " + ex.ToString() + lineEx);
+                new IFCore.IFCoreSendErrorMessage(MainMenu.GetBot, MainMenu.GetApi, "Ошибка при подключении или парсинге сайта: " + ex.ToString() + "Строка: "+ lineEx);
             }
         }
         public string GetInfoAboutWeather()
@@ -52,23 +61,25 @@ namespace Telegram_Bot.View.Classes.Menu
                 }
                 if (osadki.ToLower().Contains("дождь"))
                 {
-                    weatherStringText += $"Будет {osadki}, возьми зонтик☔";
+                    weatherStringText += $" Будет {osadki}, возьми зонтик☔";
                 }
                 else
                 {
                     if (osadki.ToLower().Contains("ясно"))
                     {
-                        weatherStringText += $"Будет {osadki}, захвати очки👓";
+                        weatherStringText += $" Будет {osadki}, захвати очки👓";
                     }
                     else
                     {
-                        weatherStringText += $"Будет {osadki}";
+                        weatherStringText += $" Будет {osadki}";
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("Weather class "+ ex.ToString());
+                new IFCore.IFCoreSendErrorMessage(MainMenu.GetBot, MainMenu.GetApi, "Ошибка при получении погоды: " + ex.ToString() + "Строка: " + lineEx);
             }
             return weatherStringText;
         }

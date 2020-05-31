@@ -19,7 +19,7 @@ namespace Telegram_Bot.View.Classes.Menu
         private string department;
         private Keyboards keyboard = new Keyboards();
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, sheldue)
+        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, ref sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
@@ -124,45 +124,62 @@ namespace Telegram_Bot.View.Classes.Menu
 
         private string SerachShldueForUser(string day)
         {
-            // Проходимся по всему полученному расписанию
-            foreach (var item in sheldue)
+            try
             {
-                if (item.Key == "ГРУППА " + groupName.Replace(" ", ""))
+                // Проходимся по всему полученному расписанию
+                foreach (var item in sheldue)
                 {
-                    // Проходимся по расписанию группы
-                    foreach (var itemSheldue in item.Value)
+                    if (item.Key == "ГРУППА " + groupName.Replace(" ", ""))
                     {
-                        if (itemSheldue.DayName.ToLower() == day.ToLower())
+                        // Проходимся по расписанию группы
+                        foreach (var itemSheldue in item.Value)
                         {
-                            // Проходимся по расписанию во дне 
-                            foreach (var itemSheldueDay in itemSheldue.Day)
+                            if (itemSheldue.DayName.ToLower() == day.ToLower())
                             {
-                                // Составляем расписание с помощью метода ListParaToString
+                                // Проходимся по расписанию во дне 
+                                foreach (var itemSheldueDay in itemSheldue.Day)
+                                {
+                                    // Составляем расписание с помощью метода ListParaToString
 
 
-                                /*
-                                 * Если одной из пар не будет, проблеов в выводе сообщения не будет
-                                 * Загоняем все пары в сообщение
-                                 * В конце вызываем метод => Weather
-                                 * получем погоду
-                                 */
-                                return $@"Твое, расписание, на {day}📚
+                                    /*
+                                     * Если одной из пар не будет, проблеов в выводе сообщения не будет
+                                     * Загоняем все пары в сообщение
+                                     * В конце вызываем метод => Weather
+                                     * получем погоду
+                                     */
+                                    return $@"Твое, расписание, на {day}📚
 Неделя: {MainMenu.week}
 
 Замены к расписанию:
 {itemSheldueDay?.ChangeSheldue} -
+Основное расписание:
 {ListParaToString(itemSheldueDay.Para1)}
 {ListParaToString(itemSheldueDay.Para2)}
 {ListParaToString(itemSheldueDay.Para3)}
 {ListParaToString(itemSheldueDay.Para4)}
 {ListParaToString(itemSheldueDay.Para5)}
 Погода: {new Weather().GetInfoAboutWeather()}";
+                                }
                             }
                         }
                     }
                 }
+                string textError = $"Уровень: PL; Метод: SerachShldueForUser; Пустой список с расписанием!";
+                IFCore.IFCore.loggerMain.Error(textError);
+                new IFCore.IFCoreSendErrorMessage(BotRoma, ApiKeyBot, textError);
+                return $@"Список с расписанием пуст😱! Обратись к разработчику, он все пофиксит👨‍🔧!";
             }
-            return $"Список с раписанием пуст. Обратитесь к разработчику!";
+            catch (Exception ex)
+            {
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                string textError = $"Уровень: PL; Метод: SerachShldueForUser; Строка: {lineEx}; Параметры: группа - {groupName}, отделение - {department}, день - {day}";
+                IFCore.IFCore.loggerMain.Error(textError);
+                new IFCore.IFCoreSendErrorMessage(BotRoma, ApiKeyBot, textError);
+                return $@"Произошла ошибка😱!
+Без паники📛! Я вызвал фиксика - Вадю😎! Он, скоро все починит👨‍🔧!
+Попробуй заново🔃";
+            }
         }
 
         private string ListParaToString(List<IFCore.SheldueTelegram> para)

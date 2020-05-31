@@ -16,7 +16,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
         private string ApiKeyBot;
         private string department;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListInformationDepartmentGroup(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, sheldue)
+        public ListInformationDepartmentGroup(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;

@@ -45,61 +45,148 @@ namespace Telegram_Bot.DAL.DALApp
         // Get Student Sheldue
         private List<Sheldue> ParseWordFileStudentMethod()
         {
-            string pathFileWord = Path.GetFullPath(departmnetListReferensToFile[_department]);
-            Application app = new Application();
-            string group = $"ГРУППА {_group.Replace(" ", "")}";
-            Document doc = app.Documents.Open(pathFileWord, Visible: false);
             List<Sheldue> allSheldue = new List<Sheldue>();
             try
             {
-                foreach (Table table in doc.Tables)
+                string pathFileWord = Path.GetFullPath(departmnetListReferensToFile[_department]);
+                Application app = new Application();
+                string group = $"ГРУППА {_group.Replace(" ", "")}";
+                Document doc = app.Documents.Open(pathFileWord, Visible: false);
+                try
                 {
-                    try
+                    foreach (Table table in doc.Tables)
                     {
-                        for (int j = 1; j < table.Columns.Count - 1; j++)
+                        try
                         {
-                            if (RangeText(table.Cell(1, j).Range.Text) == group)
+                            for (int j = 1; j < table.Columns.Count - 1; j++)
                             {
-                                if (j > 4)
+                                if (RangeText(table.Cell(1, j).Range.Text) == group)
                                 {
-                                    for (int i = 3; i <= table.Rows.Count; i++)
+                                    if (j > 4)
                                     {
-                                        try
+                                        for (int i = 3; i <= table.Rows.Count; i++)
                                         {
-                                            if (RangeText(table.Cell(i, 6).Range.Text) != string.Empty)
+                                            try
                                             {
-                                                string paraNumber = RangeText(table.Cell(i, 6).Range.Text);
-                                                string work = RangeText(table.Cell(i, 7).Range.Text);
-                                                string auditoria = RangeText(table.Cell(i, 8).Range.Text);
-                                                string teacher = RangeText(table.Cell(i, 9).Range.Text);
-                                                UserNotes note = new UserNotes();
-                                                if (userNotes.Count != 0)
-                                                    note = GetUserNote(paraNumber, work);
-                                                allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
-                                                                note.Para != null
-                                                                ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline
-                                                                : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                                $"Para{paraNumber}",
-                                                                paraNumber,
-                                                                work,
-                                                                teacher,
-                                                                auditoria,
-                                                                note));
+                                                if (RangeText(table.Cell(i, 6).Range.Text) != string.Empty)
+                                                {
+                                                    string paraNumber = RangeText(table.Cell(i, 6).Range.Text);
+                                                    string work = RangeText(table.Cell(i, 7).Range.Text);
+                                                    string auditoria = RangeText(table.Cell(i, 8).Range.Text);
+                                                    string teacher = RangeText(table.Cell(i, 9).Range.Text);
+                                                    UserNotes note = new UserNotes();
+                                                    if (userNotes.Count != 0)
+                                                        note = GetUserNote(paraNumber, work);
+                                                    allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                    note.Para != null
+                                                                    ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline
+                                                                    : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                    $"Para{paraNumber}",
+                                                                    paraNumber,
+                                                                    work,
+                                                                    teacher,
+                                                                    auditoria,
+                                                                    note));
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                continue;
                                             }
                                         }
-                                        catch
+                                    }
+                                    else
+                                    {
+                                        for (int i = 3; i <= table.Rows.Count - 1; i++)
                                         {
-                                            continue;
+                                            try
+                                            {
+                                                if (RangeText(table.Cell(i, 2).Range.Text) != string.Empty)
+                                                {
+                                                    string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
+                                                    string work = RangeText(table.Cell(i, 3).Range.Text);
+                                                    string auditoria = RangeText(table.Cell(i, 4).Range.Text);
+                                                    string teacher = RangeText(table.Cell(i, 5).Range.Text);
+
+                                                    UserNotes note = new UserNotes();
+                                                    if (userNotes.Count != 0)
+                                                        note = GetUserNote(paraNumber, work);
+                                                    allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                                note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                                $"Para{paraNumber}",
+                                                                                paraNumber,
+                                                                                work,
+                                                                                teacher,
+                                                                                auditoria,
+                                                                                note));
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                continue;
+                                            }
                                         }
                                     }
                                 }
-                                else
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                            IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileStudentMethod class " + ex.ToString() + lineEx);
+                        }
+                    }
+                    return allSheldue;
+                }
+                catch (Exception ex)
+                {
+                    doc.Close();
+                    app.Quit();
+                    int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileStudentMethod class " + ex.ToString() + lineEx);
+                    return allSheldue;
+                }
+                finally
+                {
+                    doc.Close();
+                    app.Quit();
+                }
+            }
+            catch (Exception ex)
+            {
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => ParseWordFileStudentMethod class " + ex.ToString() + lineEx);
+            }
+            return allSheldue;
+        }
+
+        // Get Teacher Sheldue
+        private List<Sheldue> ParseWordFileTeacherMethod()
+        {
+            List<Sheldue> allSheldue = new List<Sheldue>();
+            try
+            {
+                string pathFileWord = Path.GetFullPath(departmnetListReferensToFile["Информационное"]);
+                Application app = new Application();
+                string[] nameTeacher = _name.ToUpper().Split(' ');
+                Document doc = app.Documents.Open(pathFileWord, Visible: false);
+                bool twoGroupInTable = true;
+                try
+                {
+                    foreach (Table table in doc.Tables)
+                    {
+                        twoGroupInTable = table.Columns.Count > 7 ? true : false;
+                        switch (twoGroupInTable)
+                        {
+                            case true:
+                                try
                                 {
-                                    for (int i = 3; i <= table.Rows.Count - 1; i++)
+                                    for (int i = 3; i < table.Rows.Count; i++)
                                     {
-                                        try
+                                        string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
+                                        foreach (var name in teacherCellParse)
                                         {
-                                            if (RangeText(table.Cell(i, 2).Range.Text) != string.Empty)
+                                            if (nameTeacher[0] == name)
                                             {
                                                 string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
                                                 string work = RangeText(table.Cell(i, 3).Range.Text);
@@ -119,159 +206,91 @@ namespace Telegram_Bot.DAL.DALApp
                                                                             note));
                                             }
                                         }
-                                        catch
+                                        teacherCellParse = RangeText(table.Cell(i, 9).Range.Text).Split(new char[] { ' ', '/' });
+                                        foreach (var name in teacherCellParse)
                                         {
-                                            continue;
+                                            if (nameTeacher[0] == name)
+                                            {
+                                                string paraNumber = RangeText(table.Cell(i, 6).Range.Text);
+                                                string work = RangeText(table.Cell(i, 7).Range.Text);
+                                                string auditoria = RangeText(table.Cell(i, 8).Range.Text);
+                                                string teacher = RangeText(table.Cell(i, 9).Range.Text);
+
+                                                UserNotes note = new UserNotes();
+                                                if (userNotes.Count != 0)
+                                                    note = GetUserNote(paraNumber, work);
+                                                allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                            note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                            $"Para{paraNumber}",
+                                                                            paraNumber,
+                                                                            work,
+                                                                            teacher,
+                                                                            auditoria,
+                                                                            note));
+                                            }
                                         }
                                     }
                                 }
-                            }
+                                catch
+                                {
+                                    continue;
+                                }
+                                break;
+                            case false:
+                                try
+                                {
+                                    for (int i = 3; i < table.Rows.Count; i++)
+                                    {
+                                        string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
+                                        foreach (var name in teacherCellParse)
+                                        {
+                                            if (nameTeacher[0] == name)
+                                            {
+                                                string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
+                                                string work = RangeText(table.Cell(i, 3).Range.Text);
+                                                string auditoria = RangeText(table.Cell(i, 4).Range.Text);
+                                                string teacher = RangeText(table.Cell(i, 5).Range.Text);
+                                                UserNotes note = new UserNotes();
+                                                if (userNotes.Count != 0)
+                                                    note = GetUserNote(paraNumber, work);
+
+                                                allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
+                                                                            note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
+                                                                            $"Para{paraNumber}",
+                                                                            paraNumber,
+                                                                            work,
+                                                                            teacher,
+                                                                            auditoria,
+                                                                            note));
+                                            }
+                                        }
+                                    }
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                                break;
                         }
                     }
-                    catch
-                    {
-
-                    }
                 }
-                return allSheldue;
-            }
-            catch
-            {
-                doc.Close();
-                app.Quit();
-                return allSheldue;
-            }
-            finally
-            {
-                doc.Close();
-                app.Quit();
-            }
-        }
-
-        // Get Teacher Sheldue
-        private List<Sheldue> ParseWordFileTeacherMethod()
-        {
-            string pathFileWord = Path.GetFullPath(departmnetListReferensToFile["Информационное"]);
-            Application app = new Application();
-            string[] nameTeacher = _name.ToUpper().Split(' ');
-            Document doc = app.Documents.Open(pathFileWord, Visible: false);
-            List<Sheldue> allSheldue = new List<Sheldue>();
-            bool twoGroupInTable = true;
-            try
-            {
-                foreach (Table table in doc.Tables)
+                catch
                 {
-                    twoGroupInTable = table.Columns.Count > 7 ? true : false;
-                    switch (twoGroupInTable)
-                    {
-                        case true:
-                            try
-                            {
-                                for (int i = 3; i < table.Rows.Count; i++)
-                                {
-                                    string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
-                                    foreach (var name in teacherCellParse)
-                                    {
-                                        if (nameTeacher[0] == name)
-                                        {
-                                            string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
-                                            string work = RangeText(table.Cell(i, 3).Range.Text);
-                                            string auditoria = RangeText(table.Cell(i, 4).Range.Text);
-                                            string teacher = RangeText(table.Cell(i, 5).Range.Text);
-
-                                            UserNotes note = new UserNotes();
-                                            if (userNotes.Count != 0)
-                                                note = GetUserNote(paraNumber, work);
-                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
-                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                                        $"Para{paraNumber}",
-                                                                        paraNumber,
-                                                                        work,
-                                                                        teacher,
-                                                                        auditoria,
-                                                                        note));
-                                        }
-                                    }
-                                    teacherCellParse = RangeText(table.Cell(i, 9).Range.Text).Split(new char[] { ' ', '/' });
-                                    foreach (var name in teacherCellParse)
-                                    {
-                                        if (nameTeacher[0] == name)
-                                        {
-                                            string paraNumber = RangeText(table.Cell(i, 6).Range.Text);
-                                            string work = RangeText(table.Cell(i, 7).Range.Text);
-                                            string auditoria = RangeText(table.Cell(i, 8).Range.Text);
-                                            string teacher = RangeText(table.Cell(i, 9).Range.Text);
-
-                                            UserNotes note = new UserNotes();
-                                            if (userNotes.Count != 0)
-                                                note = GetUserNote(paraNumber, work);
-                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
-                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                                        $"Para{paraNumber}",
-                                                                        paraNumber,
-                                                                        work,
-                                                                        teacher,
-                                                                        auditoria,
-                                                                        note));
-                                        }
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                            break;
-                        case false:
-                            try
-                            {
-                                for (int i = 3; i < table.Rows.Count; i++)
-                                {
-                                    string[] teacherCellParse = RangeText(table.Cell(i, 5).Range.Text).Split(new char[] { ' ', '/' });
-                                    foreach (var name in teacherCellParse)
-                                    {
-                                        if (nameTeacher[0] == name)
-                                        {
-                                            string paraNumber = RangeText(table.Cell(i, 2).Range.Text);
-                                            string work = RangeText(table.Cell(i, 3).Range.Text);
-                                            string auditoria = RangeText(table.Cell(i, 4).Range.Text);
-                                            string teacher = RangeText(table.Cell(i, 5).Range.Text);
-                                            UserNotes note = new UserNotes();
-                                            if (userNotes.Count != 0)
-                                                note = GetUserNote(paraNumber, work);
-
-                                            allSheldue.Add(new Sheldue(System.Windows.Visibility.Visible,
-                                                                        note.Para != null ? MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline : MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline,
-                                                                        $"Para{paraNumber}",
-                                                                        paraNumber,
-                                                                        work,
-                                                                        teacher,
-                                                                        auditoria,
-                                                                        note));
-                                        }
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                            break;
-                    }
+                    doc.Close();
+                    app.Quit();
+                    return allSheldue;
+                }
+                finally
+                {
+                    doc.Close();
+                    app.Quit();
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                doc.Close();
-                app.Quit();
-                return allSheldue;
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => ParseCellsRanegTextTable class " + ex.ToString() + lineEx);
             }
-            finally
-            {
-                doc.Close();
-                app.Quit();
-            }
-
             return allSheldue;
         }
 
@@ -355,9 +374,10 @@ namespace Telegram_Bot.DAL.DALApp
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                IFCore.IFCore.loggerMain.Error("DAL => GetSheldueOnDays class " + ex.ToString() + lineEx);
             }
             return allDaysSheldue;
         }

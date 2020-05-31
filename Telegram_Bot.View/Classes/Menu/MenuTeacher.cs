@@ -14,7 +14,7 @@ namespace Telegram_Bot.View.Classes.Teacher
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue; 
-        public MenuWithListTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue): base(Bot, api, sheldue)
+        public MenuWithListTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue): base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
@@ -100,7 +100,7 @@ namespace Telegram_Bot.View.Classes.Teacher
                     selectDayKeyBoard.SendMessage(sender, e);
                     break;
                 case false:
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Преподаватель с такой фамилией, не записан в базу🥺", ParseMode.MarkdownV2);
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Преподаватель с такой фамилией, не записан в базу🥺", ParseMode.MarkdownV2, replyMarkup: new Keyboards().Personality());
                     break;
                 default:
                     BotRoma.OnMessage -= TeacherMethod;

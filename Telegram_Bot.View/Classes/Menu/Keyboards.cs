@@ -16,6 +16,11 @@ namespace Telegram_Bot.View.Classes.Menu
                                                     new KeyboardButton($"Выбор личности {convertEmoji = new Emoji(0x1F465)}"),
                                                     new KeyboardButton($"Помощь {convertEmoji = new Emoji(0x2754)}")
                                                 },
+                                                new []
+                                                {
+                                                    new KeyboardButton($"Расписание звонков ⌚"),
+                                                    new KeyboardButton($"Сотрудники колледжа 👨‍💼"),
+                                                }
                                             },
                 ResizeKeyboard = true
             };
@@ -30,7 +35,8 @@ namespace Telegram_Bot.View.Classes.Menu
 {convertEmoji = new Emoji(new int[] { 0x0032, 0x20E3 })} /start \- старт/презагрузка бота
 {convertEmoji = new Emoji(new int[] { 0x0033, 0x20E3 })} /personality \- выбор личности
 {convertEmoji = new Emoji(new int[] { 0x0034, 0x20E3 })} /reset \- перезапуск бота
-{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} /contacts \- контакты с разработчиком";
+{convertEmoji = new Emoji(new int[] { 0x0035, 0x20E3 })} /contacts \- контакты с разработчиком
+{convertEmoji = new Emoji(new int[] { 0x0036, 0x20E3 })} Меню \- главное меню";
         }
     }
 }

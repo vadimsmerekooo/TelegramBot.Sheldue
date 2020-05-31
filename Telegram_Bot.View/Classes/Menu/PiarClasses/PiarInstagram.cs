@@ -13,7 +13,7 @@ namespace Telegram_Bot.View.Classes.Menu.PiarClasses
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public PiarInstagram(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, sheldue)
+        public PiarInstagram(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
