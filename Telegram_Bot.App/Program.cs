@@ -24,6 +24,7 @@ namespace Telegram_Bot.App
         private static Dictionary<string, List<SheldueAllDaysTelegram>> changeSheldue;
         private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldueCopy;
         private static List<int> idMessageClients;
+        private static List<int> idMessageClientsBlackList;
         private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static int counter = 0;
         private static string weekCheck = string.Empty;
@@ -43,9 +44,12 @@ namespace Telegram_Bot.App
             {
                 Console.WriteLine("\nПрисутствуют замены к расписанию!");
                 allSheldue = allSheldueCopy;
-                allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
-                new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨На сайте появились замены к расписанию🌐 Узнай свое новое расписание на завтра⚡");
-                Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                if (newSheldueAtTimer != null)
+                {
+                    allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
+                    new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨На сайте появились замены к расписанию🌐 Узнай свое новое расписание на завтра⚡");
+                    Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                }
             }
             else
             {
@@ -66,6 +70,11 @@ namespace Telegram_Bot.App
                 {
                     idMessageClients = new List<int>();
                     idMessageClients = (List<int>)serializer.Deserialize(fs);
+                }
+                using (FileStream fs = new FileStream("BlackListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClientsBlackList = new List<int>();
+                    idMessageClientsBlackList = (List<int>)serializer.Deserialize(fs);
                 }
             }
             catch
@@ -201,7 +210,7 @@ namespace Telegram_Bot.App
                         Console.Write("Вы действительно хотите удалить ВСЕ логи?! ( Y/N ) => ");
                         if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
                         {
-                            try { File.WriteAllText("../../Resource/NLog/Logs_project.log", string.Empty); } catch { }
+                            try { File.WriteAllText("../../Resource/NLog/Logs_project.log", string.Empty); } catch { Console.WriteLine("Ошибка при очистке файла!"); }
                         }
                         DefaultlPrint();
                         break;
@@ -338,6 +347,8 @@ namespace Telegram_Bot.App
                 {
                     if (idMessageClients != null)
                         menuLibriary.idMessageClients = idMessageClients;
+                    if (idMessageClientsBlackList != null)
+                        menuLibriary.idMessageClientsBlackList = idMessageClientsBlackList;
                     bw.RunWorkerAsync(Const.GetSetApiKey);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Бот запущен...\n");
@@ -372,36 +383,43 @@ namespace Telegram_Bot.App
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
                       Dictionary<string, List<SheldueAllDaysTelegram>> shangeSheldue)
         {
-            foreach (var itemChange in shangeSheldue)
+            try
             {
-                foreach (var itemMain in mainSheldue)
+                foreach (var itemChange in shangeSheldue)
                 {
-                    if (itemChange.Key == itemMain.Key.Split(' ')[1])
+                    foreach (var itemMain in mainSheldue)
                     {
-                        foreach (var itemMainValue in itemMain.Value)
+                        if (itemChange.Key == itemMain.Key.Split(' ')[1])
                         {
-                            if (itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
+                            foreach (var itemMainValue in itemMain.Value)
                             {
-                                foreach (var itemChangeValue in itemChange.Value)
+                                if (itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
                                 {
-                                    try
+                                    foreach (var itemChangeValue in itemChange.Value)
                                     {
-                                        itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0].ChangeSheldue;
-                                        itemMainValue.Day[0].Para1[0] = null;
-                                        itemMainValue.Day[0].Para2[0] = null;
-                                        itemMainValue.Day[0].Para3[0] = null;
-                                        itemMainValue.Day[0].Para4[0] = null;
-                                        itemMainValue.Day[0].Para5[0] = null;
-                                    }
-                                    catch
-                                    {
-                                        continue;
+                                        try
+                                        {
+                                            itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0].ChangeSheldue;
+                                            itemMainValue.Day[0].Para1[0] = null;
+                                            itemMainValue.Day[0].Para2[0] = null;
+                                            itemMainValue.Day[0].Para3[0] = null;
+                                            itemMainValue.Day[0].Para4[0] = null;
+                                            itemMainValue.Day[0].Para5[0] = null;
+                                        }
+                                        catch
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+            }
+            catch
+            {
+
             }
             return mainSheldue;
         }

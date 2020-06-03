@@ -69,6 +69,7 @@
     <Compile Include="Classes\Menu\MenuTeacher.cs" />
     <Compile Include="Classes\Menu\PiarClasses\PiarInstagram.cs" />
     <Compile Include="Classes\Menu\SendAlertAllUsers.cs" />
+    <Compile Include="Classes\Menu\SendMessageToDeveloper.cs" />
     <Compile Include="Classes\Menu\Weather.cs" />
     <Compile Include="Interface\IMainMenu.cs" />
     <Compile Include="Interface\IMenu.cs" />

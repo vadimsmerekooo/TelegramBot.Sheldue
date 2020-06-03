@@ -20,6 +20,10 @@ namespace Telegram_Bot.View.Classes.Menu
                                                 {
                                                     new KeyboardButton($"Расписание звонков ⌚"),
                                                     new KeyboardButton($"Сотрудники колледжа 👨‍💼"),
+                                                },
+                                                new []
+                                                {
+                                                    new KeyboardButton($"Написать разработчику 💬👨🏻‍💻")
                                                 }
                                             },
                 ResizeKeyboard = true

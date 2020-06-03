@@ -189,7 +189,6 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     doc.Close();
                     app.Quit();
                 }
-
             }
             catch(Exception ex)
             {
