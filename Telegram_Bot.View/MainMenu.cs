@@ -85,6 +85,7 @@ namespace Telegram_Bot.View
                         {
                             serializer.Serialize(fs, idMessageClients);
                         }
+                        Console.WriteLine("Новый пользователь!");
                     }
                     if (!idMessageClients.Contains(Convert.ToInt32(message.Chat.Id)))
                     {
@@ -104,8 +105,8 @@ namespace Telegram_Bot.View
 Для промотра списка команд {new Emoji(0x1F4DC)}, просто введи /help {new Emoji(new int[] { 0x2139, 0xFE0F })}!
 Для быстрого доступа к овновному меню, введи - Меню {new Emoji(0x2714)}
 
-⚠️⚡!!!ВНИМАНИЕ!!!⚡⚠️ ПРИ НАЖАТИИ НА КОМАНДУ start 🅱️, Ваш Id🆔, будет записан на локальную машину🏧. Он требуется для оповещения💬 о каких либо сообщениях от разработчика👨🏽‍💻, оповещении нового расписания📅! Данная информацияℹ️, полность КОНФИДЕНЦИАЛЬНА🔒!
-Для удаления Вас из базы, обратитесь к разработчику👨🏽‍💻!
+⚠️⚡!!!ВНИМАНИЕ!!!⚡⚠️ ПРИ НАЖАТИИ НА КОМАНДУ start 🅱️, Ваш Id 🆔, будет записан на локальную машину 🏧. Он требуется для оповещения 💬 о каких либо сообщениях от разработчика 👨🏽‍💻, оповещении нового расписания 📅! Данная информация ℹ️, полность КОНФИДЕНЦИАЛЬНА 🔒!
+Для удаления Вас из базы, обратитесь к разработчику 👨🏽‍💻!
 
 Краткая информация о работе со мной:
 {new Emoji(new int[] { 0x0031, 0x20E3 })} Если Я не отвечаю на команды, перезапусти меня командой /reset {new Emoji(0x1F503)};)
@@ -249,6 +250,38 @@ namespace Telegram_Bot.View
                     }
                     new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage(textSend);
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, "Сообщения отправляются!");
+                }
+                catch
+                {
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
+                }
+            }
+            if (message.Text.Contains("List"))
+            {
+                try
+                {
+                    string listClients = string.Empty;
+                    foreach (var id in idMessageClients)
+                    {
+                        listClients += id;
+                    }
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, listClients);
+                }
+                catch
+                {
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
+                }
+            }
+            if (message.Text.Contains("Blacklist"))
+            {
+                try
+                {
+                    string blackListClients = string.Empty;
+                    foreach (var id in idMessageClientsBlackList)
+                    {
+                        blackListClients += id;
+                    }
+                    await BotRoma.SendTextMessageAsync(message.Chat.Id, blackListClients);
                 }
                 catch
                 {

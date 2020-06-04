@@ -47,7 +47,7 @@ namespace Telegram_Bot.App
                 if (newSheldueAtTimer != null)
                 {
                     allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
-                    new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨На сайте появились замены к расписанию🌐 Узнай свое новое расписание на завтра⚡");
+                    new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
                     Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
                 }
             }
@@ -87,21 +87,17 @@ namespace Telegram_Bot.App
 
         private static void DefaultlPrint()
         {
-            if (bw != null && bw.IsBusy != true)
-            {
-                Console.WriteLine("Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Оповестить всех пользователей\n0. Выход\n");
-            }
-            else
-            {
-
-                Console.WriteLine("Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n0. Выход\n");
-            }
+            string bwDontNull = "Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Вывести пользователей бота\n7. Оповестить всех пользователей\n0. Выход\n";
+            string bwNull = "Выберите команду:\n1.Запуск бота\n2.Просмотреть логи\n3.Проверить статус бота\n4.Очистить терминал\n5.Удалить все логи\n6.Вывести пользователей бота\n0.Выход\n";
+             
+            Console.WriteLine(bw != null && bw.IsBusy != true ? bwDontNull : bwNull);
             try
             {
                 Console.Write("Ваш выбор -> ");
                 switch (int.Parse(Console.ReadLine()))
                 {
                     case 1:
+                        #region Start Bot
                         Console.WriteLine("Загрузка расписания. Не закрывайте консоль!!!");
                         allSheldue = new Telegram_Bot.View.Classes.GetShelduePL().GetSheldueAllGroup();
                         allSheldueCopy = allSheldue;
@@ -136,7 +132,9 @@ namespace Telegram_Bot.App
                         }
                         DefaultlPrint();
                         break;
+                    #endregion
                     case 2:
+                        #region Show logs
                         Console.WriteLine("1. Вывести все логи\n2. Вывести DEBUG логи\n3. Вывести ERROR, FATAL логи\n4. Вывести остальные логи\n0. Отмена");
                         Console.Write("Ваш выбор -> ");
                         switch (int.Parse(Console.ReadLine()))
@@ -184,7 +182,9 @@ namespace Telegram_Bot.App
                         }
                         DefaultlPrint();
                         break;
+                    #endregion
                     case 3:
+                        #region Check bot status
                         if (bw != null && bw.IsBusy != true)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
@@ -199,6 +199,7 @@ namespace Telegram_Bot.App
                         }
                         DefaultlPrint();
                         break;
+                    #endregion
                     case 4:
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -215,6 +216,21 @@ namespace Telegram_Bot.App
                         DefaultlPrint();
                         break;
                     case 6:
+                        Console.WriteLine("1. Список всех пользователей\n2. Черный список пользователей\n0. Отмена");
+                        switch (Convert.ToInt32(Console.ReadLine()))
+                        {
+                            case 1:
+                                Console.WriteLine("Список пользователей!");
+                                Console.WriteLine(File.ReadAllText("ListIdMessageChatClients.xml"));
+                                break;
+                            case 2:
+                                Console.WriteLine("Список пользователей!");
+                                Console.WriteLine(File.ReadAllText("BlackListIdMessageChatClients.xml"));
+                                break;
+                        }
+                        break;
+                    case 7:
+                        #region Send message at user
                         if (bw != null && bw.IsBusy != true)
                         {
                             Console.Write("1. Сообщение c изображения\n2. Сообщение без изображения\n0. Отмена\nВаш выбор => ");
@@ -264,6 +280,7 @@ namespace Telegram_Bot.App
                         }
                         DefaultlPrint();
                         break;
+                    #endregion
                     case 0:
                         Environment.Exit(0);
                         break;
@@ -282,21 +299,6 @@ namespace Telegram_Bot.App
                 }
                 DefaultlPrint();
             }
-        }
-        private static void LoadingAnimation()
-        {
-            counter++;
-            switch (counter % 4)
-            {
-                case 0: Console.Write("/"); break;
-                case 1: Console.Write("-"); break;
-                case 2: Console.Write("\\"); break;
-                case 3: Console.Write("|"); break;
-            }
-            if (counter == 100)
-                counter = 0;
-            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-            Thread.Sleep(200);
         }
 
         private static void PrintCenterText(string text)
