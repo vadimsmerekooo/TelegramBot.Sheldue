@@ -52,6 +52,7 @@
       <HintPath>..\packages\Telegram.Bot.15.3.0\lib\net45\Telegram.Bot.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\GetShelduePL.cs" />

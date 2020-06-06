@@ -21,7 +21,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
             this.department = department;
         }
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessageListSewingDep(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -94,7 +94,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
         }
         public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
         {
-            new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department).SendMessage(sender, e);
+            new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department).SendMessageListDayWeek(sender, e);
         }
     }
 }

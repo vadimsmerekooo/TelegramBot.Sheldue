@@ -24,7 +24,7 @@ namespace Telegram_Bot.View.Classes.Menu
             this.surname = surname;
         }
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessageListDayWeekTeacher(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -94,10 +94,11 @@ namespace Telegram_Bot.View.Classes.Menu
                     NextStepParseFile(sender, e, dayToday.ToLower(), surname);
                     break;
                 case "на завтра":
+                    var dayTodays = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
                     var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
-                    if (dayTomorow == "суббота")
+                    if (dayTodays == "суббота")
                     {
-                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
+                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(3).DayOfWeek);
                     }
                     NextStepParseFile(sender, e, dayTomorow.ToLower(), surname);
                     break;
@@ -110,7 +111,7 @@ namespace Telegram_Bot.View.Classes.Menu
         public async void NextStepParseFile(object sender, MessageEventArgs e, string day, string surname)
         {
             var message = e.Message;
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Заргузка...");
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка...");
             // Вызываем метод для получения расписания на выбранный день
             string parseTextWithoutWordFile = SearchSheldueForTeacher(day);
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId + 1); } catch { }
@@ -121,6 +122,7 @@ namespace Telegram_Bot.View.Classes.Menu
         private string SearchSheldueForTeacher(string day)
         {
             string changesSheldueString = string.Empty;
+            string changesSheldueStringGroup = string.Empty;
             var para1 = new SheldueAllListTelegram().Para1;
             string para1Group = string.Empty;
             var para2 = new SheldueAllListTelegram().Para2;
@@ -145,33 +147,33 @@ namespace Telegram_Bot.View.Classes.Menu
                                 foreach (var itemSplit in splitChangeSheldue)
                                 {
                                     itemSplit.Replace('\a', ' ');
-                                    if (itemSplit.Contains(surname.ToUpper()))
+                                    if (itemSplit.Contains(surname.ToUpper()) || SplitTeacher(itemSplit, surname.ToUpper()))
                                     {
-                                        changesSheldueString += itemSplit;
+                                        changesSheldueString += itemSplit + $" - {itemSheldue.Key.Split(' ')[1]}";
                                     }
                                 }
                             }
-                            if (itemSheldueDay.Para1 != null && itemSheldueDay.Para1[0] != null && itemSheldueDay.Para1[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            if (itemSheldueDay.Para1 != null && itemSheldueDay.Para1[0] != null && SplitTeacher(itemSheldueDay.Para1[0].Teacher.ToUpper(), surname.ToUpper()))
                             {
                                 para1 = itemSheldueDay?.Para1;
                                 para1Group = itemSheldue.Key;
                             }
-                            if (itemSheldueDay.Para2 != null && itemSheldueDay.Para2[0] != null && itemSheldueDay.Para2[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            if (itemSheldueDay.Para2 != null && itemSheldueDay.Para2[0] != null && SplitTeacher(itemSheldueDay.Para2[0].Teacher.ToUpper(), surname.ToUpper()))
                             {
                                 para2 = itemSheldueDay?.Para2;
                                 para2Group = itemSheldue.Key;
                             }
-                            if (itemSheldueDay.Para3 != null && itemSheldueDay.Para3[0] != null && itemSheldueDay.Para3[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            if (itemSheldueDay.Para3 != null && itemSheldueDay.Para3[0] != null && SplitTeacher(itemSheldueDay.Para3[0].Teacher.ToUpper(), surname.ToUpper()))
                             {
                                 para3 = itemSheldueDay?.Para3;
                                 para3Group = itemSheldue.Key;
                             }
-                            if (itemSheldueDay.Para4 != null && itemSheldueDay.Para4[0] != null && itemSheldueDay.Para4[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            if (itemSheldueDay.Para4 != null && itemSheldueDay.Para4[0] != null && SplitTeacher(itemSheldueDay.Para4[0].Teacher.ToUpper(), surname.ToUpper()))
                             {
                                 para4 = itemSheldueDay?.Para4;
                                 para4Group = itemSheldue.Key;
                             }
-                            if (itemSheldueDay.Para5 != null && itemSheldueDay.Para5[0] != null && itemSheldueDay.Para5[0].Teacher.ToUpper().Contains(surname.ToUpper()))
+                            if (itemSheldueDay.Para5 != null && itemSheldueDay.Para5[0] != null && SplitTeacher(itemSheldueDay.Para5[0].Teacher.ToUpper(), surname.ToUpper()))
                             {
                                 para5 = itemSheldueDay?.Para5;
                                 para5Group = itemSheldue.Key;
@@ -228,6 +230,16 @@ namespace Telegram_Bot.View.Classes.Menu
             {
                 return text;
             }
+        }
+
+        private bool SplitTeacher(string text, string surname)
+        {
+            foreach (var item in text.Split(new char[] { '(', ' '}))
+            {
+                if (item.ToUpper().Contains(surname))
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Telegram_Bot.View.Classes.Menu
             this.department = department;
         }
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessageListDayWeek(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -98,10 +98,11 @@ namespace Telegram_Bot.View.Classes.Menu
                     NextStepParseFile(sender, e, dayToday.ToLower(), department);
                     break;
                 case "на завтра":
+                    var dayTodays = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
                     var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
-                    if(dayTomorow == "суббота")
+                    if(dayTodays == "суббота")
                     {
-                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek);
+                        dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(3).DayOfWeek);
                     }
                     NextStepParseFile(sender, e, dayTomorow.ToLower(), department);
                     break;
@@ -114,7 +115,7 @@ namespace Telegram_Bot.View.Classes.Menu
         public async void NextStepParseFile(object sender, MessageEventArgs e, string day, string department)
         {
             var message = e.Message;
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Заргузка...");
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка...");
             // Вызываем метод для получения расписания на выбранный день
             string parseTextWithoutWordFile = SerachShldueForUser(day);
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId + 1); } catch { }
@@ -201,10 +202,17 @@ namespace Telegram_Bot.View.Classes.Menu
                 string[] splitText = text.Split(' ');
                 foreach (var word in splitText)
                 {
-                    newText += word[0].ToString().ToUpper();
-                    if(word[word.Length - 1].ToString() == "/")
+                    try
                     {
-                        newText += " / ";
+                        newText += word[0].ToString().ToUpper();
+                        if (word[word.Length - 1].ToString() == "/")
+                        {
+                            newText += " / ";
+                        }
+                    }
+                    catch
+                    {
+                        continue;
                     }
                 }
                 return newText;

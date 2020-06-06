@@ -21,7 +21,7 @@ namespace Telegram_Bot.View.Classes.Student
             this.sheldue = sheldue;
         }
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessagemenuStudent(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -66,7 +66,7 @@ namespace Telegram_Bot.View.Classes.Student
             switch (message.Text)
             {
                 case "1":
-                    new Menu.MenuIDepartment.ListInformationDepartmentGroup(BotRoma, ApiKeyBot, sheldue, "Информационное").SendMessage(sender, e);
+                    new Menu.MenuIDepartment.ListInformationDepartmentGroup(BotRoma, ApiKeyBot, sheldue, "Информационное").SendMessageListInformDev(sender, e);
                     break;
                 //case "2":
                 //    IStepsForWorkFile lsd = new Menu.MenuSDepartment.ListSewingDepartmentGroups(BotRoma, ApiKeyBot);

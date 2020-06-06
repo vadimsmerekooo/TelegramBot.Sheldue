@@ -21,7 +21,7 @@ namespace Telegram_Bot.View.Classes
             this.sheldue = sheldue;
         }
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessagePersonality(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -54,14 +54,14 @@ namespace Telegram_Bot.View.Classes
                 case "Преподаватель 👨‍🏫":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    IMenu menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot, sheldue);
-                    menuSelectTeacher.SendMessage(sender, e);
+                    Teacher.MenuWithListTeacher menuSelectTeacher = new Teacher.MenuWithListTeacher(BotRoma, ApiKeyBot, sheldue);
+                    menuSelectTeacher.SendMessageMenuTeacher(sender, e);
                     break;
                 case "Учащийся 🎓":
                     try{ await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    IMenu menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot, sheldue);
-                    menuSelectStudentDepartment.SendMessage(sender, e);
+                    Student.MenuStudent menuSelectStudentDepartment = new Student.MenuStudent(BotRoma, ApiKeyBot, sheldue);
+                    menuSelectStudentDepartment.SendMessagemenuStudent(sender, e);
                     break;
                 default: BotRoma.OnMessage -= MenuPers;
                     break;

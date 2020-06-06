@@ -62,7 +62,7 @@ namespace Telegram_Bot.View.Classes.Teacher
         //        }1
 
 
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessageMenuTeacher(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
@@ -96,8 +96,8 @@ namespace Telegram_Bot.View.Classes.Teacher
             switch (checkUserInList)
             {
                 case true:
-                    IMenu selectDayKeyBoard = new ListDayWeekTeacher(BotRoma, ApiKeyBot, sheldue, message.Text.ToUpper());
-                    selectDayKeyBoard.SendMessage(sender, e);
+                    ListDayWeekTeacher selectDayKeyBoard = new ListDayWeekTeacher(BotRoma, ApiKeyBot, sheldue, message.Text.ToUpper());
+                    selectDayKeyBoard.SendMessageListDayWeekTeacher(sender, e);
                     break;
                 case false:
                     await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Преподаватель с такой фамилией, не записан в базу🥺", ParseMode.MarkdownV2, replyMarkup: new Keyboards().Personality());

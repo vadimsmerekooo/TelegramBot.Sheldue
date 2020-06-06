@@ -19,7 +19,7 @@ namespace Telegram_Bot.View.Classes.Menu.PiarClasses
             this.ApiKeyBot = api;
             this.sheldue = sheldue;
         }
-        public override async void SendMessage(object sender, MessageEventArgs e)
+        public async void SendMessagePiarInst(object sender, MessageEventArgs e)
         {
             var message = e.Message;
             var keyboard = new InlineKeyboardMarkup(new[]

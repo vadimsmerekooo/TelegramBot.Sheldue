@@ -26,7 +26,6 @@ namespace Telegram_Bot.App
         private static List<int> idMessageClients;
         private static List<int> idMessageClientsBlackList;
         private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
-        private static int counter = 0;
         private static string weekCheck = string.Empty;
         private static string dayNewSheldue = string.Empty;
         private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(300000);
@@ -50,10 +49,6 @@ namespace Telegram_Bot.App
                     new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
                     Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
                 }
-            }
-            else
-            {
-                Console.WriteLine("\nЗамены к расписанию отсутствуют!");
             }
         }
 
@@ -89,7 +84,7 @@ namespace Telegram_Bot.App
         {
             string bwDontNull = "Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Вывести пользователей бота\n7. Оповестить всех пользователей\n0. Выход\n";
             string bwNull = "Выберите команду:\n1.Запуск бота\n2.Просмотреть логи\n3.Проверить статус бота\n4.Очистить терминал\n5.Удалить все логи\n6.Вывести пользователей бота\n0.Выход\n";
-             
+
             Console.WriteLine(bw != null && bw.IsBusy != true ? bwDontNull : bwNull);
             try
             {
@@ -228,6 +223,7 @@ namespace Telegram_Bot.App
                                 Console.WriteLine(File.ReadAllText("BlackListIdMessageChatClients.xml"));
                                 break;
                         }
+                        DefaultlPrint();
                         break;
                     case 7:
                         #region Send message at user
@@ -401,12 +397,17 @@ namespace Telegram_Bot.App
                                     {
                                         try
                                         {
-                                            itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0].ChangeSheldue;
-                                            itemMainValue.Day[0].Para1[0] = null;
-                                            itemMainValue.Day[0].Para2[0] = null;
-                                            itemMainValue.Day[0].Para3[0] = null;
-                                            itemMainValue.Day[0].Para4[0] = null;
-                                            itemMainValue.Day[0].Para5[0] = null;
+                                            itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0]?.ChangeSheldue;
+                                            if (itemMainValue.Day[0].Para1 != null)
+                                                itemMainValue.Day[0].Para1[0] = null;
+                                            if (itemMainValue.Day[0].Para2 != null)
+                                                itemMainValue.Day[0].Para2[0] = null;
+                                            if (itemMainValue.Day[0].Para3 != null)
+                                                itemMainValue.Day[0].Para3[0] = null;
+                                            if (itemMainValue.Day[0].Para4 != null)
+                                                itemMainValue.Day[0].Para4[0] = null;
+                                            if (itemMainValue.Day[0].Para5 != null)
+                                                itemMainValue.Day[0].Para5[0] = null;
                                         }
                                         catch
                                         {

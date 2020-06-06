@@ -55,7 +55,7 @@ namespace Telegram_Bot.View.Classes.Menu
                     {
                         if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 10)
                         {
-                            weatherStringText = $"На улице, {temp}, жакро☀, одень рубашку🥵";
+                            weatherStringText = $"На улице, {temp}, жакро☀, надень рубашку🥵";
                         }
                     }
                 }

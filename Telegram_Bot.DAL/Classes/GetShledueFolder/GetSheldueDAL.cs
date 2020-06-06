@@ -178,7 +178,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     }
                     return allSheldue;
                 }
-                catch (Exception ex)
+                catch
                 {
                     doc.Close();
                     app.Quit();
@@ -269,10 +269,9 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                IFCore.IFCore.loggerMain.Error("DAL => GetSheldueOnDays class " + ex.ToString() + lineEx);
+
             }
             return allDaysSheldue;
         }
