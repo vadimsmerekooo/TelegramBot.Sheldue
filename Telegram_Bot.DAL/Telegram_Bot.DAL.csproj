@@ -185,9 +185,12 @@
       <DependentUpon>ShelduedbModel.edmx</DependentUpon>
       <LastGenOutput>ShelduedbModel.cs</LastGenOutput>
     </Content>
-    <Content Include="managerdb.mdf" />
+    <Content Include="managerdb.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="managerdb_log.ldf">
       <DependentUpon>managerdb.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

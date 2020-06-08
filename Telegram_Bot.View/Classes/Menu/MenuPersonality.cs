@@ -5,6 +5,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Telegram_Bot.View.Classes.Menu;
 using Telegram_Bot.View.Interface;
 
 namespace Telegram_Bot.View.Classes
@@ -40,7 +41,7 @@ namespace Telegram_Bot.View.Classes
                                             },
                 ResizeKeyboard = true
             };
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardPersonality);
+            try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Тыкай на кнопочку {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardPersonality); } catch { }
             BotRoma.OnMessage += MenuPers;
         }
 

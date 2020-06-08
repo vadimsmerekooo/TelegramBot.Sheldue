@@ -12,9 +12,9 @@ namespace Telegram_Bot.View.Classes
         {
             return new Telegram_Bot.BL.Classes.GetSheldueBL().GetSheldueAllGroup();
         }
-        public Dictionary<string, List<SheldueAllDaysTelegram>> GetChangesSheldue(out string week, out string dayNewSheldue)
+        public Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> GetChangesSheldue(out string week)
         {
-            return new Telegram_Bot.BL.Classes.GetSheldueBL().GetChangesSheldue(out week, out dayNewSheldue);
+            return new Telegram_Bot.BL.Classes.GetSheldueBL().GetChangesSheldue(out week);
         }
     }
 }

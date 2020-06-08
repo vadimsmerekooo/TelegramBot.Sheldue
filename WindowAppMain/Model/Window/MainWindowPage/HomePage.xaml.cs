@@ -27,9 +27,6 @@ namespace WindowAppMain.Model.Window.MainWindowPage
         const string student = "Студент";
 
 
-        private const MaterialDesignThemes.Wpf.PackIconKind NoteAddOutline = MaterialDesignThemes.Wpf.PackIconKind.NoteAddOutline;
-        private const MaterialDesignThemes.Wpf.PackIconKind NoteMultipleOutline = MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline;
-
         public HomePage(MainWindow mWindow)
         {
             InitializeComponent();
@@ -402,6 +399,7 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                     notes = note;
                     break;
                 case MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline:
+                    notes = note;
                     _mWindow._homePage = this;
                     _mWindow._buttonRefAddNote = butonClick;
                     _mWindow.GridModalWindows.Visibility = System.Windows.Visibility.Visible;

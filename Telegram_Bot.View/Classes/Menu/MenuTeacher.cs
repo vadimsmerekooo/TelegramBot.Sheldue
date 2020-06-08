@@ -43,7 +43,7 @@ namespace Telegram_Bot.View.Classes.Teacher
             "Аблажевич И.В.", "Гоманчук В.К.",
             "Юхневич Н.И.", "Трайгель В.В.",
             "Самойло Ж.В.", "Гоманчук В.К.",
-            "Чистобаева Н.И.", "Снацкая И.И.", "Лупач О.И."
+            "Чистобаева Н.И.", "Снацкая И.И.", "Лупач О.И.", "Алейникова М.П.", "Ващилова Н.И."
         };
 
         //        public async void ViewListWithTeacher(object sender, MessageEventArgs e)

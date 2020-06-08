@@ -11,14 +11,12 @@ namespace Telegram_Bot.View.Classes.Menu.MenuEMDepartment
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
-        private string department;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListElectoMechanicDepartmentGroups(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, ref sheldue)
+        public ListElectoMechanicDepartmentGroups(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
             this.sheldue = sheldue;
-            this.department = department;
         }
         public async void SendMessageListElectDep(object sender, MessageEventArgs e)
         {
@@ -73,40 +71,40 @@ namespace Telegram_Bot.View.Classes.Menu.MenuEMDepartment
             {
                 case "03 эс":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "03 эс", department);
+                    NextStepSelectDay(sender, e, "03 эс");
                     break;
                 case "04 эс":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "04 эс", department);
+                    NextStepSelectDay(sender, e, "04 эс");
                     break;
                 case "19 опс":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "19 опс", department);
+                    NextStepSelectDay(sender, e, "19 опс");
                     break;
                 case "20 опс":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "20 опс", department);
+                    NextStepSelectDay(sender, e, "20 опс");
                     break;
                 case "18 опс":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "18 опс", department);
+                    NextStepSelectDay(sender, e, "18 опс");
                     break;
                 case "10 эо":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "19 эо", department);
+                    NextStepSelectDay(sender, e, "19 эо");
                     break;
                 case "11 эо":
                     await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId);
-                    NextStepSelectDay(sender, e, "11 эо", department);
+                    NextStepSelectDay(sender, e, "11 эо");
                     break;
                 default: BotRoma.OnMessage -= ButtonGroups;
                    break;
             }
         }
 
-        public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
+        public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName)
         {
-            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department);
+            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue);
             selectDayKeyBoard.SendMessageListDayWeek(sender, e);
         }
     }

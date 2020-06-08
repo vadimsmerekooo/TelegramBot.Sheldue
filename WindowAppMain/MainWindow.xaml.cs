@@ -30,9 +30,9 @@ namespace WindowAppMain
         public Button _buttonRefAddNote;
         public HomePage _homePage;
         public int tmpNoteUserId;
-        private List<SheldueAllDays> sheldueList { get; set;}
-        public List<SheldueAllDays> SetSheldue { set { sheldueList = value; } }
-        public List<SheldueAllDays> GetSheldue { get { return sheldueList; } }
+        private List<SheldueAllDays> SheldueList { get; set;}
+        public List<SheldueAllDays> SetSheldue { set { SheldueList = value; } }
+        public List<SheldueAllDays> GetSheldue { get { return SheldueList; } }
         #endregion
         public MainWindow()
         {
@@ -188,10 +188,12 @@ namespace WindowAppMain
                             {
                                 Storyboard sb = FindResource("CloseModalWindowAddNewNote") as Storyboard;
                                 sb.Begin();
-                                MaterialDesignThemes.Wpf.PackIcon kindNoteSave = new MaterialDesignThemes.Wpf.PackIcon();
-                                kindNoteSave.Kind = MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline;
-                                kindNoteSave.Width = 20;
-                                kindNoteSave.Height = 20;
+                                MaterialDesignThemes.Wpf.PackIcon kindNoteSave = new MaterialDesignThemes.Wpf.PackIcon
+                                {
+                                    Kind = MaterialDesignThemes.Wpf.PackIconKind.NoteMultipleOutline,
+                                    Width = 20,
+                                    Height = 20
+                                };
                                 _buttonRefAddNote.Content = kindNoteSave;
                                 _buttonRefAddNote.ToolTip = "Изменить заметку";
                                 KindThrowMessage.Foreground = FindResource("ForegroundColorUIElements") as SolidColorBrush;
@@ -271,18 +273,20 @@ namespace WindowAppMain
             {
 
             }
+            GridModalWindows.Visibility = System.Windows.Visibility.Hidden;
+            ModalWindowAddNotes.Visibility = System.Windows.Visibility.Hidden;
         }
 
         private void NewNoteTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             CounterLengthTextBox.Text = $"{NewNoteTextBox.Text.Length}/100";
-            if (NameGridChangeOrAddNotes.Text != "Изменение заметки")
-            {
+            //if (NameGridChangeOrAddNotes.Text != "Изменение заметки")
+            //{
                 if (NewNoteTextBox.Text.Length > 5)
                     SaveNoteButton.Visibility = Visibility.Visible;
                 else
                     SaveNoteButton.Visibility = Visibility.Hidden;
-            }
+            //}
         }
         //!Event's UserInfoPage
     }

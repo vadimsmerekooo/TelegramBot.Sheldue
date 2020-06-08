@@ -94,7 +94,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuSDepartment
         }
         public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
         {
-            new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department).SendMessageListDayWeek(sender, e);
+            new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue).SendMessageListDayWeek(sender, e);
         }
     }
 }

@@ -6,14 +6,10 @@ using System.Net;
 using System.IO;
 using System.Collections.Generic;
 using IFCore;
-using System.Threading.Tasks;
 using System.Timers;
-using System.Threading;
-using System.Windows.Threading;
-using System.Globalization;
 using System.Xml.Serialization;
 using Telegram_Bot.View.Classes.Menu;
-using System.Security.Policy;
+using System.Globalization;
 
 namespace Telegram_Bot.App
 {
@@ -21,13 +17,14 @@ namespace Telegram_Bot.App
     {
         private static BackgroundWorker bw;
         private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldue;
-        private static Dictionary<string, List<SheldueAllDaysTelegram>> changeSheldue;
+        private static Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> changeSheldue;
         private static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldueCopy;
         private static List<int> idMessageClients;
         private static List<int> idMessageClientsBlackList;
+        private static List<IFCore.DictionaryList> idMessageClientsWarningList;
         private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
+        private static XmlSerializer serializerDictionary = new XmlSerializer(typeof(IFCore.DictionaryList), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static string weekCheck = string.Empty;
-        private static string dayNewSheldue = string.Empty;
         private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(300000);
 
         private static void TimerIntervalParseFile(object sender, ElapsedEventArgs e)
@@ -37,22 +34,30 @@ namespace Telegram_Bot.App
                 timerChangesSheldue.Elapsed -= TimerIntervalParseFile;
                 timerChangesSheldue.Stop();
             }
-            var dayOldSheldue = string.Empty;
-            var newSheldueAtTimer = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck, out dayOldSheldue);
-            if (dayOldSheldue.ToLower() != dayNewSheldue.ToLower())
+            try
             {
-                Console.WriteLine("\nПрисутствуют замены к расписанию!");
-                allSheldue = allSheldueCopy;
-                if (newSheldueAtTimer != null)
+                var dayOldSheldue = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
+                var newSheldueAtTimer = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck);
+                ICollection<string> keys = newSheldueAtTimer.Keys ?? null;
+                if (keys != null && !keys.Contains(dayOldSheldue.ToLower()))
                 {
-                    allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
-                    new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
-                    Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                    Console.WriteLine("\nПрисутствуют замены к расписанию!");
+                    allSheldue = allSheldueCopy;
+                    if (newSheldueAtTimer != null)
+                    {
+                        allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
+                        //new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
+                        Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                    }
                 }
+            }
+            catch
+            {
+
             }
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.Title = "Запуск Telegram бота: бот Рома";
             Console.ForegroundColor = ConsoleColor.Green;
@@ -70,6 +75,11 @@ namespace Telegram_Bot.App
                 {
                     idMessageClientsBlackList = new List<int>();
                     idMessageClientsBlackList = (List<int>)serializer.Deserialize(fs);
+                }
+                using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClientsWarningList = new List<IFCore.DictionaryList>();
+                    idMessageClientsWarningList = ((List<IFCore.DictionaryList>)serializerDictionary.Deserialize(fs));
                 }
             }
             catch
@@ -93,7 +103,37 @@ namespace Telegram_Bot.App
                 {
                     case 1:
                         #region Start Bot
-                        Console.WriteLine("Загрузка расписания. Не закрывайте консоль!!!");
+                        string pass = "";
+                        Console.Write("Введите пароль: ");
+                        do
+                        {
+                            ConsoleKeyInfo key = Console.ReadKey(true);
+                            // Backspace Should Not Work
+                            if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                            {
+                                pass += key.KeyChar;
+                                Console.Write("*");
+                            }
+                            else
+                            {
+                                if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+                                {
+                                    pass = pass.Substring(0, (pass.Length - 1));
+                                    Console.Write("\b \b");
+                                }
+                                else if (key.Key == ConsoleKey.Enter)
+                                {
+                                    break;
+                                }
+                            }
+                        } while (true);
+                        if(pass != "Roma")
+                        {
+                            Console.WriteLine("Неверный пароль!");
+                            DefaultlPrint();
+                            break;
+                        }
+                        Console.WriteLine("\nЗагрузка расписания. Не закрывайте консоль!!!");
                         allSheldue = new Telegram_Bot.View.Classes.GetShelduePL().GetSheldueAllGroup();
                         allSheldueCopy = allSheldue;
                         if (allSheldue != null)
@@ -102,7 +142,7 @@ namespace Telegram_Bot.App
                             Console.WriteLine("Расписание загружено\n");
                             Console.ResetColor();
                             Console.WriteLine("Загрузка файла, изменение к расписанию, с сайта\n");
-                            changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck, out dayNewSheldue);
+                            changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck);
                             if (changeSheldue != null)
                             {
                                 allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, changeSheldue);
@@ -338,7 +378,7 @@ namespace Telegram_Bot.App
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 bw = new BackgroundWorker();
                 MainMenu menuLibriary = new MainMenu(Const.GetsetBot, Const.GetSetApiKey, ref allSheldue);
-                MainMenu.week = weekCheck;
+                MainMenu.Week = weekCheck;
                 bw.DoWork += menuLibriary.StartedMenu;
                 Const.GetsetBot = new TelegramBotClient(Const.GetSetApiKey);
                 if (bw.IsBusy != true)
@@ -347,6 +387,8 @@ namespace Telegram_Bot.App
                         menuLibriary.idMessageClients = idMessageClients;
                     if (idMessageClientsBlackList != null)
                         menuLibriary.idMessageClientsBlackList = idMessageClientsBlackList;
+                    if (idMessageClientsWarningList != null)
+                        menuLibriary.idMessageClientsWarn = idMessageClientsWarningList;
                     bw.RunWorkerAsync(Const.GetSetApiKey);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Бот запущен...\n");
@@ -379,39 +421,42 @@ namespace Telegram_Bot.App
         }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
-                      Dictionary<string, List<SheldueAllDaysTelegram>> shangeSheldue)
+                      Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> shangeSheldue)
         {
             try
             {
-                foreach (var itemChange in shangeSheldue)
+                foreach (var changeSheldueItem in changeSheldue)
                 {
-                    foreach (var itemMain in mainSheldue)
+                    foreach (var changeSheldueItemValue in changeSheldueItem.Value)
                     {
-                        if (itemChange.Key == itemMain.Key.Split(' ')[1])
+                        foreach (var itemMain in mainSheldue)
                         {
-                            foreach (var itemMainValue in itemMain.Value)
+                            if (changeSheldueItemValue.Key == itemMain.Key.Split(' ')[1])
                             {
-                                if (itemMainValue.DayName.ToLower() == dayNewSheldue.ToLower())
+                                foreach (var itemChangeValue in changeSheldueItemValue.Value)
                                 {
-                                    foreach (var itemChangeValue in itemChange.Value)
+                                    if(itemChangeValue.DayName.ToLower() == changeSheldueItem.Key.ToLower())
                                     {
-                                        try
+                                        foreach (var itemMainValue in itemMain.Value)
                                         {
-                                            itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0]?.ChangeSheldue;
-                                            if (itemMainValue.Day[0].Para1 != null)
-                                                itemMainValue.Day[0].Para1[0] = null;
-                                            if (itemMainValue.Day[0].Para2 != null)
-                                                itemMainValue.Day[0].Para2[0] = null;
-                                            if (itemMainValue.Day[0].Para3 != null)
-                                                itemMainValue.Day[0].Para3[0] = null;
-                                            if (itemMainValue.Day[0].Para4 != null)
-                                                itemMainValue.Day[0].Para4[0] = null;
-                                            if (itemMainValue.Day[0].Para5 != null)
-                                                itemMainValue.Day[0].Para5[0] = null;
-                                        }
-                                        catch
-                                        {
-                                            continue;
+                                            try
+                                            {
+                                                itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0]?.ChangeSheldue;
+                                                if (itemMainValue.Day[0].Para1 != null)
+                                                    itemMainValue.Day[0].Para1[0] = null;
+                                                if (itemMainValue.Day[0].Para2 != null)
+                                                    itemMainValue.Day[0].Para2[0] = null;
+                                                if (itemMainValue.Day[0].Para3 != null)
+                                                    itemMainValue.Day[0].Para3[0] = null;
+                                                if (itemMainValue.Day[0].Para4 != null)
+                                                    itemMainValue.Day[0].Para4[0] = null;
+                                                if (itemMainValue.Day[0].Para5 != null)
+                                                    itemMainValue.Day[0].Para5[0] = null;
+                                            }
+                                            catch
+                                            {
+                                                continue;
+                                            }
                                         }
                                     }
                                 }
@@ -425,6 +470,24 @@ namespace Telegram_Bot.App
 
             }
             return mainSheldue;
+            //try
+            //{
+            //    itemMainValue.Day[0].ChangeSheldue = itemChangeValueValue.Day[0]?.ChangeSheldue;
+            //    if (itemMainValue.Day[0].Para1 != null)
+            //        itemMainValue.Day[0].Para1[0] = null;
+            //    if (itemMainValue.Day[0].Para2 != null)
+            //        itemMainValue.Day[0].Para2[0] = null;
+            //    if (itemMainValue.Day[0].Para3 != null)
+            //        itemMainValue.Day[0].Para3[0] = null;
+            //    if (itemMainValue.Day[0].Para4 != null)
+            //        itemMainValue.Day[0].Para4[0] = null;
+            //    if (itemMainValue.Day[0].Para5 != null)
+            //        itemMainValue.Day[0].Para5[0] = null;
+            //}
+            //catch
+            //{
+            //    continue;
+            //}
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Telegram_Bot.DAL.DALApp
 
         Dictionary<string, string> departmnetListReferensToFile = new Dictionary<string, string>()
         {
-            {"Информационное", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Information.docx"}
+            {"Информационное", "../../Classes/Student/FileWord/ListShedule/Information.docx"}
             //{"Швейное", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Sewing.docx"},
             //{"Электромеханическое", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/ElektroMechanic.docx"},
             //{"Отделение", "../../../Telegram_Bot.DAL/Classes/Student/FileWord/ListShedule/Mechanic.docx"}

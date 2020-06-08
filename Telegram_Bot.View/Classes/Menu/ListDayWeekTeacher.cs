@@ -184,7 +184,7 @@ namespace Telegram_Bot.View.Classes.Menu
             }
 
             return $@"Ваше, расписание, на {day}📚
-Неделя: {MainMenu.week}
+Неделя: {MainMenu.Week}
 
 Замены к расписанию:
 {changesSheldueString} -

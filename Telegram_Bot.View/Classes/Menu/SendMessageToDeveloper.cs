@@ -13,6 +13,12 @@ namespace Telegram_Bot.View.Classes.Menu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
+        private List<string> listCommand = new List<string>()
+        {
+            "/start", "/help", "Выбор личности 👥", "Помощь ❔", "/personality",
+            "/reset", "/contacts", "Меню", "меню", "Расписание звонков ⌚", "Сотрудники колледжа 👨‍💼",
+            "Написать разработчику 💬👨🏻‍💻", "Учащийся 🎓", "Преподаватель 👨‍🏫"
+        };
         public SendMessageToDeveloper(TelegramBotClient Bot, string api, ref Dictionary<string, List<SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
         {
             BotRoma = Bot;
@@ -21,6 +27,12 @@ namespace Telegram_Bot.View.Classes.Menu
         public async void SendMessageToDev(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            if (idMessageClientsBlackList.Contains(Convert.ToInt32(e.Message.Chat.Id)))
+            {
+                try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, $@"Вы находитесь в черном списке", ParseMode.MarkdownV2); } catch { }
+                BotRoma.OnMessage -= SendMessageToDevp;
+                return;
+            }
             try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "⚠ВНИМАНИЕ!⚠ Сообщение не должно содержать нецензурную брань❗, или оскорбления в адрес разработчика❗ Если одно из условий будет нарушено⛔, вы автоматически попадаете в черный список❌! Введите сообщение⬇"); } catch { }
             BotRoma.OnMessage += SendMessageToDevp;
         }
@@ -39,7 +51,12 @@ namespace Telegram_Bot.View.Classes.Menu
                 BotRoma.OnMessage -= SendMessageToDevp;
                 return;
             }
-            try { await BotRoma.SendTextMessageAsync(415226650, "Сообщение от пользователя: " + e.Message.Text + $" От: {e.Message.Chat.Id} - {e.Message.Chat.FirstName}", replyMarkup:new ReplyKeyboardRemove()); } catch { }
+            if (listCommand.Contains(e.Message.Text))
+            {
+                BotRoma.OnMessage -= SendMessageToDevp;
+                return;
+            }
+            try { await BotRoma.SendTextMessageAsync(415226650, "Сообщение от пользователя: " + e.Message.Text + $" От: {e.Message.Chat.Id} - {e.Message.Chat.FirstName}", replyMarkup: new ReplyKeyboardRemove()); } catch { }
             try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, "Сообщение отправлено ✔"); } catch { }
             BotRoma.OnMessage -= SendMessageToDevp;
         }

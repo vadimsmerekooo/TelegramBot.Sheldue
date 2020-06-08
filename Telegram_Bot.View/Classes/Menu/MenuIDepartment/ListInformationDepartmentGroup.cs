@@ -77,40 +77,40 @@ namespace Telegram_Bot.View.Classes.Menu.MenuIDepartment
             {
                 case "27 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "27 тп", department);
+                    NextStepSelectDay(sender, e, "27 тп");
                     break;
                 case "29 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "29 тп", department);
+                    NextStepSelectDay(sender, e, "29 тп");
                     break;
                 case "30 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "30 тп", department);
+                    NextStepSelectDay(sender, e, "30 тп");
                     break;
                 case "31 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "31 тп", department);
+                    NextStepSelectDay(sender, e, "31 тп");
                     break;
                 case "32 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "32 тп", department);
+                    NextStepSelectDay(sender, e, "32 тп");
                     break;
                 case "33 тп":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "33 тп", department);
+                    NextStepSelectDay(sender, e, "33 тп");
                     break;
                 case "06 шо":
                     try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
-                    NextStepSelectDay(sender, e, "06 шо", department);
+                    NextStepSelectDay(sender, e, "06 шо");
                     break;
                 default: BotRoma.OnMessage -= this.ButtonGroups1;
                     break;
             }
         }
 
-        public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
+        public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName)
         {
-            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department);
+            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue);
             selectDayKeyBoard.SendMessageListDayWeek(sender, e);
         }
     }

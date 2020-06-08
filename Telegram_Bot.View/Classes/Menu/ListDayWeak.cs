@@ -16,16 +16,14 @@ namespace Telegram_Bot.View.Classes.Menu
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         private string groupName;
-        private string department;
         private Keyboards keyboard = new Keyboards();
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, string department) : base(Bot, api, ref sheldue)
+        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
             groupName = group;
             this.sheldue = sheldue;
-            this.department = department;
         }
 
         public async void SendMessageListDayWeek(object sender, MessageEventArgs e)
@@ -60,7 +58,7 @@ namespace Telegram_Bot.View.Classes.Menu
                                             },
                 ResizeKeyboard = true
             };
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери день {new Emoji(0x2B07)}", ParseMode.Default, false, false, 0, keyboardDays);
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери день {new Emoji(0x2B07)}", ParseMode.Default, true, true, 0, keyboardDays);
             BotRoma.OnMessage += SelectDay;
         }
         public async void SelectDay(object sender, MessageEventArgs e)
@@ -76,26 +74,26 @@ namespace Telegram_Bot.View.Classes.Menu
             switch (message.Text.ToLower())
             {
                 case "пн":
-                    NextStepParseFile(sender, e, "понедельник", department);
+                    NextStepParseFile(sender, e, "понедельник");
                     break;
                 case "вт":
-                    NextStepParseFile(sender, e, "вторник", department);
+                    NextStepParseFile(sender, e, "вторник");
                     break;
                 case "ср":
-                    NextStepParseFile(sender, e, "среда", department);
+                    NextStepParseFile(sender, e, "среда");
                     break;
                 case "чт":
-                    NextStepParseFile(sender, e, "четверг", department);
+                    NextStepParseFile(sender, e, "четверг");
                     break;
                 case "пт":
-                    NextStepParseFile(sender, e, "пятница", department);
+                    NextStepParseFile(sender, e, "пятница");
                     break;
                 case "сб":
-                    NextStepParseFile(sender, e, "суббота", department);
+                    NextStepParseFile(sender, e, "суббота");
                     break;
                 case "на сегодня":
                     var dayToday = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
-                    NextStepParseFile(sender, e, dayToday.ToLower(), department);
+                    NextStepParseFile(sender, e, dayToday.ToLower());
                     break;
                 case "на завтра":
                     var dayTodays = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
@@ -104,7 +102,7 @@ namespace Telegram_Bot.View.Classes.Menu
                     {
                         dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(3).DayOfWeek);
                     }
-                    NextStepParseFile(sender, e, dayTomorow.ToLower(), department);
+                    NextStepParseFile(sender, e, dayTomorow.ToLower());
                     break;
                 default:
                     BotRoma.OnMessage -= SelectDay;
@@ -112,15 +110,15 @@ namespace Telegram_Bot.View.Classes.Menu
             }
         }
 
-        public async void NextStepParseFile(object sender, MessageEventArgs e, string day, string department)
+        public async void NextStepParseFile(object sender, MessageEventArgs e, string day)
         {
             var message = e.Message;
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка...");
+            try { await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка..."); }catch { }
             // Вызываем метод для получения расписания на выбранный день
             string parseTextWithoutWordFile = SerachShldueForUser(day);
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId + 1); } catch { }
 
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, parseTextWithoutWordFile, replyMarkup: keyboard.Personality());
+            try { await BotRoma.SendTextMessageAsync(message.Chat.Id, parseTextWithoutWordFile, replyMarkup: keyboard.Personality()); } catch { }
         }
 
         private string SerachShldueForUser(string day)
@@ -150,7 +148,7 @@ namespace Telegram_Bot.View.Classes.Menu
                                      * получем погоду
                                      */
                                     return $@"Твое, расписание, на {day}📚
-Неделя: {MainMenu.week}
+Неделя: {MainMenu.Week}
 
 Замены к расписанию:
 {itemSheldueDay?.ChangeSheldue} -
@@ -174,7 +172,7 @@ namespace Telegram_Bot.View.Classes.Menu
             catch (Exception ex)
             {
                 int lineEx = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                string textError = $"Уровень: PL; Метод: SerachShldueForUser; Строка: {lineEx}; Параметры: группа - {groupName}, отделение - {department}, день - {day}";
+                string textError = $"Уровень: PL; Метод: SerachShldueForUser; Строка: {lineEx}; Параметры: группа - {groupName}, день - {day}";
                 IFCore.IFCore.loggerMain.Error(textError);
                 new IFCore.IFCoreSendErrorMessage(BotRoma, ApiKeyBot, textError);
                 return $@"Произошла ошибка😱!

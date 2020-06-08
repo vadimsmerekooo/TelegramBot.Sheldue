@@ -110,7 +110,7 @@ namespace Telegram_Bot.View.Classes.Menu.MenuMDepartment
 
         public void NextStepSelectDay(object sender, MessageEventArgs e, string groupName, string department)
         {
-            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue, department);
+            ListDayWeak selectDayKeyBoard = new ListDayWeak(BotRoma, ApiKeyBot, groupName, sheldue);
             selectDayKeyBoard.SendMessageListDayWeek(sender, e);
         }
     }
