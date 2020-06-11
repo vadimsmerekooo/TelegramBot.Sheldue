@@ -23,7 +23,14 @@ namespace Telegram_Bot.View.Classes.Menu
         {
             foreach (int id in messageChatIdClients)
             {
-                await BotRoma.SendTextMessageAsync(id, alertMessage);
+                try
+                {
+                    await BotRoma.SendTextMessageAsync(id, alertMessage);
+                }
+                catch
+                {
+
+                }
             }
             return true;
         }

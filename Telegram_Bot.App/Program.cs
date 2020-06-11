@@ -10,6 +10,10 @@ using System.Timers;
 using System.Xml.Serialization;
 using Telegram_Bot.View.Classes.Menu;
 using System.Globalization;
+using System.Security.Policy;
+using System.Net.NetworkInformation;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Telegram_Bot.App
 {
@@ -25,7 +29,8 @@ namespace Telegram_Bot.App
         private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static XmlSerializer serializerDictionary = new XmlSerializer(typeof(IFCore.DictionaryList), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static string weekCheck = string.Empty;
-        private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(300000);
+        private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(200000);
+        static string dayOldSheldue = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
 
         private static void TimerIntervalParseFile(object sender, ElapsedEventArgs e)
         {
@@ -36,17 +41,21 @@ namespace Telegram_Bot.App
             }
             try
             {
-                var dayOldSheldue = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
                 var newSheldueAtTimer = new View.Classes.GetShelduePL().GetChangesSheldue(out weekCheck);
-                ICollection<string> keys = newSheldueAtTimer.Keys ?? null;
+                if (newSheldueAtTimer.Keys == null)
+                    return;
+                ICollection<string> keys = newSheldueAtTimer.Keys;
                 if (keys != null && !keys.Contains(dayOldSheldue.ToLower()))
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\nПрисутствуют замены к расписанию!");
+                    Console.ResetColor();
                     allSheldue = allSheldueCopy;
                     if (newSheldueAtTimer != null)
                     {
                         allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
-                        //new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
+                        Program.dayOldSheldue = keys.ToArray()[0];
+                        new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
                         Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
                     }
                 }
@@ -90,6 +99,7 @@ namespace Telegram_Bot.App
             Console.ReadKey();
         }
 
+        
         private static void DefaultlPrint()
         {
             string bwDontNull = "Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Вывести пользователей бота\n7. Оповестить всех пользователей\n0. Выход\n";
@@ -103,31 +113,17 @@ namespace Telegram_Bot.App
                 {
                     case 1:
                         #region Start Bot
-                        string pass = "";
-                        Console.Write("Введите пароль: ");
-                        do
+                        IPStatus status = IPStatus.TimedOut;
+                        try { status = new Ping().Send(@"google.by").Status; } catch { }
+                        if (status != IPStatus.Success)
                         {
-                            ConsoleKeyInfo key = Console.ReadKey(true);
-                            // Backspace Should Not Work
-                            if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
-                            {
-                                pass += key.KeyChar;
-                                Console.Write("*");
-                            }
-                            else
-                            {
-                                if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
-                                {
-                                    pass = pass.Substring(0, (pass.Length - 1));
-                                    Console.Write("\b \b");
-                                }
-                                else if (key.Key == ConsoleKey.Enter)
-                                {
-                                    break;
-                                }
-                            }
-                        } while (true);
-                        if(pass != "Roma")
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nОтсутсвует подключение к интренету!\n");
+                            Console.ResetColor();
+                            DefaultlPrint();
+                            break;
+                        }
+                        if (!SetPassword())
                         {
                             Console.WriteLine("Неверный пароль!");
                             DefaultlPrint();
@@ -318,7 +314,13 @@ namespace Telegram_Bot.App
                         break;
                     #endregion
                     case 0:
-                        Environment.Exit(0);
+                        if (SetPassword())
+                            Environment.Exit(0);
+                        else
+                        {
+                            Console.WriteLine("\nНе верный пароль!");
+                            DefaultlPrint();
+                        }
                         break;
                     default:
                         DefaultlPrint();
@@ -419,6 +421,34 @@ namespace Telegram_Bot.App
                 return false;
             }
         }
+        private static bool SetPassword()
+        {
+            string pass = "";
+            Console.Write("\nВведите пароль: ");
+            do
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                // Backspace Should Not Work
+                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                {
+                    pass += key.KeyChar;
+                    Console.Write("*");
+                }
+                else
+                {
+                    if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        pass = pass.Substring(0, (pass.Length - 1));
+                        Console.Write("\b \b");
+                    }
+                    else if (key.Key == ConsoleKey.Enter)
+                    {
+                        break;
+                    }
+                }
+            } while (true);
+            return pass != "Roma" ? false : true;
+        }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
                       Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> shangeSheldue)
@@ -435,7 +465,7 @@ namespace Telegram_Bot.App
                             {
                                 foreach (var itemChangeValue in changeSheldueItemValue.Value)
                                 {
-                                    if(itemChangeValue.DayName.ToLower() == changeSheldueItem.Key.ToLower())
+                                    if (itemChangeValue.DayName.ToLower() == changeSheldueItem.Key.ToLower())
                                     {
                                         foreach (var itemMainValue in itemMain.Value)
                                         {

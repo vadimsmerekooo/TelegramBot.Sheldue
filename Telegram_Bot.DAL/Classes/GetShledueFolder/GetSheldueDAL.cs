@@ -178,12 +178,18 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
 
                             }
                         }
+
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"{item.Key} отделение загруженно!");
+                        Console.ResetColor();
                     }
                     catch
                     {
                         doc.Close();
                         app.Quit();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{item.Key} отделение не загруженно!");
+                        Console.ResetColor();
                         continue;
                     }
                     finally

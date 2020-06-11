@@ -47,15 +47,15 @@ namespace Telegram_Bot.View.Classes.Menu
                 }
                 else
                 {
-                    if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 0 && Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) < 10)
+                    if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 0 && Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) < 15)
                     {
                         weatherStringText = $"На улице, {temp}, прохладно⛄, оденься теплее🥶";
                     }
                     else
                     {
-                        if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 10)
+                        if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 15)
                         {
-                            weatherStringText = $"На улице, {temp}, жакро☀, надень рубашку🥵";
+                            weatherStringText = $"На улице, {temp}, жарко☀, надень рубашку🥵";
                         }
                     }
                 }

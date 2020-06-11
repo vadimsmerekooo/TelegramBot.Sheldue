@@ -24,8 +24,6 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                             checkRangeUser = false;
                         }
                     }
-                    //checkUsers = context.UsersInfo.Where(user => user.Email == userLogin).ToList();
-
                     return checkRangeUser;
                 }
             }
@@ -88,35 +86,6 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                             Group = userInfo.UserGroup
                         };
                     }
-                    //foreach (var user in context.Users)
-                    //{
-                    //    if (user.Email == userLogin && user.Password == new CryptAndDecryptPassword().CalculateMD5Hash(userPassword).ToString())
-                    //    {
-                    //        checkRangeUser = true;
-                    //        var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
-                    //        switch (userInfo[0].UserStatus)
-                    //        {
-                    //            case "Преподаватель":
-                    //                userListInformantion = new Person()
-                    //                {
-                    //                    ID = user.ID,
-                    //                    Login = user.Email,
-                    //                    Name = userInfo[0].UserName,
-                    //                    Status = userInfo[0].UserStatus
-                    //                }; break;
-                    //            case "Студент":
-                    //                userListInformantion = new Person()
-                    //                {
-                    //                    ID = user.ID,
-                    //                    Login = user.Email,
-                    //                    Name = userInfo[0].UserName,
-                    //                    Status = userInfo[0].UserStatus,
-                    //                    Department = userInfo[0].UserDepartment,
-                    //                    Group = userInfo[0].UserGroup
-                    //                }; break;
-                    //        }
-                    //    }
-                    //}
                 }
                 return checkRangeUser;
             }
@@ -142,34 +111,6 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                         Department = userInfo.UserDepartment,
                         Group = userInfo.UserGroup
                     };
-                    //foreach (var user in context.Users)
-                    //{
-                    //    if (user.Email == userLogin)
-                    //    {
-                    //        var userInfo = context.UsersInfo.Where(userinf => userinf.ID == user.ID).ToList();
-                    //        switch (userInfo[0].UserStatus)
-                    //        {
-                    //            case "Преподаватель":
-                    //                userListInformantion = new Person()
-                    //                {
-                    //                    ID = user.ID,
-                    //                    Login = user.Email,
-                    //                    Name = userInfo[0].UserName,
-                    //                    Status = userInfo[0].UserStatus
-                    //                }; break;
-                    //            case "Студент":
-                    //                userListInformantion = new Person()
-                    //                {
-                    //                    ID = user.ID,
-                    //                    Login = user.Email,
-                    //                    Name = userInfo[0].UserName,
-                    //                    Status = userInfo[0].UserStatus,
-                    //                    Department = userInfo[0].UserDepartment,
-                    //                    Group = userInfo[0].UserGroup
-                    //                }; break;
-                    //        }
-                    //    }
-                    //}
                 }
             }
             catch
@@ -183,8 +124,6 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
             using (var context = new managerdbContext())
             {
                 context.Users.FirstOrDefault(user => user.Email == userLogin).Password = new CryptAndDecryptPassword().CalculateMD5Hash(userNewPassword).ToString();
-                //var usersInfo = context.Users.FirstOrDefaultOrDefault(user => user.Email == userLogin);
-                //usersInfo.Password = new CryptAndDecryptPassword().CalculateMD5Hash(userNewPassword).ToString();
                 context.SaveChanges();
             }
         }

@@ -4,8 +4,6 @@ using Telegram_Bot.DAL.Interfaces;
 using Microsoft.Office.Interop.Word;
 using IFCore;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Telegram_Bot.DAL.DALApp
 {

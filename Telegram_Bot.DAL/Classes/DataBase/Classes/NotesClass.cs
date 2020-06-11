@@ -62,9 +62,5 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                 return false;
             }
         }
-        //public bool ChangeNoteUser()
-        //{
-
-        //}
     }
 }

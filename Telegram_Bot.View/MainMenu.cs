@@ -298,13 +298,7 @@ namespace Telegram_Bot.View
                 {
                     try
                     {
-                        var splitMessage = message.Text.Split(' ');
-                        string textSend = string.Empty;
-                        for (int i = 1; i < splitMessage.Length; i++)
-                        {
-                            textSend += splitMessage[i] + " ";
-                        }
-                        new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage(textSend + ". Рассылку сообщений ✉, можно отключить командой /stop!");
+                        new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage(message.Text.Replace("Allsend", "") + ". Рассылку сообщений ✉, можно отключить командой /stop!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Сообщения отправляются!");
                     }
                     catch (Exception ex)
@@ -492,7 +486,7 @@ namespace Telegram_Bot.View
                             {
                             }
 
-                            try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(415226650), "Попытка отправки более 70 сообщений📛! Пользователь добавлен в бан! ID: " + message.Chat.Id); } catch { }
+                            try { if (!idMessageClientsBlackList.Contains(Convert.ToInt32(message.Chat.Id))) await BotRoma.SendTextMessageAsync(Convert.ToInt32(415226650), "Попытка отправки более 70 сообщений📛! Пользователь добавлен в бан! ID: " + message.Chat.Id); } catch { }
                             return false;
                         }
                         idMessageClientsBlackList.Add(Convert.ToInt32(message.Chat.Id));
