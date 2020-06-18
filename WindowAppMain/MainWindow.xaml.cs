@@ -15,6 +15,7 @@ using Telegram_Bot.BL.Classes.App;
 using WindowAppMain.Classes;
 using WindowAppMain.Model.Window;
 using WindowAppMain.Model.Window.MainWindowPage;
+using WindowAppMain.Properties;
 
 namespace WindowAppMain
 {
@@ -93,7 +94,7 @@ namespace WindowAppMain
                     MainWindowPage.NavigationService.Navigate(new AccountInfoPage(this));
                     break;
                 case 2:
-                    MainWindowPage.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/SettingsPage.xaml", UriKind.Relative));
+                    MainWindowPage.NavigationService.Navigate(new SettingsPage(this));
                     break;
             }
         }

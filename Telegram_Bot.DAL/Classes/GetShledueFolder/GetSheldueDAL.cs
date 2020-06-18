@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using IFCore;
 using System.IO;
 using Microsoft.Office.Interop.Word;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Telegram_Bot.DAL.Classes.GetShledueFolder
 {
@@ -194,8 +196,28 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                     }
                     finally
                     {
-                        doc.Close();
-                        app.Quit();
+                        try
+                        {
+                            doc.Close();
+                            app.Quit();
+                        }
+                        catch
+                        {
+
+                        }
+                        if (Process.GetProcessesByName("winword").Count() > 0)
+                        {
+                            Microsoft.Office.Interop.Word.Application wordInstance = (Microsoft.Office.Interop.Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+                            IFCore.IFCore.loggerMain.Error("Ошибка при доступе к файлу " +  item + " отделения");
+                            foreach (Microsoft.Office.Interop.Word.Document docs in wordInstance.Documents)
+                            {
+                                if (docs.Name == "Information.docx" || docs.Name == "Sewing.docx" || docs.Name == "ElektroMechanic.docx" || docs.Name == "Mechanic.docx")
+                                {
+                                    docs.Close();
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

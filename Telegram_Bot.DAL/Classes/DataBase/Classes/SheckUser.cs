@@ -127,5 +127,14 @@ namespace Telegram_Bot.DAL.Classes.DataBase.Classes
                 context.SaveChanges();
             }
         }
+
+        public bool GetPasswordUser(string userLogin, string password)
+        {
+            using (managerdbContext context = new managerdbContext())
+            {
+                var user = context.Users.Where(login => login.Email == userLogin).ToList()[0];
+                return user.Password == new CryptAndDecryptPassword().CalculateMD5Hash(password).ToString() ? true : false;
+            }
+        }
     }
 }

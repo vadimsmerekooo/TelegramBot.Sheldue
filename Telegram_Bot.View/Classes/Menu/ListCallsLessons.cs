@@ -23,7 +23,7 @@ namespace Telegram_Bot.View.Classes.Menu
             var message = e.Message;
             string callsLessonTextChetDay = $@"Расписание звонков *2019\/2020*, 2 полугодие
 
-*Понеделник, Среда, Пятнциа*
+*Понеделник, Среда, Пятница*
 1,3 курс *ПТО*, 2 курс *ПТО, ССО*
                  *По 45 минуту*
 *1\.*               9\.00 \-  9\.45

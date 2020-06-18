@@ -105,6 +105,9 @@
     <Compile Include="Model\Window\MainWindowPage\AccountPages\AccountGlobePage.xaml.cs">
       <DependentUpon>AccountGlobePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Window\MainWindowPage\AccountPages\AccountLastNotesPage.xaml.cs">
+      <DependentUpon>AccountLastNotesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Window\MainWindowPage\AccountPages\AccountMainPage.xaml.cs">
       <DependentUpon>AccountMainPage.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Model\Window\MainWindowPage\AccountPages\AccountGlobePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\Window\MainWindowPage\AccountPages\AccountLastNotesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

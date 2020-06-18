@@ -2,8 +2,10 @@
 using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace Telegram_Bot.DAL.Classes.GetShledueFolder
@@ -49,10 +51,13 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                 {
                     List<string> listDate = new List<string>()
                         {
+                            CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(-3).DayOfWeek),
+                            CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(-2).DayOfWeek),
                             CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(-1).DayOfWeek),
                             DayNowSaturdayDelete(CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek)),
                             CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek),
-                            CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek)
+                            CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(2).DayOfWeek),
+                            CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(3).DayOfWeek)
                         };
                     // Определение недели\
                     foreach (Paragraph parag in doc.Paragraphs)
@@ -79,7 +84,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                                                 counter++;
                                                 if (counter == 2)
                                                 {
-                                                    dayNewSheldue = listDate[posititonDay + 1];
+                                                    dayNewSheldue = dayNewSheldue != "суббота" ? listDate[posititonDay + 1] : listDate[posititonDay + 2];
                                                     allChangesSheldue.Add(dayNewSheldue, ParseCellsRanegTextTable(doc.Tables[counter]));
                                                 }
                                                 else
@@ -105,8 +110,28 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                 }
                 finally
                 {
-                    doc.Close();
-                    app.Quit();
+                    try
+                    {
+                        doc.Close();
+                        app.Quit();
+                    }
+                    catch
+                    {
+
+                    }
+                    if (Process.GetProcessesByName("winword").Count() > 0)
+                    {
+                        Microsoft.Office.Interop.Word.Application wordInstance = (Microsoft.Office.Interop.Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+
+                        foreach (Microsoft.Office.Interop.Word.Document docs in wordInstance.Documents)
+                        {
+                            if (docs.Name == "changesSheldue.docx")
+                            {
+                                docs.Close();
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -195,8 +220,23 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                 try { new WebClient().DownloadFile("http://ggkttd.by/wp-content/uploads/2016/01/%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D1%8B2018.docx", "changesSheldue.docx"); } catch { }
                 return File.Exists("changesSheldue.docx") ? true : false;
             }
-            catch
+            catch(Exception ex)
             {
+                IFCore.IFCore.loggerMain.Error("Ошибка при доступе к файлу с изм. Расписанием: " + ex);
+                if (Process.GetProcessesByName("winword").Count() > 0)
+                {
+                    Microsoft.Office.Interop.Word.Application wordInstance = (Microsoft.Office.Interop.Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+
+                    foreach (Microsoft.Office.Interop.Word.Document docs in wordInstance.Documents)
+                    {
+                        if (docs.Name == "changesSheldue.docx")
+                        {
+                            docs.Close();
+                            DownloadFileChangesForSheldue();
+                            break;
+                        }
+                    }
+                }
                 return false;
             }
         }

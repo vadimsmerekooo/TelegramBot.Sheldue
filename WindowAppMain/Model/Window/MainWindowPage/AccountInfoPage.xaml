@@ -46,12 +46,6 @@
                             <TextBlock Text="Аккаунт" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem x:Name="GlobeBox" Style="{DynamicResource ListBoxItemStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon x:Name="AccountButton" Kind="Globe" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                            <TextBlock Text="Общие" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
                     <ListBoxItem x:Name="PasswordResetBox" Style="{DynamicResource ListBoxItemStyle}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon x:Name="SettingsButton" Kind="PasswordReset" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>

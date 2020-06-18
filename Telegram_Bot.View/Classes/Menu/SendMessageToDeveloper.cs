@@ -6,6 +6,9 @@ using Telegram.Bot.Args;
 using Telegram_Bot.View.Interface;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.IO;
+using System.Xml.Serialization;
+using System.Linq;
 
 namespace Telegram_Bot.View.Classes.Menu
 {
@@ -13,6 +16,7 @@ namespace Telegram_Bot.View.Classes.Menu
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
+        private XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private List<string> listCommand = new List<string>()
         {
             "/start", "/help", "Выбор личности 👥", "Помощь ❔", "/personality",
@@ -55,6 +59,84 @@ namespace Telegram_Bot.View.Classes.Menu
             {
                 BotRoma.OnMessage -= SendMessageToDevp;
                 return;
+            }
+            foreach (var word in e.Message.Text.Split(' '))
+            {
+                if (MainMenu.error_Word.Contains(word.ToLower()))
+                {
+                    if (idMessageClientsWarn != null && idMessageClientsWarn.Count != 0)
+                    {
+                        List<IFCore.DictionaryList> user = idMessageClientsWarn.Where(ids => ids.Id == Convert.ToInt32(e.Message.Chat.Id)).ToList();
+                        if (user != null)
+                        {
+                            if (user[0].Count != 3)
+                            {
+                                ((IFCore.DictionaryList)idMessageClientsWarn.Where(ids => ids.Id == user[0].Id)).Count++;
+                                using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                                {
+                                    sw.WriteLine(string.Empty);
+                                }
+                                using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                {
+                                    MainMenu.serializerDictionary.Serialize(fs, idMessageClientsWarn);
+                                }
+                                try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, $"Вам выданно {user[0].Count} предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: запрещенные слова 📛!"); } catch { }
+                                break;
+                            }
+                            else
+                            {
+                                idMessageClientsWarn.Remove(user[0]);
+                                using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                                {
+                                    sw.WriteLine(string.Empty);
+                                }
+                                using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                {
+                                    MainMenu.serializerDictionary.Serialize(fs, idMessageClientsWarn);
+                                }
+                                idMessageClientsBlackList.Add(Convert.ToInt32(e.Message.Chat.Id));
+                                using (StreamWriter sw = new StreamWriter("BlackListIdMessageChatClients.xml"))
+                                {
+                                    sw.WriteLine(string.Empty);
+                                }
+                                using (FileStream fs = new FileStream("BlackListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                {
+                                    serializer.Serialize(fs, idMessageClientsBlackList);
+                                }
+                                await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, "Вы занесены в черный список📛! Причина: максимальнок кол-во предупрдеждений!");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            idMessageClientsWarn.Add(new IFCore.DictionaryList(Convert.ToInt32(e.Message.Chat.Id), 1));
+                            using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                            {
+                                sw.WriteLine(string.Empty);
+                            }
+                            using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                            {
+                                MainMenu.serializerDictionary.Serialize(fs, idMessageClientsWarn);
+                            }
+                            try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, $"Вам выданно {user[0].Count} предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: запрещенные слова 📛!"); } catch { }
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        idMessageClientsWarn.Add(new IFCore.DictionaryList(Convert.ToInt32(e.Message.Chat.Id), 1));
+                        using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                        {
+                            sw.WriteLine(string.Empty);
+                        }
+                        using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                        {
+                            MainMenu.serializerDictionary.Serialize(fs, idMessageClientsWarn);
+                        }
+                        try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, $"Вам выданно 1 предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: запрещенные слова 📛"); } catch { }
+                        break;
+                    }
+                }
             }
             try { await BotRoma.SendTextMessageAsync(415226650, "Сообщение от пользователя: " + e.Message.Text + $" От: {e.Message.Chat.Id} - {e.Message.Chat.FirstName}", replyMarkup: new ReplyKeyboardRemove()); } catch { }
             try { await BotRoma.SendTextMessageAsync(e.Message.Chat.Id, "Сообщение отправлено ✔"); } catch { }

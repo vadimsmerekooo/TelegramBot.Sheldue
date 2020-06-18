@@ -83,5 +83,9 @@ namespace Telegram_Bot.BL.Classes.App
         {
             new CheckUser().ChangePasswordUser(login, password);
         }
+        public bool GetPasswordUser(string login, string password)
+        {
+            return new CheckUser().GetPasswordUser(login, password);
+        }
     }
 }

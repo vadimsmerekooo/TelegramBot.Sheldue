@@ -1,11 +1,12 @@
-﻿<Page x:Class="WindowAppMain.Model.Window.MainWindowPage.AccountPages.AccountGlobePage"
+﻿<Page x:Class="WindowAppMain.Model.Window.MainWindowPage.AccountPages.AccountLastNotesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WindowAppMain.Model.Window.MainWindowPage.AccountPages"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="400">
+      d:DesignHeight="450" d:DesignWidth="900"
+      Title="AccountLastNotesPage">
     <Page.Resources>
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
@@ -77,36 +78,69 @@
     </Page.Resources>
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VirtualizingPanel.ScrollUnit="Pixel">
-            <Grid Margin="15">
+            <Grid Margin="15" MinWidth="850">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Изменение пароля" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
+                <TextBlock Text="Ваши последние заметки" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
                 <Border Background="Gray" Height="1" VerticalAlignment="Bottom"/>
-                <StackPanel
+                <Grid
                     Grid.Row="1"
-                    Margin="20 0">
-                    <TextBlock Grid.Row="2" Text="Введите старый пароль" Style="{DynamicResource InfoUserTextBlockStyle}" Margin="10"/>
-                    <PasswordBox x:Name="TextBlockOldPass" Width="180" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" HorizontalAlignment="Left" Margin="10 0" ToolTip="Логин"></PasswordBox>
-                    <Border Width="180" 
-                       VerticalAlignment="Bottom"
-                            HorizontalAlignment="Left"
-                       Margin="10 0 0 15"
-                       Height="2"
-                       Background="{DynamicResource TextBlockColorWhite}"
-                       Opacity="0.5"/>
-                    <TextBlock Grid.Row="2" Text="Введите новый пароль" Style="{DynamicResource InfoUserTextBlockStyle}" Margin="10"/>
-                    <PasswordBox x:Name="TextBlockNewPass" Width="180" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" HorizontalAlignment="Left" Margin="10 0" ToolTip="Логин"></PasswordBox>
-                    <Border  Width="180" 
-                       VerticalAlignment="Bottom"
-                            HorizontalAlignment="Left"
-                       Margin="10 0 0 15"
-                       Height="2"
-                       Background="{DynamicResource TextBlockColorWhite}"
-                       Opacity="0.5"/>
-                    <Button Style="{DynamicResource BorderButtonCorner}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Width="180" Content="Изменить пароль" HorizontalAlignment="Left" ToolTip="Изменить пароль" Margin="10 0" Click="Button_Click"/>
-                </StackPanel>
+                    VerticalAlignment="Top"
+                    Margin="30 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border Background="Gray" Width="1" HorizontalAlignment="Right"/>
+                    <Border Background="Gray" Grid.Column="1" Width="1" HorizontalAlignment="Right"/>
+                    <Border Background="Gray" Grid.Column="2" Width="1" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Дата" Style="{DynamicResource InfoUserTextBlockStyle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Пара" Style="{DynamicResource InfoUserTextBlockStyle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Предмет" Style="{DynamicResource InfoUserTextBlockStyle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Текст заметки" Style="{DynamicResource InfoUserTextBlockStyle}"/>
+                    <Border Background="Gray" Grid.ColumnSpan="5" Height="1" VerticalAlignment="Bottom"/>
+                    <ItemsControl
+                        Grid.Row="1"
+                        Grid.ColumnSpan="5"
+                        ItemsSource="{Binding UsersNotes}"
+                        x:Name="NotesItemsControl">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Grid.Row="1"
+                        Grid.ColumnSpan="5"
+                          MinHeight="40">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140"></ColumnDefinition>
+                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Background="Gray" Width="1" HorizontalAlignment="Right"/>
+                                    <Border Background="Gray" Grid.Column="1" Width="1" HorizontalAlignment="Right"/>
+                                    <Border Background="Gray" Grid.Column="2" Width="1" HorizontalAlignment="Right"/>
+                                    <TextBlock Padding="8" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding DateNote}" Style="{DynamicResource InfoUserTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <TextBlock Padding="8" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding ParaNumber}" Style="{DynamicResource InfoUserTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <TextBlock Padding="8" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Para}" Style="{DynamicResource InfoUserTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <TextBlock Padding="8" Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding NoteText}" Style="{DynamicResource InfoUserTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <Border Background="Gray" Grid.ColumnSpan="5" Height="1" VerticalAlignment="Bottom"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -28,11 +28,10 @@ namespace WindowAppMain.Model.Window.MainWindowPage
                     AccountInfoPageFrame.NavigationService.Navigate(new AccountMainInfo(_mWindow, this));
                     break;
                 case 1:
-                    AccountInfoPageFrame.NavigationService.Navigate(new Uri("Model/Window/MainWindowPage/AccountPages/AccountGlobePage.xaml", UriKind.Relative));
+                    AccountInfoPageFrame.NavigationService.Navigate(new AccountGlobePage(_mWindow));
                     break;
                 case 2:
-                    break;
-                case 3:
+                    AccountInfoPageFrame.NavigationService.Navigate(new AccountLastNotesPage(_mWindow));
                     break;
             }
         }

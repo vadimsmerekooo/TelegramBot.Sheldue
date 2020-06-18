@@ -43,19 +43,19 @@ namespace Telegram_Bot.View.Classes.Menu
             {
                 if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) < 0)
                 {
-                    weatherStringText = $"На улице, {temp}, холодно⛄, надень шапку🥶";
+                    weatherStringText = $"В Гродно, на улице, {temp}, холодно⛄, надень шапку🥶";
                 }
                 else
                 {
                     if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 0 && Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) < 15)
                     {
-                        weatherStringText = $"На улице, {temp}, прохладно⛄, оденься теплее🥶";
+                        weatherStringText = $"В Гродно, на улице, {temp}, прохладно⛄, оденься теплее🥶";
                     }
                     else
                     {
                         if (Convert.ToInt32(temp.Replace("+", "").Replace("-", "")) >= 15)
                         {
-                            weatherStringText = $"На улице, {temp}, жарко☀, надень рубашку🥵";
+                            weatherStringText = $"В Гродно, на улице, {temp}, жарко☀, надень рубашку🥵";
                         }
                     }
                 }

@@ -380,8 +380,8 @@
                             </ListBoxItem>
                             <ListBoxItem x:Name="Settings" Style="{DynamicResource ListBoxItemStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon x:Name="SettingsButton" Kind="SettingsOutline" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                                    <TextBlock Text="Настройки" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
+                                    <materialDesign:PackIcon x:Name="SettingsButton" Kind="TrackChanges" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
+                                    <TextBlock Text="Изменение к расписанию" Margin="20 0" Style="{DynamicResource TextBlockStyle}"/>
                                 </StackPanel>
                             </ListBoxItem>
                         </ListBox>

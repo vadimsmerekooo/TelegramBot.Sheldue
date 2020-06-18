@@ -29,7 +29,7 @@ namespace Telegram_Bot.App
         private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static XmlSerializer serializerDictionary = new XmlSerializer(typeof(IFCore.DictionaryList), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
         private static string weekCheck = string.Empty;
-        private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(200000);
+        private static System.Timers.Timer timerChangesSheldue = new System.Timers.Timer(200000);//200000
         static string dayOldSheldue = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
 
         private static void TimerIntervalParseFile(object sender, ElapsedEventArgs e)
@@ -54,6 +54,7 @@ namespace Telegram_Bot.App
                     if (newSheldueAtTimer != null)
                     {
                         allSheldue = ChangeMainSheldueWithNewSheldue(allSheldue, newSheldueAtTimer);
+                        MainMenu.SetSheldue = allSheldue;
                         Program.dayOldSheldue = keys.ToArray()[0];
                         new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, idMessageClients, allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
                         Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
@@ -99,7 +100,7 @@ namespace Telegram_Bot.App
             Console.ReadKey();
         }
 
-        
+
         private static void DefaultlPrint()
         {
             string bwDontNull = "Выберите команду:\n1. Запуск бота\n2. Просмотреть логи\n3. Проверить статус бота\n4. Очистить терминал\n5. Удалить все логи\n6. Вывести пользователей бота\n7. Оповестить всех пользователей\n0. Выход\n";
@@ -451,23 +452,23 @@ namespace Telegram_Bot.App
         }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
-                      Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> shangeSheldue)
+                      Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> shangeSheldues)
         {
             try
             {
-                foreach (var changeSheldueItem in changeSheldue)
+                foreach (var changeSheldueItem in shangeSheldues)
                 {
                     foreach (var changeSheldueItemValue in changeSheldueItem.Value)
                     {
                         foreach (var itemMain in mainSheldue)
                         {
-                            if (changeSheldueItemValue.Key == itemMain.Key.Split(' ')[1])
+                            if (changeSheldueItemValue.Key.ToLower() == itemMain.Key.Split(' ')[1].ToLower())
                             {
                                 foreach (var itemChangeValue in changeSheldueItemValue.Value)
                                 {
-                                    if (itemChangeValue.DayName.ToLower() == changeSheldueItem.Key.ToLower())
+                                    foreach (var itemMainValue in itemMain.Value)
                                     {
-                                        foreach (var itemMainValue in itemMain.Value)
+                                        if (itemChangeValue.DayName.ToLower() == itemMainValue.DayName.ToLower())
                                         {
                                             try
                                             {
@@ -497,7 +498,7 @@ namespace Telegram_Bot.App
             }
             catch
             {
-
+               
             }
             return mainSheldue;
             //try
