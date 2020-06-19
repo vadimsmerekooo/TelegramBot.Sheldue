@@ -448,7 +448,7 @@ namespace Telegram_Bot.App
                     }
                 }
             } while (true);
-            return pass != "Roma" ? false : true;
+            return pass.GetHashCode() != 324320923432 ? false : true;
         }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,

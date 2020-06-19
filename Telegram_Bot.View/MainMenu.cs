@@ -80,6 +80,8 @@ namespace Telegram_Bot.View
         public async void SendMessageAdminPanel(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            if (message.Type != MessageType.Text || message == null)
+                return;
             if (message.Chat.Id == 415226650)
             {
                 switch (message.Text.GetHashCode())
