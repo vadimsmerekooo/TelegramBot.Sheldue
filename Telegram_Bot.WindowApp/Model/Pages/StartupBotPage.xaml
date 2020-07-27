@@ -99,6 +99,7 @@
             </Setter>
         </Style>
     </Page.Resources>
+
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>

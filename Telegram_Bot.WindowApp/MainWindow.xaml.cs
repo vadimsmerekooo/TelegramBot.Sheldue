@@ -22,6 +22,7 @@ namespace Telegram_Bot.WindowApp
         {
             InitializeComponent();
             _mWindow = this;
+            GroupListBox.SelectedIndex = 0;
         }
 
         private void ButtonFechar_Click(object sender, RoutedEventArgs e)

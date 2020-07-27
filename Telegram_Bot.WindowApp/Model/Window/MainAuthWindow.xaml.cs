@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Telegram_Bot.WindowApp.Model.Window
 {
@@ -74,6 +66,21 @@ namespace Telegram_Bot.WindowApp.Model.Window
             BorderInfoPanelAuthReg.Background = Brushes.Red;
             BorderPasswordPasswordBox.Background = Brushes.Red;
             BorderLoginTextBox.Background = Brushes.Red;
+        }
+
+        private void TextBoxLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                if (PasswordBoxPassword.Password == string.Empty)
+                    PasswordBoxPassword.Focus();
+                else
+                    ButtonAuth_Click(null, null);
+        }
+
+        private void PasswordBoxPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ButtonAuth_Click(null, null);
         }
     }
 }

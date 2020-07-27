@@ -71,7 +71,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <TextBox x:Name="TextBoxLogin" Width="180" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Логин" TextChanged="TextBoxLogin_TextChanged"></TextBox>
+                <TextBox x:Name="TextBoxLogin" Width="180" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Логин" TextChanged="TextBoxLogin_TextChanged" KeyDown="TextBoxLogin_KeyDown"></TextBox>
                 <materialDesign:PackIcon Kind="UserOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderLoginTextBox" Width="210" 
@@ -81,7 +81,7 @@
                        Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <PasswordBox x:Name="PasswordBoxPassword" Width="180" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" ToolTip="Пароль" PasswordChanged="PasswordBoxPassword_PasswordChanged"/>
+                <PasswordBox x:Name="PasswordBoxPassword" Width="180" VerticalContentAlignment="Center" Style="{DynamicResource PasswordBoxTransparateStyle}" ToolTip="Пароль" PasswordChanged="PasswordBoxPassword_PasswordChanged" KeyDown="PasswordBoxPassword_KeyDown"/>
                 <materialDesign:PackIcon Kind="TextboxPassword" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
             </StackPanel>
             <Border x:Name="BorderPasswordPasswordBox" Grid.Row="1" Width="210" 

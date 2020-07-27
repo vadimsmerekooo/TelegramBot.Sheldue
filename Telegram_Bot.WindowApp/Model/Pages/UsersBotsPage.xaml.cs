@@ -24,16 +24,26 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             {
                 case 0:
                     ListBoxUsersBots.ItemsSource = MainWindow.DeserializebleMethod("Configure_Files/TelegramBot_Files/Users/UsersListTelegram.xaml");
-                    TextBlockTelegramName.Text = $"Пользователи Telegram бота ({((List<UserInfoList>)ListBoxUsersBots.ItemsSource).Count})";
+                    BotListBox_EnterData("Telegram");
                     break;
                 case 1:
                     ListBoxUsersBots.ItemsSource = MainWindow.DeserializebleMethod("Configure_Files/VkBot_Files/Users/UsersListVk.xaml");
-                    TextBlockTelegramName.Text = $"Пользователи Vk бота ({((List<UserInfoList>)ListBoxUsersBots.ItemsSource).Count})";
+                    BotListBox_EnterData("Vk");
                     break;
                 case 2:
                     ListBoxUsersBots.ItemsSource = MainWindow.DeserializebleMethod("Configure_Files/ViberBot_Files/Users/UsersListViber.xaml");
-                    TextBlockTelegramName.Text = $"Пользователи Viber бота ({((List<UserInfoList>)ListBoxUsersBots.ItemsSource).Count})";
+                    BotListBox_EnterData("Viber");
                     break;
+            }
+        }
+        private void BotListBox_EnterData(string botText)
+        {
+            if (ListBoxUsersBots.ItemsSource != null && ((List<UserInfoList>)ListBoxUsersBots.ItemsSource).Count != 0)
+                TextBlockTelegramName.Text = $"Пользователи {botText} бота ({((List<UserInfoList>)ListBoxUsersBots.ItemsSource).Count})";
+            else
+            {
+                ClearList.Visibility = System.Windows.Visibility.Visible;
+                TextBlockTelegramName.Text = $"Пользователи {botText} бота (список пуст)";
             }
         }
     }
