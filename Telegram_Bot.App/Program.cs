@@ -14,6 +14,10 @@ using System.Security.Policy;
 using System.Net.NetworkInformation;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Configuration;
 
 namespace Telegram_Bot.App
 {
@@ -99,7 +103,6 @@ namespace Telegram_Bot.App
             DefaultlPrint();
             Console.ReadKey();
         }
-
 
         private static void DefaultlPrint()
         {
@@ -448,7 +451,7 @@ namespace Telegram_Bot.App
                     }
                 }
             } while (true);
-            return pass.GetHashCode() != 324320923432 ? false : true;
+            return pass == "Roma";
         }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
                       Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,

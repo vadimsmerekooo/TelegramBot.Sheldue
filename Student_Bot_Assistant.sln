@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowAppMain", "WindowAppM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFCore", "IFCore\IFCore.csproj", "{91E602CB-69A1-44BA-83F2-8846E6AD41E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telegram_Bot.WindowApp", "Telegram_Bot.WindowApp\Telegram_Bot.WindowApp.csproj", "{08497AE5-CC5D-4BF2-B006-19EF0F11E15F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{91E602CB-69A1-44BA-83F2-8846E6AD41E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E602CB-69A1-44BA-83F2-8846E6AD41E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E602CB-69A1-44BA-83F2-8846E6AD41E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08497AE5-CC5D-4BF2-B006-19EF0F11E15F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08497AE5-CC5D-4BF2-B006-19EF0F11E15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08497AE5-CC5D-4BF2-B006-19EF0F11E15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08497AE5-CC5D-4BF2-B006-19EF0F11E15F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
