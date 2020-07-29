@@ -1,0 +1,285 @@
+﻿<Page x:Class="Telegram_Bot.WindowApp.Model.Pages.StopBotPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:Telegram_Bot.WindowApp.Model.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="600"
+      Title="TelegramBotPage">
+
+    <Page.Resources>
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                            <Border x:Name="ScrollBarRectangle" CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="ScrollBarRectangle" Property="Width" Value="Auto" />
+                                <Setter TargetName="ScrollBarRectangle" Property="Height" Value="5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Margin" Value="0,0,-5,-5" />
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColorUIElements}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="5" Background="{TemplateBinding Background}">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="ScrollBarThumb" Background="{TemplateBinding Foreground}" Style="{StaticResource ScrollThumbs}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="ScrollBarThumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="5" />
+                                <Setter TargetName="ScrollBarThumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{Binding (TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}}"/>
+            <Setter Property="Background" Value="Chartreuse"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueMidBrush}"/>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="Click">
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="48"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="48"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-24"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-24"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox VerticalAlignment="Center" Height="18" Width="18">
+                                <Canvas Height="24" Width="24">
+                                    <Path x:Name="Graphic"  Data="M12,20A8,8,0,0,1,4,12A8,8,0,0,1,12,4A8,8,0,0,1,20,12A8,8,0,0,1,12,20 M12,2A10,10,0,0,0,2,12A10,10,0,0,0,12,22A10,10,0,0,0,22,12A10,10,0,0,0,12,2z" Fill="Chartreuse"/>
+                                    <Ellipse x:Name="InteractionEllipse" Fill="Chartreuse" Height="0" Canvas.Left="12" Opacity="0" RenderTransformOrigin="0.5,0.5" Canvas.Top="12" Width="0">
+                                        <Ellipse.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Ellipse.RenderTransform>
+                                    </Ellipse>
+                                </Canvas>
+                            </Viewbox>
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="ButtonBase.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="InteractionEllipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="48"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="InteractionEllipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="48"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="InteractionEllipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-24"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="InteractionEllipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="-24"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="InteractionEllipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="HasContent" Value="True">
+                                <Setter Property="FocusVisualStyle">
+                                    <Setter.Value>
+                                        <Style>
+                                            <Setter Property="Control.Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <Rectangle Margin="0" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" Fill="Chartreuse" StrokeDashArray="1 2"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Padding" Value="4,2,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Fill" TargetName="Graphic" Value="{DynamicResource MaterialDesignCheckBoxDisabled}"/>
+                                <Setter Property="Opacity" Value="0.26"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True"/>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Data" TargetName="Graphic" Value="M12,20A8,8,0,0,1,4,12A8,8,0,0,1,12,4A8,8,0,0,1,20,12A8,8,0,0,1,12,20 M12,2A10,10,0,0,0,2,12A10,10,0,0,0,12,22A10,10,0,0,0,22,12A10,10,0,0,0,12,2 M12,7A5,5,0,0,0,7,12A5,5,0,0,0,12,17A5,5,0,0,0,17,12A5,5,0,0,0,12,7z"/>
+                                <Setter Property="Fill" TargetName="Graphic" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Data" TargetName="Graphic" Value="M12,20A8,8,0,0,1,4,12A8,8,0,0,1,12,4A8,8,0,0,1,20,12A8,8,0,0,1,12,20 M12,2A10,10,0,0,0,2,12A10,10,0,0,0,12,22A10,10,0,0,0,22,12A10,10,0,0,0,12,2 M12,7A5,5,0,0,0,7,12A5,5,0,0,0,12,17A5,5,0,0,0,17,12A5,5,0,0,0,12,7z"/>
+                                <Setter Property="Opacity" TargetName="Graphic" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="Fill" TargetName="Graphic" Value="{DynamicResource ValidationErrorBrush}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{DynamicResource ValidationErrorBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <ScrollViewer Margin="15" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VirtualizingPanel.ScrollUnit="Pixel">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="300" Width="400"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition />
+                    <RowDefinition Height="90"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="NameBot" Text="Управление ... ботом" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
+                <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+
+                <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+                <Border Grid.Row="2" Margin="30 5" CornerRadius="10" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2" HorizontalAlignment="Left" MinWidth="300">
+                    <TextBox x:Name="TextBoxNewMessage" FontWeight="Light" MaxLength="100" Background="Transparent" BorderThickness="0" Padding="10" Style="{DynamicResource TextBoxTransparateStyle}" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
+                </Border>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="5" Grid.Row="2">
+                    <Button Grid.Column="2"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                     Height="40"  Width="60"
+                            ToolTip="Прикрепить файл">
+                        <materialDesign:PackIcon Kind="AttachFile" 
+                                             Foreground="Chartreuse" 
+                                             Height="30" 
+                                             Width="30" HorizontalAlignment="Left"/>
+
+                    </Button>
+                    <Button Grid.Column="2"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Отправить"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                     Height="40"  Width="60">
+                        <materialDesign:PackIcon Kind="Send" 
+                                             Foreground="Chartreuse" 
+                                             Height="30" 
+                                             Width="30" HorizontalAlignment="Left"/>
+
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Margin="5">
+                    <RadioButton x:Name="AllSendMessageRadioButton" Content="Отправить всем" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" IsChecked="True" Click="RadioButton_Click"/>
+                    <RadioButton x:Name="IdSendMessageRadioButton" Content="Выбрать адресатора" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" Click="RadioButton_Click_1"/>
+                    <StackPanel x:Name="TextBoxStackPanel" Height="0" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBox x:Name="TextBoxLogin" Width="140" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Id" ></TextBox>
+                        <materialDesign:PackIcon Kind="UserOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
+                    </StackPanel>
+                </StackPanel>
+                <Border x:Name="BorderTextBoxIdUser" Grid.Row="2" Width="160" 
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom"
+                       Margin="0 0 0 8"
+                       Height="2"
+                        Visibility="Hidden"
+                       Background="{DynamicResource TextBlockColorWhite}"
+                       Opacity="0.5"/>
+                <Button x:Name="ButtonStartBot"
+                        Grid.Column="1" Style="{DynamicResource BorderButtonCorner}" Height="30" Margin="5" Content="Остановить бот"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

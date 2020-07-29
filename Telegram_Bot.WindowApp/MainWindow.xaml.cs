@@ -18,6 +18,13 @@ namespace Telegram_Bot.WindowApp
 
         public static MainWindow _mWindow;
 
+
+        public static bool TelegramBot_Working;
+        public static bool VkBot_Working;
+        public static bool ViberBot_Working;
+
+
+
         public MainWindow()
         {
             InitializeComponent();

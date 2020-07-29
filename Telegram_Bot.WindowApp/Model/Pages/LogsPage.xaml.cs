@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Controls;
-using Telegram_Bot.WindowApp.Model.Pages.BotsPages;
 
 namespace Telegram_Bot.WindowApp.Model.Pages
 {
@@ -19,13 +18,13 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             switch (BotListBox.SelectedIndex)
             {
                 case 0:
-                    BotInfoPageFrame.NavigationService.Navigate(new TelegramBotPage());
+                    BotInfoPageFrame.NavigationService.Navigate(null);
                     break;
                 case 1:
-                    BotInfoPageFrame.NavigationService.Navigate(new VkBotPage());
+                    BotInfoPageFrame.NavigationService.Navigate(null);
                     break;
                 case 2:
-                    BotInfoPageFrame.NavigationService.Navigate(new ViberBotPage());
+                    BotInfoPageFrame.NavigationService.Navigate(null);
                     break;
             }
         }

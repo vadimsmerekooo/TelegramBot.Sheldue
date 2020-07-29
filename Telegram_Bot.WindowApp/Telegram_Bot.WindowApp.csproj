@@ -81,23 +81,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Model\Pages\BotsPages\TelegramBotPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Model\Pages\BotsPages\ViberBotPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Model\Pages\BotsPages\VkBotPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Model\Pages\LogsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Model\Pages\StartBotPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Model\Pages\StartupBotPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Model\Pages\StopBotPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,20 +115,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Pages\BotsPages\TelegramBotPage.xaml.cs">
-      <DependentUpon>TelegramBotPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Pages\BotsPages\ViberBotPage.xaml.cs">
-      <DependentUpon>ViberBotPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Pages\BotsPages\VkBotPage.xaml.cs">
-      <DependentUpon>VkBotPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\Pages\LogsPage.xaml.cs">
       <DependentUpon>LogsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Pages\StartBotPage.xaml.cs">
+      <DependentUpon>StartBotPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Pages\StartupBotPage.xaml.cs">
       <DependentUpon>StartupBotPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Pages\StopBotPage.xaml.cs">
+      <DependentUpon>StopBotPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Pages\UsersBotsPage.xaml.cs">
       <DependentUpon>UsersBotsPage.xaml</DependentUpon>
