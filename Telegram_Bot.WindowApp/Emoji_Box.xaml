@@ -1,14 +1,13 @@
-﻿<Page x:Class="Telegram_Bot.WindowApp.Model.Pages.StartupBotPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:local="clr-namespace:Telegram_Bot.WindowApp.Model.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="400" d:DesignWidth="500"
-      Title="BotsInfoPage" Margin="15">
-    <Page.Resources>
+﻿<UserControl x:Class="Telegram_Bot.WindowApp.Emoji_Box"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Telegram_Bot.WindowApp"
+             mc:Ignorable="d" 
+             Height="200" Width="260">
+    <UserControl.Resources>
+
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -30,7 +29,7 @@
         <Style TargetType="{x:Type ScrollBar}">
             <Setter Property="Margin" Value="0,0,-5,-5" />
             <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColorUIElements}" />
+            <Setter Property="Foreground" Value="Chartreuse" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Width" Value="5" />
             <Setter Property="Template">
@@ -82,13 +81,14 @@
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <Border 
           Name="Border"
-          Padding="7"
+          Padding="5"
+                            CornerRadius="10"
           SnapsToDevicePixels="true">
                             <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="#DDDDDD"/>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#1C1C1C"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="#888888"/>
@@ -98,52 +98,32 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Page.Resources>
-
-    <Grid Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="2" Style="{DynamicResource BlockRectangleStyle}"/>
-        <Rectangle  Style="{DynamicResource BlockRectangleStyle}" Fill="Gray" Width="40" Margin="10" HorizontalAlignment="Left"/>
-        <Grid Grid.Column="0" Margin="10 10">
-            <Grid Grid.Row="1" VerticalAlignment="Top">
-                <!--<Grid.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Gray" Offset="0"/>
-                        <GradientStop Color="#585858" Offset="0.01"/>
-                        <GradientStop Color="#1C1C1C" Offset="1"/>
-                    </LinearGradientBrush>
-                </Grid.Background>-->
-                <TextBlock Text="Управление ботами" Style="{DynamicResource TextBlockStyle}" VerticalAlignment="Top" Margin="20"/>
-                <ListBox x:Name="BotListBox" Margin="0 20 0 0"  Grid.Row="1" SelectionChanged="BotListBox_SelectionChanged">
-                    <ListBoxItem x:Name="TelegramBotBox" Style="{DynamicResource ListBoxItemStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Telegram" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                            <TextBlock Text="Telegram Bot" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem x:Name="VkBotBox" Style="{DynamicResource ListBoxItemStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Vk" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                            <TextBlock Text="Vk Bot" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem x:Name="ViberBotBox" Style="{DynamicResource ListBoxItemStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Ember" Height="25" Width="25" Foreground="{DynamicResource ForegroundColorUIElements}"/>
-                            <TextBlock Text="Viber Bot" Margin="20 0" VerticalAlignment="Center" Style="{DynamicResource TextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Effect>
+            <DropShadowEffect 
+                ShadowDepth="1"/>
+        </Grid.Effect>
+        <Rectangle 
+            RadiusX="10"
+            RadiusY="10"
+            Margin="0 0 0 10"
+            Fill="#2E2E2E"/>
+        <Polygon 
+            VerticalAlignment="Bottom" 
+            HorizontalAlignment="Right"
+            Margin="30 0" Height="15" 
+            Width="20" 
+            Fill="#2E2E2E" 
+            Points="0, 0, 20, 0, 10, 15" />
+        <Grid Margin="5 5 0 15">
+            <ListBox BorderThickness="0" Background="Transparent" MaxWidth="260" x:Name="AllEmoji" VerticalAlignment="Top" HorizontalAlignment="Left" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling" SelectionChanged="AllEmoji_SelectionChanged">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel MaxWidth="258"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                 </ListBox>
-            </Grid>
-        </Grid>
-        <Grid Grid.Column="1" Margin="10">
-            <Rectangle  Grid.Column="1" Style="{DynamicResource BlockRectangleStyle}" Fill="{DynamicResource MainGrayColor}" Opacity="0.4" />
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VirtualizingPanel.ScrollUnit="Pixel">
-                <Frame x:Name="BotInfoPageFrame" NavigationUIVisibility="Hidden"/>
-            </ScrollViewer>
         </Grid>
     </Grid>
-</Page>
+</UserControl>

@@ -358,7 +358,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown" >
+        <Grid x:Name="GridTitleBar" Background="{DynamicResource TitleStackPanelBackgroundColor}" MouseDown="GridTitleBar_MouseDown" MouseLeftButtonUp="GridTitleBar_MouseLeftButtonDown" MouseLeftButtonDown="GridTitleBar_MouseLeftButtonDown_1">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="15"/>
             </Grid.Effect>

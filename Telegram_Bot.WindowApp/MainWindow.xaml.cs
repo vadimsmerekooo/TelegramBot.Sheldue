@@ -113,5 +113,17 @@ namespace Telegram_Bot.WindowApp
                 return null;
             }
         }
+
+        private void GridTitleBar_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+
+            }
+        }
     }
 }
