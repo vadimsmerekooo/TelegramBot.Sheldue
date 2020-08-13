@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.Office.Interop.Word;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace Telegram_Bot.DAL.Classes.GetShledueFolder
 {

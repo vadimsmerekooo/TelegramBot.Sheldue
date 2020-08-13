@@ -98,7 +98,7 @@ namespace Telegram_Bot.View.Classes.Menu
                 case "на завтра":
                     var dayTodays = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
                     var dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(1).DayOfWeek);
-                    if(dayTodays == "суббота")
+                    if (dayTodays == "суббота")
                     {
                         dayTomorow = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.AddDays(3).DayOfWeek);
                     }
@@ -113,7 +113,7 @@ namespace Telegram_Bot.View.Classes.Menu
         public async void NextStepParseFile(object sender, MessageEventArgs e, string day)
         {
             var message = e.Message;
-            try { await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка..."); }catch { }
+            try { await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка..."); } catch { }
             // Вызываем метод для получения расписания на выбранный день
             string parseTextWithoutWordFile = SerachShldueForUser(day);
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId + 1); } catch { }
@@ -126,7 +126,7 @@ namespace Telegram_Bot.View.Classes.Menu
             try
             {
                 // Проходимся по всему полученному расписанию
-                foreach (var item in sheldue)
+                foreach (var item in this.sheldue)
                 {
                     if (item.Key == "ГРУППА " + groupName.Replace(" ", ""))
                     {
@@ -183,7 +183,7 @@ namespace Telegram_Bot.View.Classes.Menu
 
         private string ListParaToString(List<IFCore.SheldueTelegram> para)
         {
-            if (para == null)
+            if (para == null || para.Count == 0)
                 return string.Empty;
             else
                 //  Возвращаем номер пары, название урока и аудиторию
@@ -194,28 +194,35 @@ namespace Telegram_Bot.View.Classes.Menu
         private string LongStringInShort(string text)
         {
             // Если название длиннее 25 символов, укарачиваем строку
-            if (text?.Length > 25)
+            try
             {
-                string newText = string.Empty;
-                string[] splitText = text.Split(' ');
-                foreach (var word in splitText)
+                if (text?.Length > 25)
                 {
-                    try
+                    string newText = string.Empty;
+                    string[] splitText = text.Split(' ');
+                    foreach (var word in splitText)
                     {
-                        newText += word[0].ToString().ToUpper();
-                        if (word[word.Length - 1].ToString() == "/")
+                        try
                         {
-                            newText += " / ";
+                            newText += word[0].ToString().ToUpper();
+                            if (word[word.Length - 1].ToString() == "/")
+                            {
+                                newText += " / ";
+                            }
+                        }
+                        catch
+                        {
+                            continue;
                         }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                    return newText;
                 }
-                return newText;
+                else
+                {
+                    return text;
+                }
             }
-            else
+            catch
             {
                 return text;
             }

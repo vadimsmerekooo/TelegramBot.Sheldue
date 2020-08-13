@@ -347,7 +347,7 @@
                        Background="{DynamicResource TextBlockColorWhite}"
                        Opacity="0.5"/>
                 <Button x:Name="ButtonStartBot"
-                        Grid.Column="1" Style="{DynamicResource BorderButtonCorner}" Height="30" Margin="5" Content="Остановить бот"/>
+                        Grid.Column="1" Style="{DynamicResource BorderButtonCorner}" Height="30" Margin="5" Content="Остановить бот" Click="ButtonStartBot_Click"/>
 
             </Grid>
         </ScrollViewer>

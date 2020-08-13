@@ -65,7 +65,7 @@ namespace Telegram_Bot.View
                 var key = e.Argument as String;
                 if (File.Exists("Error_Word.txt"))
                     error_Word = File.ReadAllText("Error_Word.txt").ToLower().Split(new char[] { ',', ' ', '.' }).ToList();
-                BotRoma = new TelegramBotClient(key);
+                BotRoma = new TelegramBotClient(ApiKeyBot);
                 await BotRoma.SetWebhookAsync("");
                 BotRoma.OnMessage += SendMessageAdminPanel;
                 BotRoma.OnMessage += SendMessage;

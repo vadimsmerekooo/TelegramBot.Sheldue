@@ -1,17 +1,16 @@
-﻿using System;
+﻿using IFCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Xml.Serialization;
+using Telegram.Bot;
+using Telegram_Bot.View;
+using Telegram_Bot.View.Classes.Menu;
 
 namespace Telegram_Bot.WindowApp.Model.Pages
 {
@@ -20,9 +19,220 @@ namespace Telegram_Bot.WindowApp.Model.Pages
     /// </summary>
     public partial class StartBotPage : Page
     {
-        public StartBotPage()
+
+        bool selected_TelegramBot;
+        bool selected_VkBot_Working;
+        bool selected_ViberBot_Working;
+
+        public StartBotPage(string bot)
         {
             InitializeComponent();
+            switch (bot)
+            {
+                case nameof(MainWindow.TelegramBot_Working):
+                    SetTokensBot(Path.GetFullPath("Configure_Files/TelegramBot_Files/api_key_bot.dat"));
+                    selected_TelegramBot = true;
+                    break;
+                case nameof(MainWindow.VkBot_Working):
+                    SetTokensBot("Configure_Files/VkBot_Files/api_key_bot.dat");
+                    selected_VkBot_Working = true;
+                    break;
+                case nameof(MainWindow.ViberBot_Working):
+                    SetTokensBot("Configure_Files/ViberBot_Files/api_key_bot.dat");
+                    selected_ViberBot_Working = true;
+                    break;
+            }
+        }
+
+        private void ButtonStartBot_Click(object sender, RoutedEventArgs e)
+        {
+            if (selected_TelegramBot)
+            {
+                MainWindow._mWindow.ShowSuccessfulMessage("Загрузка расписания.");
+
+                if (!File.Exists("SheldueList.xml"))
+                {
+                    MainWindow._mWindow.ShowErrorMessage("Список с расписанием, не найден!!!");
+                    return;
+                }
+                XmlSerializer serializer = new XmlSerializer(typeof(List<IFCore.GetSheldueDic>), new XmlRootAttribute() { ElementName = "DictionarySerSheldueTelegram" });
+
+                using (FileStream fs = new FileStream("SheldueList.xml", FileMode.Open))
+                {
+                    MainWindow.allSheldue = new Dictionary<string, List<SheldueAllDaysTelegram>>();
+                    var deserlist = (List<IFCore.GetSheldueDic>)serializer.Deserialize(fs);
+                    foreach (var item in deserlist)
+                    {
+                        MainWindow.allSheldue.Add(item.Name, item.Sheldue);
+                    }
+                }
+                if (MainWindow.allSheldue is null)
+                {
+                    MainWindow._mWindow.ShowErrorMessage("Список с расписанием пуст!!!");
+                    return;
+                }
+                MainWindow.allSheldueCopy = MainWindow.allSheldue;
+                if (MainWindow.allSheldue != null)
+                {
+                    MainWindow._mWindow.ShowSuccessfulMessage("Расписание загружено.");
+                    MainWindow._mWindow.ShowSuccessfulMessage("Загрузка файла, изменение к расписанию, с сайта.");
+                    MainWindow.changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out MainWindow.weekCheck);
+                    if (MainWindow.changeSheldue != null)
+                    {
+                        MainWindow.allSheldue = ChangeMainSheldueWithNewSheldue(MainWindow.allSheldue, MainWindow.changeSheldue);
+                        MainWindow._mWindow.ShowSuccessfulMessage("Изменение к расписанию загружено.");
+                    }
+                    else
+                    {
+                        MainWindow._mWindow.ShowErrorMessage("Изменение к расписанию не загружено.");
+                    }
+                    TelegramBotStartup();
+
+                }
+                else
+                {
+                    MainWindow._mWindow.ShowErrorMessage("Расписание не загружено. Бот не будет запущен!");
+                }
+            }
+        }
+
+
+        private void SetTokensBot(string path_File)
+        {
+            TokensBotComboBox.ItemsSource = File.ReadAllLines(path_File);
+        }
+        private async void TelegramBotStartup()
+        {
+            if (TokensBotComboBox.SelectedIndex == -1)
+                return;
+
+            string apiToken = TokensBotComboBox.SelectedValue.ToString().Trim();
+            TelegramBotClient BotRoma = new TelegramBotClient(apiToken);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            MainMenu menuLibriary = new MainMenu(BotRoma, apiToken, ref MainWindow.allSheldue);
+            MainMenu.Week = MainWindow.weekCheck;
+
+            MainWindow.bw.DoWork += menuLibriary.StartedMenu;
+
+            if (MainWindow.bw.IsBusy != true)
+            {
+                if (MainWindow.idMessageClients != null)
+                    menuLibriary.idMessageClients = MainWindow.idMessageClients;
+                if (MainWindow.idMessageClientsBlackList != null)
+                    menuLibriary.idMessageClientsBlackList = MainWindow.idMessageClientsBlackList;
+                if (MainWindow.idMessageClientsWarningList != null)
+                    menuLibriary.idMessageClientsWarn = MainWindow.idMessageClientsWarningList;
+                MainWindow.bw.RunWorkerAsync(apiToken);
+
+                try
+                {
+                    BotRoma = new TelegramBotClient(apiToken);
+                    await BotRoma.SetWebhookAsync("");
+                    IFCore.IFCore.loggerMain.Debug("Bot: Status - Run");
+                    MainWindow.timerChangesSheldue.Tick += new EventHandler(TimerIntervalParseFile);
+                    MainWindow.timerChangesSheldue.Interval = new TimeSpan(0, 0, 20);
+                    MainWindow.timerChangesSheldue.Start();
+                    MainWindow.SetParam(nameof(MainWindow.TelegramBot_Working), true);
+                    MainWindow._mWindow.ShowSuccessfulMessage("Бот запущен!!!");
+                    MainWindow._mWindow.MainWindowPage.NavigationService.Navigate(new StartupBotPage());
+                }
+                catch
+                {
+                    MainWindow._mWindow.ShowErrorMessage("Бот не запущен!!! Не верный токен!!!");
+                    IFCore.IFCore.loggerMain.Error("Bot: Status - Stop. Exception;");
+                }
+            }
+            else
+            {
+                IFCore.IFCore.loggerMain.Debug("Bot: Status - Stop");
+            }
+        }
+        private static void TimerIntervalParseFile(object sender, EventArgs e)
+        {
+            if (MainWindow.bw == null && MainWindow.bw.IsBusy == true)
+            {
+                MainWindow.timerChangesSheldue.Tick -= TimerIntervalParseFile;
+                MainWindow.timerChangesSheldue.Stop();
+            }
+            try
+            {
+                var newSheldueAtTimer = new View.Classes.GetShelduePL().GetChangesSheldue(out MainWindow.weekCheck);
+                if (newSheldueAtTimer == null || newSheldueAtTimer.Keys == null)
+                    return;
+                ICollection<string> keys = newSheldueAtTimer.Keys;
+                if (keys != null && !keys.Contains(MainWindow.dayOldSheldue.ToLower()))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nПрисутствуют замены к расписанию!");
+                    Console.ResetColor();
+                    MainWindow.allSheldue = MainWindow.allSheldueCopy;
+                    if (newSheldueAtTimer != null)
+                    {
+                        MainWindow.allSheldue = ChangeMainSheldueWithNewSheldue(MainWindow.allSheldue, newSheldueAtTimer);
+                        MainMenu.SetSheldue = MainWindow.allSheldue;
+                        MainWindow.dayOldSheldue = keys.ToArray()[0];
+                        new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, MainWindow.idMessageClients, MainWindow.allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
+                        Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        public static Dictionary<string, List<SheldueAllDaysTelegram>> ChangeMainSheldueWithNewSheldue(
+                      Dictionary<string, List<SheldueAllDaysTelegram>> mainSheldue,
+                      Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> shangeSheldues)
+        {
+            try
+            {
+                foreach (var changeSheldueItem in shangeSheldues)
+                {
+                    foreach (var changeSheldueItemValue in changeSheldueItem.Value)
+                    {
+                        foreach (var itemMain in mainSheldue)
+                        {
+                            if (changeSheldueItemValue.Key.ToLower() == itemMain.Key.Split(' ')[1].ToLower())
+                            {
+                                foreach (var itemChangeValue in changeSheldueItemValue.Value)
+                                {
+                                    foreach (var itemMainValue in itemMain.Value)
+                                    {
+                                        if (itemChangeValue.DayName.ToLower() == itemMainValue.DayName.ToLower())
+                                        {
+                                            try
+                                            {
+                                                itemMainValue.Day[0].ChangeSheldue = itemChangeValue.Day[0]?.ChangeSheldue;
+                                                if (itemMainValue.Day[0].Para1 != null)
+                                                    itemMainValue.Day[0].Para1[0] = null;
+                                                if (itemMainValue.Day[0].Para2 != null)
+                                                    itemMainValue.Day[0].Para2[0] = null;
+                                                if (itemMainValue.Day[0].Para3 != null)
+                                                    itemMainValue.Day[0].Para3[0] = null;
+                                                if (itemMainValue.Day[0].Para4 != null)
+                                                    itemMainValue.Day[0].Para4[0] = null;
+                                                if (itemMainValue.Day[0].Para5 != null)
+                                                    itemMainValue.Day[0].Para5[0] = null;
+                                            }
+                                            catch
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return mainSheldue;
         }
     }
 }

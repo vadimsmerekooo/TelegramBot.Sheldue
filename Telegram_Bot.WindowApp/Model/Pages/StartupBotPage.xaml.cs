@@ -22,22 +22,22 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             switch (BotListBox.SelectedIndex)
             {
                 case 0:
-                    if (MainWindow.TelegramBot_Working)
-                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage());
+                    if (!MainWindow.TelegramBot_Working)
+                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage(nameof(MainWindow.TelegramBot_Working)));
                     else
-                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage());
+                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage(nameof(MainWindow.TelegramBot_Working)));
                     break;
                 case 1:
                     if (!MainWindow.VkBot_Working)
-                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage());
+                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage(nameof(MainWindow.VkBot_Working)));
                     else
-                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage());
+                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage(nameof(MainWindow.VkBot_Working)));
                     break;
                 case 2:
                     if (!MainWindow.ViberBot_Working)
-                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage());
+                        BotInfoPageFrame.NavigationService.Navigate(new StartBotPage(nameof(MainWindow.ViberBot_Working)));
                     else
-                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage());
+                        BotInfoPageFrame.NavigationService.Navigate(new StopBotPage(nameof(MainWindow.ViberBot_Working)));
                     break;
             }
         }

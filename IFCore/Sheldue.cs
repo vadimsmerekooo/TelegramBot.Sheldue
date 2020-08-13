@@ -26,6 +26,7 @@ namespace IFCore
             userNotes = note;
         }
     }
+    [Serializable]
     public class SheldueTelegram
     {
         public string Para { get; set; }
@@ -39,6 +40,10 @@ namespace IFCore
             Work = work;
             Teacher = teacher;
             Auditorya = auditorya;
+        }
+        public SheldueTelegram()
+        {
+
         }
     }
     public class SheldueAllList
@@ -83,6 +88,7 @@ namespace IFCore
 
         }
     }
+    [Serializable]
     public class SheldueAllListTelegram
     {
         public string ChangeSheldue { get; set; }
@@ -140,6 +146,7 @@ namespace IFCore
             DayName = dayName;
         }
     }
+    [Serializable]
     public class SheldueAllDaysTelegram
     {
         public List<SheldueAllListTelegram> Day { get; set; }
@@ -148,6 +155,10 @@ namespace IFCore
         {
             Day = day;
             DayName = dayName;
+        }
+        public SheldueAllDaysTelegram()
+        {
+                
         }
     }
 }

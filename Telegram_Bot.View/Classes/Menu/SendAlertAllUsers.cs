@@ -21,6 +21,8 @@ namespace Telegram_Bot.View.Classes.Menu
         }
         public async Task<bool> AlertMessage(string alertMessage)
         {
+            if (messageChatIdClients is null)
+                return false;
             foreach (int id in messageChatIdClients)
             {
                 try

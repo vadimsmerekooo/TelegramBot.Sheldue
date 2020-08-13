@@ -93,14 +93,11 @@
                 <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="30 10">
                     <TextBlock Style="{DynamicResource TextBlockStyle}" Text="Токен Бота" HorizontalAlignment="Left"/>
-                    <ComboBox x:Name="TokensBotsComboBox" Foreground="{DynamicResource ForegroundColorUIElements}" BorderBrush="Chartreuse">
-                        <ComboBoxItem Content="1123611805:AAGln7hVP6yo460tF6sR_UyFj2b7YHw04i4"/>
-                        <ComboBoxItem Content="904575664:AAEBKyXlFX2IHieutGKofU_AqjP_--pimWI"/>
-                    </ComboBox>
+                    <ComboBox x:Name="TokensBotComboBox" Foreground="{DynamicResource ForegroundColorUIElements}" BorderBrush="Chartreuse"/>
                 </StackPanel> 
                 <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
                 <Button x:Name="ButtonStartBot"
-                        Grid.Column="1" Style="{DynamicResource BorderButtonCorner}" Height="30" Margin="5" Content="Запустить бот"/>
+                        Grid.Column="1" Style="{DynamicResource BorderButtonCorner}" Height="30" Margin="5" Content="Запустить бот" Click="ButtonStartBot_Click"/>
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -20,9 +20,11 @@ namespace Telegram_Bot.WindowApp.Model.Pages
     /// </summary>
     public partial class StopBotPage : Page
     {
-        public StopBotPage()
+        string bot = string.Empty;
+        public StopBotPage(string bot)
         {
             InitializeComponent();
+            this.bot = bot;
             Box_Emoji_UIElement.onEmoji += GetEmoji;
 
         }
@@ -209,7 +211,7 @@ namespace Telegram_Bot.WindowApp.Model.Pages
                 Text = idUser.ToString(),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Margin = new Thickness(5, 0, 0 , 0),
+                Margin = new Thickness(5, 0, 0, 0),
                 Foreground = Brushes.White,
                 Background = Brushes.Transparent,
                 IsReadOnly = true,
@@ -255,5 +257,25 @@ namespace Telegram_Bot.WindowApp.Model.Pages
                 Button_Click_1(null, null);
         }
 
+        private void ButtonStartBot_Click(object sender, RoutedEventArgs e)
+        {
+            switch (bot)
+            {
+                case nameof(MainWindow.TelegramBot_Working):
+                    MainWindow.bw.Dispose();
+                    MainWindow.TelegramBot_Working = false;
+                    MainWindow._mWindow.SetParamOnOffBot(bot, false);
+                    MainWindow._mWindow.ShowErrorMessage("Бот остановлен!");
+                    MainWindow._mWindow.GroupListBox.SelectedIndex = -1;
+                    MainWindow._mWindow.GroupListBox.SelectedIndex = 0;
+                    break;
+                case nameof(MainWindow.VkBot_Working):
+
+                    break;
+                case nameof(MainWindow.ViberBot_Working):
+
+                    break;
+            }
+        }
     }
 }

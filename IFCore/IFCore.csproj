@@ -60,6 +60,7 @@
     <Compile Include="IFCore.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GetSheldueDic.cs" />
     <Compile Include="Sheldue.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserInfo.cs" />
