@@ -46,16 +46,4 @@ namespace Telegram_Bot.WindowApp
 
         }
     }
-
-
-
-    public class Handler_I
-    {
-
-        public object Emoji(object tag)
-        {
-            return tag;
-        }
-    }
-
 }

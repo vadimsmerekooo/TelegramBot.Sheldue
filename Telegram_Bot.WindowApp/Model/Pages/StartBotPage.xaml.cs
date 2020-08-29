@@ -48,11 +48,14 @@ namespace Telegram_Bot.WindowApp.Model.Pages
         {
             if (selected_TelegramBot)
             {
+                if (TokensBotComboBox.SelectedIndex == -1)
+                    return;
+
                 MainWindow._mWindow.ShowSuccessfulMessage("Загрузка расписания.");
 
                 if (!File.Exists("SheldueList.xml"))
                 {
-                    MainWindow._mWindow.ShowErrorMessage("Список с расписанием, не найден!!!");
+                    MainWindow._mWindow.ShowErrorMessage("Файл с расписанием, не найден!!!");
                     return;
                 }
                 XmlSerializer serializer = new XmlSerializer(typeof(List<IFCore.GetSheldueDic>), new XmlRootAttribute() { ElementName = "DictionarySerSheldueTelegram" });
@@ -68,14 +71,14 @@ namespace Telegram_Bot.WindowApp.Model.Pages
                 }
                 if (MainWindow.allSheldue is null)
                 {
-                    MainWindow._mWindow.ShowErrorMessage("Список с расписанием пуст!!!");
+                    MainWindow._mWindow.ShowErrorMessage("Файл с расписанием пуст!!!");
                     return;
                 }
                 MainWindow.allSheldueCopy = MainWindow.allSheldue;
                 if (MainWindow.allSheldue != null)
                 {
                     MainWindow._mWindow.ShowSuccessfulMessage("Расписание загружено.");
-                    MainWindow._mWindow.ShowSuccessfulMessage("Загрузка файла, изменение к расписанию, с сайта.");
+                    MainWindow._mWindow.ShowSuccessfulMessage("Загрузка ф2айла, изменение к расписанию, с сайта.");
                     MainWindow.changeSheldue = new View.Classes.GetShelduePL().GetChangesSheldue(out MainWindow.weekCheck);
                     if (MainWindow.changeSheldue != null)
                     {
@@ -163,9 +166,7 @@ namespace Telegram_Bot.WindowApp.Model.Pages
                 ICollection<string> keys = newSheldueAtTimer.Keys;
                 if (keys != null && !keys.Contains(MainWindow.dayOldSheldue.ToLower()))
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nПрисутствуют замены к расписанию!");
-                    Console.ResetColor();
+                    MainWindow._mWindow.ShowSuccessfulMessage("Присутствуют замены к расписанию!");
                     MainWindow.allSheldue = MainWindow.allSheldueCopy;
                     if (newSheldueAtTimer != null)
                     {
@@ -173,7 +174,7 @@ namespace Telegram_Bot.WindowApp.Model.Pages
                         MainMenu.SetSheldue = MainWindow.allSheldue;
                         MainWindow.dayOldSheldue = keys.ToArray()[0];
                         new SendAlertAllUsers(MainMenu.GetBot, MainMenu.GetApi, MainWindow.idMessageClients, MainWindow.allSheldue).AlertMessage("⚠️🚨 На сайте появились замены к расписанию 🌐 Узнай свое новое расписание на завтра ⚡");
-                        Console.WriteLine("\nОпопвещение о новом расписании выполняется!");
+                        MainWindow._mWindow.ShowSuccessfulMessage("Опопвещение о новом расписании выполняется!");
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IFCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Telegram_Bot.View;
 
 namespace Telegram_Bot.WindowApp.Model.Pages
 {
@@ -26,12 +28,14 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             InitializeComponent();
             this.bot = bot;
             Box_Emoji_UIElement.onEmoji += GetEmoji;
+            MainMenu.onMessage += GetMessage;
 
         }
 
         private void RadioButton_Click(object sender, RoutedEventArgs e)
         {
             IdSendMessageRadioButton.IsChecked = false;
+            BotSendMessageRadioButton.IsChecked = false;
             BorderTextBoxIdUser.Visibility = Visibility.Hidden;
             TextBoxStackPanel.Height = 0;
         }
@@ -39,8 +43,16 @@ namespace Telegram_Bot.WindowApp.Model.Pages
         private void RadioButton_Click_1(object sender, RoutedEventArgs e)
         {
             AllSendMessageRadioButton.IsChecked = false;
+            BotSendMessageRadioButton.IsChecked = false;
             BorderTextBoxIdUser.Visibility = Visibility.Visible;
             TextBoxStackPanel.Height = 25;
+        }
+        private void BotSendMessageRadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            AllSendMessageRadioButton.IsChecked = false;
+            IdSendMessageRadioButton.IsChecked = false;
+            BorderTextBoxIdUser.Visibility = Visibility.Hidden;
+            TextBoxStackPanel.Height = 0;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -57,6 +69,10 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             TextBoxNewMessage.SelectionStart = TextBoxNewMessage.Text.Length + 1;
         }
 
+        private void GetMessage(string message)
+        {
+            ChatListBox.Items.Add(CreateListBoxItem_Bot(message));
+        }
 
 
         private ListBoxItem CreateListBoxItem_Bot(string messageText)
@@ -247,8 +263,14 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             if (String.IsNullOrWhiteSpace(TextBoxNewMessage.Text))
                 return;
             ChatListBox.Items.Add(CreateListBoxItem_Admin(TextBoxNewMessage.Text));
-            TextBoxNewMessage.Clear();
             Emoji_BoxGrid.Visibility = Visibility.Hidden;
+            if (AllSendMessageRadioButton.IsChecked == true)
+                Telegram_Bot.View.MainMenu.SendAllMessageAdminPanel(TextBoxNewMessage.Text);
+            if (BotSendMessageRadioButton.IsChecked == true)
+                Telegram_Bot.View.MainMenu.SendMessagePcAdmin(TextBoxNewMessage.Text);
+            if (IdSendMessageRadioButton.IsChecked == true)
+                Telegram_Bot.View.MainMenu.SendIdMEssageAdminPanel(TextBoxNewMessage.Text, int.Parse(TextBoxLogin.Text));
+            TextBoxNewMessage.Clear();
         }
 
         private void TextBoxNewMessage_KeyDown(object sender, KeyEventArgs e)
@@ -276,6 +298,13 @@ namespace Telegram_Bot.WindowApp.Model.Pages
 
                     break;
             }
+        }
+
+        private void TextBoxLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            char number = Convert.ToChar(e.Key);
+            if (!Char.IsDigit(number))
+                e.Handled = true;
         }
     }
 }

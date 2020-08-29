@@ -330,10 +330,11 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Margin="5">
+                    <RadioButton x:Name="BotSendMessageRadioButton" Content="Отправить боту" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" IsChecked="True" Click="BotSendMessageRadioButton_Click"/>
                     <RadioButton x:Name="AllSendMessageRadioButton" Content="Отправить всем" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" IsChecked="True" Click="RadioButton_Click"/>
                     <RadioButton x:Name="IdSendMessageRadioButton" Content="Выбрать адресатора" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" Click="RadioButton_Click_1"/>
                     <StackPanel x:Name="TextBoxStackPanel" Height="0" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
-                        <TextBox x:Name="TextBoxLogin" Width="140" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Id" ></TextBox>
+                        <TextBox x:Name="TextBoxLogin" Width="140" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Id" KeyDown="TextBoxLogin_KeyDown"></TextBox>
                         <materialDesign:PackIcon Kind="UserOutline" Foreground="{DynamicResource TextBlockColorChartreuse}" Width="25" Height="25"/>
                     </StackPanel>
                 </StackPanel>

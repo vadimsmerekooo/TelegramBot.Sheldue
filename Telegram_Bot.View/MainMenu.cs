@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Telegram.Bot.Types;
 
 namespace Telegram_Bot.View
 {
@@ -41,11 +42,18 @@ namespace Telegram_Bot.View
         public static string GetApi { get { return ApiKeyBot; } }
         public static List<string> error_Word;
 
+        public delegate void MethodMessage(string message);
+        public static event MethodMessage onMessage;
+
+
+        static MainMenu mainMenu;
+
         public MainMenu(TelegramBotClient Bot, string api, ref Dictionary<string, List<SheldueAllDaysTelegram>> sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
             MainMenu.sheldue = sheldue;
+            mainMenu = this;
         }
         private static void CheckMessageAntiDDOSTimer(object obj)
         {
@@ -63,8 +71,8 @@ namespace Telegram_Bot.View
             {
                 var worker = sender as BackgroundWorker;
                 var key = e.Argument as String;
-                if (File.Exists("Error_Word.txt"))
-                    error_Word = File.ReadAllText("Error_Word.txt").ToLower().Split(new char[] { ',', ' ', '.' }).ToList();
+                if (System.IO.File.Exists("Error_Word.txt"))
+                    error_Word = System.IO.File.ReadAllText("Error_Word.txt").ToLower().Split(new char[] { ',', ' ', '.' }).ToList();
                 BotRoma = new TelegramBotClient(ApiKeyBot);
                 await BotRoma.SetWebhookAsync("");
                 BotRoma.OnMessage += SendMessageAdminPanel;
@@ -82,15 +90,17 @@ namespace Telegram_Bot.View
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
                 return;
-            if (message.Chat.Id == 415226650)
+            if (message.Chat.Id == 415226650 || message.Chat.Id == 1217631943)
             {
                 switch (message.Text.GetHashCode())
                 {
                     case 847733991:
+                        onMessage("Бот - Рома🤖, на время остановлен🛑 PS: Admin - экстренное отключение!");
                         try { await new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage("Бот - Рома🤖, на время остановлен🛑 PS: Admin - экстренное отключение!"); } catch { }
                         BotRoma.OnMessage -= SendMessage;
                         break;
                     case 137360049:
+                        onMessage("Бот - Рома🤖, снова в строю🛎!");
                         try { await new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage("Бот - Рома🤖, снова в строю🛎!"); } catch { }
                         BotRoma.OnMessage += SendMessage;
                         break;
@@ -102,6 +112,7 @@ namespace Telegram_Bot.View
                         var splitMessage = message.Text.Split(' ');
                         if (idMessageClientsBlackList.Contains(Convert.ToInt32(splitMessage[1])))
                         {
+                            onMessage("Пользователь уже находиться в бане!");
                             try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь уже находиться в бане!"); } catch { }
                             return;
                         }
@@ -127,6 +138,7 @@ namespace Telegram_Bot.View
                                     {
                                         textMessageBan += splitMessage[i] + " ";
                                     }
+                                    onMessage($"Пользователю выданно {user.Count} предупреждение! Сообщение отправлено!");
                                     try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно {user.Count} предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
                                     try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Пользователю выданно {user.Count} предупреждение! Сообщение отправлено!"); } catch { }
                                     return;
@@ -157,6 +169,7 @@ namespace Telegram_Bot.View
                                         textBanWarning += splitMessage[i] + " ";
                                     }
                                     await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), "Вы занесены в черный список📛! Причина: " + textBanWarning);
+                                    onMessage("Пользователь занесен в черный список! Сообщение отправлено!");
                                     await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь занесен в черный список! Сообщение отправлено!");
                                     return;
                                 }
@@ -178,6 +191,7 @@ namespace Telegram_Bot.View
                                 {
                                     textMessageBan += splitMessage[i] + " ";
                                 }
+                                onMessage($"Пользователю выданно 1 предупреждение! Сообщение отправлено!");
                                 try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно 1 предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
                                 try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Пользователю выданно 1 предупреждение! Сообщение отправлено!"); } catch { };
                             }
@@ -199,6 +213,7 @@ namespace Telegram_Bot.View
                                 textMessageBan += splitMessage[i] + " ";
                             }
                             try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно 1 предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
+                            onMessage($"Пользователю выданно 1 предупреждение! Сообщение отправлено!");
                             try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Пользователю выданно 1 предупреждение! Сообщение отправлено!"); } catch { }
                             return;
                         }
@@ -210,6 +225,7 @@ namespace Telegram_Bot.View
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -220,6 +236,7 @@ namespace Telegram_Bot.View
                         var splitMessage = message.Text.Split(' ');
                         if (!idMessageClientsBlackList.Contains(Convert.ToInt32(splitMessage[1])))
                         {
+                            onMessage("Пользователь не найден в черном списке!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь не найден в черном списке!");
                             return;
                         }
@@ -239,15 +256,18 @@ namespace Telegram_Bot.View
                             serializer.Serialize(fs, idMessageClientsBlackList);
                         }
                         await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), "Вы удалены из черного списка👍! За повторные нарушения, бан, сниматься не будет👤! Хорошего дня!👾");
+                        onMessage("Пользователь удален из черного списка! Сообщение отправлено!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь удален из черного списка! Сообщение отправлено!");
                     }
                     catch (Exception ex)
                     {
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -262,6 +282,7 @@ namespace Telegram_Bot.View
                         {
                             textSend += splitMessage[i] + " ";
                         }
+                        onMessage("Ответ отправлен пользователю!");
                         await BotRoma.SendTextMessageAsync(chatId, $"Доброго времени суток👾! Ответ на ваше обращение💨 к админу бота: {textSend}");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ответ отправлен пользователю!");
                     }
@@ -269,9 +290,11 @@ namespace Telegram_Bot.View
                     {
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -286,6 +309,7 @@ namespace Telegram_Bot.View
                         {
                             textSend += splitMessage[i] + " ";
                         }
+                        onMessage("Сообщение отправлен пользователю!");
                         await BotRoma.SendTextMessageAsync(chatId, $"Доброго времени суток👾! Это, админ бота, {textSend}");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Сообщение отправлен пользователю!");
                     }
@@ -293,9 +317,11 @@ namespace Telegram_Bot.View
                     {
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -303,6 +329,7 @@ namespace Telegram_Bot.View
                 {
                     try
                     {
+                        onMessage("Сообщения отправляются!");
                         new SendAlertAllUsers(BotRoma, ApiKeyBot, idMessageClients, sheldue).AlertMessage(message.Text.Replace("Allsend", "") + ". Рассылку сообщений ✉, можно отключить командой /stop!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Сообщения отправляются!");
                     }
@@ -310,9 +337,11 @@ namespace Telegram_Bot.View
                     {
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -331,11 +360,14 @@ namespace Telegram_Bot.View
                     }
                     catch (Exception ex)
                     {
+
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
@@ -356,11 +388,25 @@ namespace Telegram_Bot.View
                     {
                         if (ex != null && ex.Message.Contains("bot was blocked by the user"))
                         {
+                            onMessage("Пользователь заблокировал бота!");
                             await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь заблокировал бота!");
                             return;
                         }
+                        onMessage("Ошибка в команде!");
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
+                }
+                if(message.Text == "BlockPc")
+                {
+                    IFCore.MessageDelegate.SendMessageAdminPc = false;
+                    try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "Отправка сообщений для пк заблокированна!"); } catch { }
+                    onMessage("Панель заблокированна админом!");
+                }
+                if (message.Text == "DblockPc")
+                {
+                    IFCore.MessageDelegate.SendMessageAdminPc = true;
+                    try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "Отправка сообщений для пк разблокированна!"); } catch { }
+                    onMessage("Панель разблокированна админом!");
                 }
             }
         }
@@ -393,7 +439,7 @@ namespace Telegram_Bot.View
                 {
                     serializer.Serialize(fs, idMessageClients);
                 }
-                Console.WriteLine("Новый пользователь!");
+                onMessage("Новый пользователь!");
             }
             if (!idMessageClients.Contains(Convert.ToInt32(message.Chat.Id)))
             {
@@ -490,9 +536,7 @@ namespace Telegram_Bot.View
                             catch
                             {
                             }
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Попытка отправки более 70 сообщений!!! Пользователь занесен в черный список!!!");
-                            Console.ResetColor();
+                            onMessage("Попытка отправки более 70 сообщений!!! Пользователь занесен в черный список!!!");
                             try { if (!idMessageClientsBlackList.Contains(Convert.ToInt32(message.Chat.Id))) await BotRoma.SendTextMessageAsync(Convert.ToInt32(415226650), "Попытка отправки более 70 сообщений📛! Пользователь добавлен в бан! ID: " + message.Chat.Id); } catch { }
                             return false;
                         }
@@ -510,7 +554,7 @@ namespace Telegram_Bot.View
                         catch
                         {
                         }
-
+                        onMessage("Попытка отправки более 70 сообщений📛! Пользователь добавлен в бан! ID: " + message.Chat.Id);
                         try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(415226650), "Попытка отправки более 70 сообщений📛! Пользователь добавлен в бан! ID: " + message.Chat.Id); } catch { }
                         return false;
                     }
@@ -524,6 +568,293 @@ namespace Telegram_Bot.View
             catch
             {
                 return true;
+            }
+        }
+
+        public static async void SendAllMessageAdminPanel(string messageText)
+        {
+            try
+            {
+                onMessage("Сообщения отправляются!");
+                new SendAlertAllUsers(BotRoma, ApiKeyBot, mainMenu.idMessageClients, sheldue).AlertMessage(messageText + ". Рассылку сообщений ✉, можно отключить командой /stop!");
+            }
+            catch
+            {
+                onMessage("Ошибка в команде!");
+            }
+        }
+        public static async void SendIdMEssageAdminPanel(string messageText, int idUser)
+        {
+            try
+            {
+                onMessage("Сообщение отправлен пользователю!");
+                await BotRoma.SendTextMessageAsync(idUser, $"Доброго времени суток👾! Это, админ бота, {messageText}");
+                await BotRoma.SendTextMessageAsync(415226650, "Сообщение "+ messageText + ", отправлен пользователю!");
+            }
+            catch (Exception ex)
+            {
+                if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                {
+                    onMessage("Пользователь заблокировал бота!");
+                    return;
+                }
+                onMessage("Ошибка в команде!");
+            }
+        }
+
+        public static async void SendMessagePcAdmin(string messageText)
+        {
+            int adminId = 415226650;
+
+            if (messageText == string.Empty)
+                return;
+            if (IFCore.MessageDelegate.SendMessageAdminPc)
+            {
+                if (messageText.Contains("Ban"))
+                {
+                    try
+                    {
+                        var splitMessage = messageText.Split(' ');
+                        if (mainMenu.idMessageClientsBlackList.Contains(Convert.ToInt32(splitMessage[1])))
+                        {
+                            onMessage("Пользователь уже находиться в бане!");
+                            try { await BotRoma.SendTextMessageAsync(adminId, "Пользователь уже находиться в бане!"); } catch { }
+                            return;
+                        }
+                        if (mainMenu.idMessageClientsWarn != null && mainMenu.idMessageClientsWarn.Count != 0)
+                        {
+                            List<IFCore.DictionaryList> userList = mainMenu.idMessageClientsWarn.Where(ids => ids.Id == Convert.ToInt32(splitMessage[1])).ToList();
+                            if (userList != null || userList.Count != 0)
+                            {
+                                IFCore.DictionaryList user = userList[0];
+                                if (user.Count != 3)
+                                {
+                                    ((IFCore.DictionaryList)mainMenu.idMessageClientsWarn.Where(ids => ids.Id == user.Id)).Count++;
+                                    using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                                    {
+                                        sw.WriteLine(string.Empty);
+                                    }
+                                    using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                    {
+                                        MainMenu.serializerDictionary.Serialize(fs, mainMenu.idMessageClientsWarn);
+                                    }
+                                    string textMessageBan = string.Empty;
+                                    for (int i = 2; i < splitMessage.Length; i++)
+                                    {
+                                        textMessageBan += splitMessage[i] + " ";
+                                    }
+                                    onMessage($"Пользователю выданно {user.Count} предупреждение! Сообщение отправлено!");
+                                    try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно {user.Count} предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
+                                    try { await BotRoma.SendTextMessageAsync(adminId, $"Пользователю выданно {user.Count} предупреждение! Сообщение отправлено!"); } catch { }
+                                    return;
+                                }
+                                else
+                                {
+                                    mainMenu.idMessageClientsWarn.Remove(user);
+                                    using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                                    {
+                                        sw.WriteLine(string.Empty);
+                                    }
+                                    using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                    {
+                                        MainMenu.serializerDictionary.Serialize(fs, mainMenu.idMessageClientsWarn);
+                                    }
+                                    mainMenu.idMessageClientsBlackList.Add(Convert.ToInt32(splitMessage[1]));
+                                    using (StreamWriter sw = new StreamWriter("BlackListIdMessageChatClients.xml"))
+                                    {
+                                        sw.WriteLine(string.Empty);
+                                    }
+                                    using (FileStream fs = new FileStream("BlackListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                    {
+                                        mainMenu.serializer.Serialize(fs, mainMenu.idMessageClientsBlackList);
+                                    }
+                                    string textBanWarning = string.Empty;
+                                    for (int i = 2; i < splitMessage.Length; i++)
+                                    {
+                                        textBanWarning += splitMessage[i] + " ";
+                                    }
+                                    await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), "Вы занесены в черный список📛! Причина: " + textBanWarning);
+                                    onMessage("Пользователь занесен в черный список! Сообщение отправлено!");
+                                    await BotRoma.SendTextMessageAsync(adminId, "Пользователь занесен в черный список! Сообщение отправлено!");
+                                    return;
+                                }
+
+                            }
+                            else
+                            {
+                                mainMenu.idMessageClientsWarn.Add(new IFCore.DictionaryList(Convert.ToInt32(splitMessage[1]), 1));
+                                using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                                {
+                                    sw.WriteLine(string.Empty);
+                                }
+                                using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                                {
+                                    MainMenu.serializerDictionary.Serialize(fs, mainMenu.idMessageClientsWarn);
+                                }
+                                string textMessageBan = string.Empty;
+                                for (int i = 2; i < splitMessage.Length; i++)
+                                {
+                                    textMessageBan += splitMessage[i] + " ";
+                                }
+                                onMessage($"Пользователю выданно 1 предупреждение! Сообщение отправлено!");
+                                try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно 1 предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
+                                try { await BotRoma.SendTextMessageAsync(adminId, $"Пользователю выданно 1 предупреждение! Сообщение отправлено!"); } catch { };
+                            }
+                        }
+                        else
+                        {
+                            mainMenu.idMessageClientsWarn.Add(new IFCore.DictionaryList(Convert.ToInt32(splitMessage[1]), 1));
+                            using (StreamWriter sw = new StreamWriter("WarningListIdMessageChatClients.xml"))
+                            {
+                                sw.WriteLine(string.Empty);
+                            }
+                            using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                            {
+                                MainMenu.serializerDictionary.Serialize(fs, mainMenu.idMessageClientsWarn);
+                            }
+                            string textMessageBan = string.Empty;
+                            for (int i = 2; i < splitMessage.Length; i++)
+                            {
+                                textMessageBan += splitMessage[i] + " ";
+                            }
+                            try { await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), $"Вам выданно 1 предупреждение📛! Внимание! Если предупреждений будет более 3, вам будет выдан бан! Причина: " + textMessageBan); } catch { }
+                            onMessage($"Пользователю выданно 1 предупреждение! Сообщение отправлено!");
+                            try { await BotRoma.SendTextMessageAsync(adminId, $"Пользователю выданно 1 предупреждение! Сообщение отправлено!"); } catch { }
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                        {
+                            await BotRoma.SendTextMessageAsync(adminId, "Пользователь заблокировал бота!");
+                            return;
+                        }
+                        onMessage("Ошибка в команде!");
+                        await BotRoma.SendTextMessageAsync(adminId, "Ошибка в команде!");
+                    }
+                }
+                if (messageText.Contains("Dban"))
+                {
+                    try
+                    {
+                        var splitMessage = messageText.Split(' ');
+                        if (!mainMenu.idMessageClientsBlackList.Contains(Convert.ToInt32(splitMessage[1])))
+                        {
+                            onMessage("Пользователь не найден в черном списке!");
+                            await BotRoma.SendTextMessageAsync(adminId, "Пользователь не найден в черном списке!");
+                            return;
+                        }
+                        //ICollection<int> keys = idMessageClientsWarnings.Keys;
+                        //if (!keys.Contains(Convert.ToInt32(splitMessage[1])))
+                        //{
+                        //    await BotRoma.SendTextMessageAsync(message.Chat.Id, "Пользователь не найден в списке предупреждений!");
+                        //    return;
+                        //}
+                        mainMenu.idMessageClientsBlackList.Remove(Convert.ToInt32(splitMessage[1]));
+                        using (StreamWriter sw = new StreamWriter("BlackListIdMessageChatClients.xml"))
+                        {
+                            sw.WriteLine(string.Empty);
+                        }
+                        using (FileStream fs = new FileStream("BlackListIdMessageChatClients.xml", FileMode.OpenOrCreate))
+                        {
+                            mainMenu.serializer.Serialize(fs, mainMenu.idMessageClientsBlackList);
+                        }
+                        await BotRoma.SendTextMessageAsync(Convert.ToInt32(splitMessage[1]), "Вы удалены из черного списка👍! За повторные нарушения, бан, сниматься не будет👤! Хорошего дня!👾");
+                        onMessage("Пользователь удален из черного списка! Сообщение отправлено!");
+                        await BotRoma.SendTextMessageAsync(adminId, "Пользователь удален из черного списка! Сообщение отправлено!");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                        {
+                            onMessage("Пользователь заблокировал бота!");
+                            await BotRoma.SendTextMessageAsync(adminId, "Пользователь заблокировал бота!");
+                            return;
+                        }
+                        onMessage("Ошибка в команде!");
+                        await BotRoma.SendTextMessageAsync(adminId, "Ошибка в команде!");
+                    }
+                }
+                if (messageText.Contains("Send"))
+                {
+                    try
+                    {
+                        var splitMessage = messageText.Split(' ');
+                        int chatId = Convert.ToInt32(splitMessage[1]);
+                        string textSend = string.Empty;
+                        for (int i = 2; i < splitMessage.Length; i++)
+                        {
+                            textSend += splitMessage[i] + " ";
+                        }
+                        onMessage("Ответ отправлен пользователю!");
+                        await BotRoma.SendTextMessageAsync(chatId, $"Доброго времени суток👾! Ответ на ваше обращение💨 к админу бота: {textSend}");
+                        await BotRoma.SendTextMessageAsync(adminId, "Ответ отправлен пользователю!");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                        {
+                            onMessage("Пользователь заблокировал бота!");
+                            await BotRoma.SendTextMessageAsync(adminId, "Пользователь заблокировал бота!");
+                            return;
+                        }
+                        onMessage("Ошибка в команде!");
+                        await BotRoma.SendTextMessageAsync(adminId, "Ошибка в команде!");
+                    }
+                }
+                if (messageText.Contains("List"))
+                {
+                    try
+                    {
+                        string listClients = @"Cписок пользователей:
+";
+                        foreach (var id in mainMenu.idMessageClients)
+                        {
+                            listClients += id + @"
+";
+                        }
+                        if (mainMenu.idMessageClients == null || mainMenu.idMessageClients.Count == 0)
+                            listClients += "Список пуст!";
+                        onMessage(listClients);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                        {
+                            onMessage("Пользователь заблокировал бота!");
+                            return;
+                        }
+                        onMessage("Ошибка в команде!");
+                    }
+                }
+                if (messageText.Contains("Blacklist"))
+                {
+                    try
+                    {
+                        string blackListClients = @"Черный список:
+";
+                        foreach (var id in mainMenu.idMessageClientsBlackList)
+                        {
+                            blackListClients += id + @"
+";
+                        }
+                        if (mainMenu.idMessageClientsBlackList == null || mainMenu.idMessageClientsBlackList.Count == 0)
+                            blackListClients += "Список пуст!";
+                        onMessage(blackListClients);
+                        await BotRoma.SendTextMessageAsync(adminId, blackListClients);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex != null && ex.Message.Contains("bot was blocked by the user"))
+                        {
+                            onMessage("Пользователь заблокировал бота!");
+                            return;
+                        }
+                        onMessage("Ошибка в команде!");
+                    }
+                }
             }
         }
     }

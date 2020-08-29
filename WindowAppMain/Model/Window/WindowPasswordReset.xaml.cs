@@ -143,7 +143,7 @@ namespace WindowAppMain.Model.Window
                     switch (ComboBoxPerson.SelectedIndex)
                     {
                         case 0:
-                            if (ComboBoxPerson.Text == refDALClass.userListInformantion.Status && ComboBoxNameOrGroup.Text == refDALClass.userListInformantion.Department)
+                            if (refDALClass.userListInformantion != null && ComboBoxPerson.Text == refDALClass.userListInformantion.Status && ComboBoxNameOrGroup.Text == refDALClass.userListInformantion.Department)
                             {
                                 Storyboard sb2 = this.FindResource("Step3") as Storyboard;
                                 sb2.Begin();
