@@ -13,12 +13,14 @@ namespace Telegram_Bot.View.Classes.Teacher
     {
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
-        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue; 
-        public MenuWithListTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue): base(Bot, api, ref sheldue)
+        Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
+        long idUserIni;
+        public MenuWithListTeacher(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, long idInputUser): base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
             this.sheldue = sheldue;
+            idUserIni = idInputUser;
         }
         private SortedSet<string> listTeacher = new SortedSet<string>()
         {
@@ -114,6 +116,8 @@ namespace Telegram_Bot.View.Classes.Teacher
             var message = e.Message;
             if (message.Type != MessageType.Text || message == null)
                 return;
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, message.Chat.Id))
+                return;
             await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"*👀 Введите свою Фамилию*
 Пример: Иванов
 
@@ -125,6 +129,8 @@ namespace Telegram_Bot.View.Classes.Teacher
         private async void TeacherMethod(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, message.Chat.Id))
+                return;
             if (message.Type != MessageType.Text || message == null)
             {
                 await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);

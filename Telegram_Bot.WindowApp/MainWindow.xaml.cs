@@ -31,7 +31,6 @@ namespace Telegram_Bot.WindowApp
         public static bool ViberBot_Working;
 
 
-        public static BackgroundWorker bw = new BackgroundWorker();
 
         public static Dictionary<string, List<SheldueAllDaysTelegram>> allSheldue;
         public static Dictionary<string, Dictionary<string, List<SheldueAllDaysTelegram>>> changeSheldue;
@@ -44,6 +43,9 @@ namespace Telegram_Bot.WindowApp
         public static List<int> idMessageClientsBlackList;
         public static List<IFCore.DictionaryList> idMessageClientsWarningList;
 
+        private static XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
+        private static XmlSerializer serializerDictionary = new XmlSerializer(typeof(IFCore.DictionaryList), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
+
         public static DispatcherTimer timerChangesSheldue = new DispatcherTimer();
         public static string dayOldSheldue = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
 
@@ -52,8 +54,8 @@ namespace Telegram_Bot.WindowApp
             InitializeComponent();
             _mWindow = this;
             GroupListBox.SelectedIndex = 0;
-
         }
+
 
         private void ButtonFechar_Click(object sender, RoutedEventArgs e)
         {

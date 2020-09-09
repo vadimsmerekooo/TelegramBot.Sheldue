@@ -1,6 +1,7 @@
 ﻿using IFCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using Telegram_Bot.View;
+using Telegram_Bot.View.Classes.Menu;
 
 namespace Telegram_Bot.WindowApp.Model.Pages
 {
@@ -29,7 +32,9 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             this.bot = bot;
             Box_Emoji_UIElement.onEmoji += GetEmoji;
             MainMenu.onMessage += GetMessage;
-
+            SendMessageToDeveloper.onMessage += GetMessage;
+            ListBoxBlockedUsers.ItemsSource = MainWindow.idMessageClientsBlackList;
+            ListBoxWarningsUsers.ItemsSource = MainWindow.idMessageClientsWarningList;
         }
 
         private void RadioButton_Click(object sender, RoutedEventArgs e)
@@ -71,71 +76,80 @@ namespace Telegram_Bot.WindowApp.Model.Pages
 
         private void GetMessage(string message)
         {
-            ChatListBox.Items.Add(CreateListBoxItem_Bot(message));
+            Task.Run((Action)delegate ()
+           {
+               this.Dispatcher.BeginInvoke((Action)delegate ()
+               {
+                   ChatListBox.Items.Add(CreateListBoxItem_Bot(message));
+               });
+           });
         }
 
 
         private ListBoxItem CreateListBoxItem_Bot(string messageText)
         {
-            ListBoxItem item = new ListBoxItem();
-
-            Image img = new Image() { Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../Resource/botRoma.png"), UriKind.RelativeOrAbsolute)) };
-            img.Height = 50;
-            img.Width = 50;
-            ImageBrush imgBrush = new ImageBrush();
-            imgBrush.ImageSource = img.Source;
-
-            Ellipse el = new Ellipse()
-            {
-                Width = 30,
-                Height = 30,
-                Fill = imgBrush,
-                ToolTip = "Бот",
-                VerticalAlignment = VerticalAlignment.Top
-            };
-
-            item.Content = el;
-            Border border = new Border();
-            border.CornerRadius = new CornerRadius() { TopLeft = 10, BottomLeft = 10, BottomRight = 10, TopRight = 10 };
-            border.BorderThickness = new Thickness() { Bottom = 1, Left = 1, Right = 1, Top = 1 };
-            border.BorderBrush = Brushes.Gray;
-
-            TextBlock txtblock = new TextBlock();
-            txtblock.Text = messageText;
-            txtblock.MaxWidth = 250;
-            txtblock.Margin = new Thickness(3, 5, 3, 5);
-            txtblock.TextWrapping = TextWrapping.Wrap;
-            txtblock.Foreground = Brushes.White;
-            txtblock.VerticalAlignment = VerticalAlignment.Center;
-            txtblock.Style = (Style)Application.Current.Resources["MaterialDesignBody1TextBlock"];
-            border.Width = txtblock.Width + 10;
-            border.Height = txtblock.Height + 10;
-            Grid grid = new Grid();
-            grid.Children.Add(border);
-            grid.Children.Add(txtblock);
-            StackPanel panel = new StackPanel();
-            panel.Orientation = Orientation.Horizontal;
-            panel.Children.Add(item);
-            panel.Children.Add(grid);
-            TextBlock timeTextBlock = new TextBlock();
-            if (DateTime.Now.Minute.ToString().Length == 2)
-                timeTextBlock.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
-            else
-                timeTextBlock.Text = DateTime.Now.Hour + ":0" + DateTime.Now.Minute;
-            timeTextBlock.Foreground = Brushes.Gray;
-            timeTextBlock.Opacity = 0.7;
-            timeTextBlock.FontSize = 11;
-            timeTextBlock.HorizontalAlignment = HorizontalAlignment.Right;
-
-            StackPanel panelTime = new StackPanel();
-            panelTime.Orientation = Orientation.Vertical;
-            panelTime.Children.Add(panel);
-            panelTime.Children.Add(timeTextBlock);
-
             ListBoxItem bigItem = new ListBoxItem();
-            bigItem.Content = panelTime;
+            this.Dispatcher.BeginInvoke((Action)delegate ()
+           {
+               ListBoxItem item = new ListBoxItem();
+
+               Image img = new Image() { Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath("../../Resource/botRoma.png"), UriKind.RelativeOrAbsolute)) };
+               img.Height = 50;
+               img.Width = 50;
+               ImageBrush imgBrush = new ImageBrush();
+               imgBrush.ImageSource = img.Source;
+
+               Ellipse el = new Ellipse()
+               {
+                   Width = 30,
+                   Height = 30,
+                   Fill = imgBrush,
+                   ToolTip = "Бот",
+                   VerticalAlignment = VerticalAlignment.Top
+               };
+
+               item.Content = el;
+               Border border = new Border();
+               border.CornerRadius = new CornerRadius() { TopLeft = 10, BottomLeft = 10, BottomRight = 10, TopRight = 10 };
+               border.BorderThickness = new Thickness() { Bottom = 1, Left = 1, Right = 1, Top = 1 };
+               border.BorderBrush = Brushes.Gray;
+
+               TextBlock txtblock = new TextBlock();
+               txtblock.Text = messageText;
+               txtblock.MaxWidth = 250;
+               txtblock.Margin = new Thickness(3, 5, 3, 5);
+               txtblock.TextWrapping = TextWrapping.Wrap;
+               txtblock.Foreground = Brushes.White;
+               txtblock.VerticalAlignment = VerticalAlignment.Center;
+               txtblock.Style = (Style)Application.Current.Resources["MaterialDesignBody1TextBlock"];
+               border.Width = txtblock.Width + 10;
+               border.Height = txtblock.Height + 10;
+               Grid grid = new Grid();
+               grid.Children.Add(border);
+               grid.Children.Add(txtblock);
+               StackPanel panel = new StackPanel();
+               panel.Orientation = Orientation.Horizontal;
+               panel.Children.Add(item);
+               panel.Children.Add(grid);
+               TextBlock timeTextBlock = new TextBlock();
+               if (DateTime.Now.Minute.ToString().Length == 2)
+                   timeTextBlock.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
+               else
+                   timeTextBlock.Text = DateTime.Now.Hour + ":0" + DateTime.Now.Minute;
+               timeTextBlock.Foreground = Brushes.Gray;
+               timeTextBlock.Opacity = 0.7;
+               timeTextBlock.FontSize = 11;
+               timeTextBlock.HorizontalAlignment = HorizontalAlignment.Right;
+
+               StackPanel panelTime = new StackPanel();
+               panelTime.Orientation = Orientation.Vertical;
+               panelTime.Children.Add(panel);
+               panelTime.Children.Add(timeTextBlock);
+
+               bigItem.Content = panelTime;
 
 
+           });
             return bigItem;
         }
         private ListBoxItem CreateListBoxItem_Admin(string messageText)
@@ -269,7 +283,27 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             if (BotSendMessageRadioButton.IsChecked == true)
                 Telegram_Bot.View.MainMenu.SendMessagePcAdmin(TextBoxNewMessage.Text);
             if (IdSendMessageRadioButton.IsChecked == true)
-                Telegram_Bot.View.MainMenu.SendIdMEssageAdminPanel(TextBoxNewMessage.Text, int.Parse(TextBoxLogin.Text));
+                try
+                {
+
+                    using (FileStream fs = new FileStream("ListIdMessageChatClients.xml", FileMode.Open))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<int>), new XmlRootAttribute() { ElementName = "MessageChatIdClients" });
+                        var idMessageClients = new List<int>();
+                        idMessageClients = (List<int>)serializer.Deserialize(fs);
+                        if (idMessageClients.Contains(int.Parse(TextBoxLogin.Text)))
+                            Telegram_Bot.View.MainMenu.SendIdMEssageAdminPanel(TextBoxNewMessage.Text, int.Parse(TextBoxLogin.Text));
+                        else
+                        {
+                            MainWindow._mWindow.ShowErrorMessage("Пользователя с данным id, нет в списке пользователей! ");
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
             TextBoxNewMessage.Clear();
         }
 
@@ -284,7 +318,7 @@ namespace Telegram_Bot.WindowApp.Model.Pages
             switch (bot)
             {
                 case nameof(MainWindow.TelegramBot_Working):
-                    MainWindow.bw.Dispose();
+                    MainMenu.Setbw = null;
                     MainWindow.TelegramBot_Working = false;
                     MainWindow._mWindow.SetParamOnOffBot(bot, false);
                     MainWindow._mWindow.ShowErrorMessage("Бот остановлен!");

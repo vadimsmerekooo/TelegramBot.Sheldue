@@ -257,15 +257,16 @@
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="NameBot" Text="Управление ... ботом" Style="{DynamicResource TextBlockStyle}" FontSize="25" HorizontalAlignment="Left" Margin="30 0"/>
                 <Border Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
-                <Border Grid.Row="1" Margin="30 5" CornerRadius="10" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
-                    <ScrollViewer  Grid.Column="1" Grid.Row="1" 
+                <Border Grid.Row="1" Margin="30 5" BorderBrush="#35C1F1" MaxHeight="330" BorderThickness="2" CornerRadius="10">
+                    <Border  Margin="3 -7 -7 3" CornerRadius="10" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
+                        <ScrollViewer  Grid.Column="1" Grid.Row="1" 
                                 Margin="0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
-                        <ListBox x:Name="ChatListBox"
+                            <ListBox x:Name="ChatListBox"
                                  VerticalAlignment="Bottom"
                                     Grid.IsSharedSizeScope="True">
-                        </ListBox>
-                    </ScrollViewer>
-
+                            </ListBox>
+                        </ScrollViewer>
+                    </Border>
                 </Border>
                 <Grid Grid.Row="1" Grid.Column="1" Margin="5">
                     <Grid.RowDefinitions>
@@ -275,27 +276,33 @@
                     <StackPanel>
                         <TextBlock Style="{DynamicResource TextBlockStyle}" Text="Список пол. в бане"/>
                         <Border Background="Gray" Height="1"  VerticalAlignment="Top"/>
-                        <Border Margin="5" CornerRadius="10" Height="130" MinWidth="200" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
-                            <ListBox x:Name="ListBoxBlockedUsers" MinWidth="200">
-                                
-                            </ListBox>
+                        <Border Margin="-7 7 7 0" BorderBrush="#35C1F1" BorderThickness="2" CornerRadius="10">
+                            <Border Margin="3 -7 -7 3" CornerRadius="10" Height="130" MinWidth="200" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
+                                <ListBox x:Name="ListBoxBlockedUsers" MinWidth="200">
+
+                                </ListBox> 
+                            </Border>
                         </Border>
                     </StackPanel>
                     <StackPanel Grid.Row="1">
                         <TextBlock Style="{DynamicResource TextBlockStyle}" Text="Список пол. с пред." ToolTip="Список пользователей с предупреждениями"/>
                         <Border Background="Gray" Height="1"  VerticalAlignment="Top"/>
-                        <Border Margin="5" CornerRadius="10" Height="130" MinWidth="200" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
-                            <ListBox x:Name="ListBoxWarningsUsers" MinWidth="200">
+                        <Border Margin="-7 7 7 0" BorderBrush="#35C1F1" BorderThickness="2" CornerRadius="10">
+                            <Border Margin="3 -7 -7 3" CornerRadius="10" Height="130" MinWidth="200" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2">
+                                <ListBox x:Name="ListBoxWarningsUsers" MinWidth="200">
 
-                            </ListBox>
+                                </ListBox>
+                            </Border>
                         </Border>
                     </StackPanel>
                 </Grid>
 
                 <Border Grid.Row="1" Background="Gray" Height="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
                 <StackPanel Grid.Row="2" Margin="30 5 5 5" Orientation="Horizontal">
-                    <Border  CornerRadius="10" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2" HorizontalAlignment="Left" Width="300">
-                        <TextBox x:Name="TextBoxNewMessage" FontWeight="Light" Background="Transparent" BorderThickness="0" Padding="5" Style="{DynamicResource TextBoxTransparateStyle}" VerticalContentAlignment="Top" TextWrapping="Wrap" KeyDown="TextBoxNewMessage_KeyDown" />
+                    <Border BorderBrush="#35C1F1" Margin="0 3 0 0"  CornerRadius="10" BorderThickness="2">
+                        <Border  CornerRadius="10" Margin="3 -7 -7 3" BorderBrush="{DynamicResource TextBlockColorChartreuse}" BorderThickness="2" HorizontalAlignment="Left" Width="300">
+                            <TextBox x:Name="TextBoxNewMessage" FontWeight="Light" Background="Transparent" BorderThickness="0" Padding="5" Style="{DynamicResource TextBoxTransparateStyle}" VerticalContentAlignment="Top" TextWrapping="Wrap" KeyDown="TextBoxNewMessage_KeyDown" />
+                        </Border>
                     </Border>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="10 0" Grid.Row="2">
                         <Button Grid.Column="2"
@@ -331,7 +338,7 @@
 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Margin="5">
                     <RadioButton x:Name="BotSendMessageRadioButton" Content="Отправить боту" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" IsChecked="True" Click="BotSendMessageRadioButton_Click"/>
-                    <RadioButton x:Name="AllSendMessageRadioButton" Content="Отправить всем" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" IsChecked="True" Click="RadioButton_Click"/>
+                    <RadioButton x:Name="AllSendMessageRadioButton" Content="Отправить всем" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" Click="RadioButton_Click"/>
                     <RadioButton x:Name="IdSendMessageRadioButton" Content="Выбрать адресатора" FontSize="15" FontWeight="DemiBold" Foreground="{DynamicResource TextBlockColorWhite}" Style="{DynamicResource RadioButtonStyle}" Click="RadioButton_Click_1"/>
                     <StackPanel x:Name="TextBoxStackPanel" Height="0" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
                         <TextBox x:Name="TextBoxLogin" Width="140" FontWeight="Light" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Style="{DynamicResource TextBoxTransparateStyle}" ToolTip="Id" KeyDown="TextBoxLogin_KeyDown"></TextBox>

@@ -21,11 +21,13 @@ namespace Telegram_Bot.View.Classes.Student
         private TelegramBotClient BotRoma;
         private string ApiKeyBot;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public MenuStudent(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
+        long idUserIni;
+        public MenuStudent(TelegramBotClient Bot, string api, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, long idInputUser) : base(Bot, api, ref sheldue)
         {
             this.BotRoma = Bot;
             this.ApiKeyBot = api;
             this.sheldue = sheldue;
+            idUserIni = idInputUser;
         }
 
         public async void SendMessagemenuStudent(object sender, MessageEventArgs e)
@@ -36,6 +38,8 @@ namespace Telegram_Bot.View.Classes.Student
                 await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
             }
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, e.Message.Chat.Id))
+                return;
             //var keyboardGroups = new ReplyKeyboardMarkup
             //{
             //    Keyboard = new[] {
@@ -69,7 +73,7 @@ namespace Telegram_Bot.View.Classes.Student
                 return;
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
             if (listGroups.Contains(message.Text.ToLower()))
-                new ListDayWeak(BotRoma, ApiKeyBot, message.Text.ToLower(), sheldue).SendMessageListDayWeek(sender, e);
+                new ListDayWeak(BotRoma, ApiKeyBot, message.Text.ToLower(), sheldue, idUserIni).SendMessageListDayWeek(sender, e);
             else
             {
                 try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "Группа не найдена в списке 🙀! Если вы уверены, что такая группа есть, напишите разработчику ✉!"); } catch { }

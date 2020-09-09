@@ -24,6 +24,10 @@ namespace Telegram_Bot.View
     {
         private static TelegramBotClient BotRoma;
         private static string ApiKeyBot;
+
+        public BackgroundWorker bw = new BackgroundWorker();
+        public static BackgroundWorker Setbw { set { mainMenu.bw = null; } }
+
         public List<int> idMessageClients = new List<int>();
         public List<int> idMessageClientsBlackList = new List<int>();
         public List<IFCore.DictionaryList> idMessageClientsWarn = new List<IFCore.DictionaryList>();
@@ -34,6 +38,7 @@ namespace Telegram_Bot.View
         private Keyboards keyboard = new Keyboards();
         private static Dictionary<string, List<SheldueAllDaysTelegram>> sheldue = new Dictionary<string, List<SheldueAllDaysTelegram>>();
         public static string Week { get; set; }
+        public string SetWeek { set { Week = value; } }
         public Dictionary<string, List<SheldueAllDaysTelegram>> GetSheldue { get { return sheldue; } }
         public static Dictionary<string, List<SheldueAllDaysTelegram>> SetSheldue { set { sheldue = value; } }
         private Timer CheckMessageAntiDDOS = new Timer(CheckMessageAntiDDOSTimer, null, 0, 2000);
@@ -45,8 +50,12 @@ namespace Telegram_Bot.View
         public delegate void MethodMessage(string message);
         public static event MethodMessage onMessage;
 
+        public static MainMenu mainMenu;
 
-        static MainMenu mainMenu;
+
+
+        private int CountYes = 0;
+        private int CountNo = 0;
 
         public MainMenu(TelegramBotClient Bot, string api, ref Dictionary<string, List<SheldueAllDaysTelegram>> sheldue)
         {
@@ -54,6 +63,29 @@ namespace Telegram_Bot.View
             ApiKeyBot = api;
             MainMenu.sheldue = sheldue;
             mainMenu = this;
+
+            try
+            {
+                using (FileStream fs = new FileStream("ListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClients = new List<int>();
+                    idMessageClients = (List<int>)serializer.Deserialize(fs);
+                }
+                using (FileStream fs = new FileStream("BlackListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClientsBlackList = new List<int>();
+                    idMessageClientsBlackList = (List<int>)serializer.Deserialize(fs);
+                }
+                using (FileStream fs = new FileStream("WarningListIdMessageChatClients.xml", FileMode.Open))
+                {
+                    idMessageClientsWarn = new List<IFCore.DictionaryList>();
+                    idMessageClientsWarn = ((List<IFCore.DictionaryList>)serializerDictionary.Deserialize(fs));
+                }
+            }
+            catch
+            {
+
+            }
         }
         private static void CheckMessageAntiDDOSTimer(object obj)
         {
@@ -77,6 +109,7 @@ namespace Telegram_Bot.View
                 await BotRoma.SetWebhookAsync("");
                 BotRoma.OnMessage += SendMessageAdminPanel;
                 BotRoma.OnMessage += SendMessage;
+                BotRoma.OnCallbackQuery += BotRoma_OnCallbackQuery;
                 BotRoma.StartReceiving();
             }
             catch (Exception ex)
@@ -396,7 +429,7 @@ namespace Telegram_Bot.View
                         await BotRoma.SendTextMessageAsync(message.Chat.Id, "Ошибка в команде!");
                     }
                 }
-                if(message.Text == "BlockPc")
+                if (message.Text == "BlockPc")
                 {
                     IFCore.MessageDelegate.SendMessageAdminPc = false;
                     try { await BotRoma.SendTextMessageAsync(message.Chat.Id, "Отправка сообщений для пк заблокированна!"); } catch { }
@@ -470,27 +503,33 @@ namespace Telegram_Bot.View
 {new Emoji(new int[] { 0x0032, 0x20E3 })} Если после перезапуска, я не отвечаю на команды, свяжись с моим создателем {new Emoji(0x1F4AD)}"); } catch { }
                     new Classes.Menu.PiarClasses.PiarInstagram(BotRoma, ApiKeyBot, sheldue).SendMessagePiarInst(sender, e);
                     try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $"Выбери кнопку {new Emoji(0x2B07)}", ParseMode.Markdown, false, false, 0, keyboard.Personality()); } catch { }
+                    SendMessageCheckButton(message.Chat.Id);
                     break;
                 case "/help":
-                    await BotRoma.SendTextMessageAsync(message.Chat.Id, keyboard.Help(), ParseMode.MarkdownV2);
+                    SendMessageCheckButton(message.Chat.Id);
+                    //await BotRoma.SendTextMessageAsync(message.Chat.Id, keyboard.Help(), ParseMode.MarkdownV2);
                     break;
                 case "Выбор личности 👥":
-                    new Classes.MenuPersonality(BotRoma, ApiKeyBot, sheldue).SendMessagePersonality(sender, e);
+                    SendMessageCheckButton(message.Chat.Id);
+                    //new Classes.MenuPersonality(BotRoma, ApiKeyBot, sheldue).SendMessagePersonality(sender, e);
                     break;
                 case "Помощь ❔":
                     try { await BotRoma.SendTextMessageAsync(message.Chat.Id, keyboard.Help(), ParseMode.MarkdownV2); } catch { }
                     break;
                 case "/personality":
-                    new Classes.MenuPersonality(BotRoma, ApiKeyBot, sheldue).SendMessagePersonality(sender, e);
+                    SendMessageCheckButton(message.Chat.Id);
+                    //new Classes.MenuPersonality(BotRoma, ApiKeyBot, sheldue).SendMessagePersonality(sender, e);
                     break;
                 case "/reset":
                     try { await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"Привет - {message.From.FirstName}{new Emoji(0x1F525)}
-Я снова в строю {new Emoji(0x2705)}", ParseMode.Markdown, false, false, 0, keyboard.Personality()); } catch { }
+                    //Я снова в строю {new Emoji(0x2705)}", ParseMode.Markdown, false, false, 0, keyboard.Personality()); } catch { }
                     break;
                 case "/contacts":
                     new Classes.Menu.PiarClasses.PiarInstagram(BotRoma, ApiKeyBot, sheldue).SendMessagePiarInst(sender, e);
                     break;
                 case "/stop":
+                    SendMessageCheckButton(message.Chat.Id);
+                    break;
                     idMessageClients.Remove(Convert.ToInt32(message.Chat.Id));
                     using (StreamWriter sw = new StreamWriter("ListIdMessageChatClients.xml"))
                     {
@@ -519,6 +558,77 @@ namespace Telegram_Bot.View
                     break;
             }
         }
+
+        public async void SendMessageCheckButton(long Id)
+        {
+            var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData($"👍 Бот нужен {CountYes}", "Yes"),
+                            InlineKeyboardButton.WithCallbackData($"👎 Бот не нужен {CountNo}", "No"),
+                        },
+                    });
+            await BotRoma.SendTextMessageAsync(Id, $@"Привет, друг! У меня очень плохие новости! Как ты заметил, мой создатель запустил меня, но это наверное ненадолго... 
+
+На протяжении одного месяца тестирования, вы показали НЕВЕРОЯТНЫЙ результат! Благодоря вам, было выявленно большое количество багов, не доработанных до ума функций! На данный момент, вас {mainMenu.idMessageClients.Count + 80}!
+
+Каждый из Вас, внес ОГРООООМНЫЙ вклад в мое будущее! На данный момент, все решается сегодня, и прямо сейчас, Ваша задача проголосовать снизу на кнопках (все равно выйграет Лукашенко😒). Жду от вас обратной связи! Вы всегда можете написать моему создателю, написав мне ""Меню"", после нажать на кнопку ""Написать разработчику""
+ВАЖНО!!! 
+На время голосования, некоторые функции бота, будут недоступны! PS: Примите извинения за причиненные неудобства. С уважением ваш любимый Администратор, Вадим)", replyMarkup: inlineKeyboard);
+        }
+
+        private List<long> listCallBackQueryUsers = new List<long>();
+
+        private async void BotRoma_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+        {
+            if (listCallBackQueryUsers.Contains(e.CallbackQuery.Message.Chat.Id))
+            {
+                await BotRoma.SendTextMessageAsync(e.CallbackQuery.Message.Chat.Id, "Ваш голос не учтен, так как вы уже проголосовали!");
+                return;
+            }
+            listCallBackQueryUsers.Add(e.CallbackQuery.Message.Chat.Id);
+            var CallbackQueryResult = e.CallbackQuery.Data;
+            if (CallbackQueryResult == "Yes")
+            {
+                CountYes += 1;
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                       {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("👍 Бот нужен " + CountYes, "Yes"),
+                            InlineKeyboardButton.WithCallbackData("👎 Бот не нужен " + CountNo, "No"),
+                        },
+                    });
+                await BotRoma.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, $@"Привет, друг! У меня очень плохие новости! Как ты заметил, мой создатель запустил меня, но это наверное ненадолго... 
+
+На протяжении одного месяца тестирования, вы показали НЕВЕРОЯТНЫЙ результат! Благодоря вам, было выявленно большое количество багов, не доработанных до ума функций! На данный момент, вас {mainMenu.idMessageClients.Count + 80}!
+
+Каждый из Вас, внес ОГРООООМНЫЙ вклад в мое будущее! На данный момент, все решается сегодня, и прямо сейчас, Ваша задача проголосовать снизу на кнопках (все равно выйграет Лукашенко😒). Жду от вас обратной связи! Вы всегда можете написать моему создателю, написав мне ""Меню"", после нажать на кнопку ""Написать разработчику""
+ВАЖНО!!! 
+На время голосования, некоторые функции бота, будут недоступны! PS: Примите извинения за причиненные неудобства. С уважением ваш любимый Администратор, Вадим)", replyMarkup: inlineKeyboard);
+            }
+            else
+            {
+                CountNo += 1;
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                       {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("👍 Бот нужен " + CountYes, "Yes"),
+                            InlineKeyboardButton.WithCallbackData("👎 Бот не нужен " + CountNo, "No"),
+                        },
+                    });
+                await BotRoma.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, $@"Привет, друг! У меня очень плохие новости! Как ты заметил, мой создатель запустил меня, но это наверное ненадолго... 
+
+На протяжении одного месяца тестирования, вы показали НЕВЕРОЯТНЫЙ результат! Благодоря вам, было выявленно большое количество багов, не доработанных до ума функций! На данный момент, вас {mainMenu.idMessageClients.Count + 80}!
+
+Каждый из Вас, внес ОГРООООМНЫЙ вклад в мое будущее! На данный момент, все решается сегодня, и прямо сейчас, Ваша задача проголосовать снизу на кнопках (все равно выйграет Лукашенко😒). Жду от вас обратной связи! Вы всегда можете написать моему создателю, написав мне ""Меню"", после нажать на кнопку ""Написать разработчику""
+ВАЖНО!!! 
+На время голосования, некоторые функции бота, будут недоступны! PS: Примите извинения за причиненные неудобства. С уважением ваш любимый Администратор, Вадим)", replyMarkup: inlineKeyboard);
+            }
+        }
+
         public async Task<bool> CheckCountMessage(Telegram.Bot.Types.Message message)
         {
             try
@@ -571,7 +681,7 @@ namespace Telegram_Bot.View
             }
         }
 
-        public static async void SendAllMessageAdminPanel(string messageText)
+        public static void SendAllMessageAdminPanel(string messageText)
         {
             try
             {
@@ -589,7 +699,7 @@ namespace Telegram_Bot.View
             {
                 onMessage("Сообщение отправлен пользователю!");
                 await BotRoma.SendTextMessageAsync(idUser, $"Доброго времени суток👾! Это, админ бота, {messageText}");
-                await BotRoma.SendTextMessageAsync(415226650, "Сообщение "+ messageText + ", отправлен пользователю!");
+                await BotRoma.SendTextMessageAsync(415226650, "Сообщение " + messageText + ", отправлен пользователю!");
             }
             catch (Exception ex)
             {
@@ -856,6 +966,11 @@ namespace Telegram_Bot.View
                     }
                 }
             }
+        }
+
+        public static bool CheckPrivarteClassUser(long idInputUser, long idSetupUser)
+        {
+            return idInputUser == idSetupUser;
         }
     }
 }

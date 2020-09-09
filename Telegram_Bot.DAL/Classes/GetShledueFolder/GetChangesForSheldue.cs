@@ -78,7 +78,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                                         var paragSplit2 = RangeText(parag2.Range.Text).Split(new char[] { ' ', '(', ')' });
                                         foreach (string wordl in paragSplit2)
                                         {
-                                            if (wordl.Contains("нечётная") || wordl.Contains("чётная"))
+                                            if (wordl.Replace("/t", "").Contains("нечётная") || wordl.Replace("/t", "").Contains("чётная"))
                                             {
                                                 week = wordl;
                                                 counter++;
@@ -207,7 +207,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
         // Очистка текста от лишних символов
         private string RangeText(string text)
         {
-            return text.Replace("\r\a", "").Replace("\r", ""); ;
+            return text.Replace("\r\a", "").Replace("\r", "");
         }
         private bool DownloadFileChangesForSheldue()
         {
@@ -216,8 +216,8 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                 if (File.Exists("changesSheldue.docx"))
                 {
                     File.Delete("changesSheldue.docx");
-                }
-                try { new WebClient().DownloadFile("http://ggkttd.by/wp-content/uploads/2016/01/%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D1%8B2018.docx", "changesSheldue.docx"); } catch { }
+                }                                   
+                try { new WebClient().DownloadFile("http://ggkttd.by/wp-content/uploads/2016/01/замены2018.docx", "changesSheldue.docx"); } catch { }
                 return File.Exists("changesSheldue.docx") ? true : false;
             }
             catch(Exception ex)
@@ -232,7 +232,7 @@ namespace Telegram_Bot.DAL.Classes.GetShledueFolder
                         if (docs.Name == "changesSheldue.docx")
                         {
                             docs.Close();
-                            DownloadFileChangesForSheldue();
+                            DownloadFileChangesForSheldue(); 
                             break;
                         }
                     }

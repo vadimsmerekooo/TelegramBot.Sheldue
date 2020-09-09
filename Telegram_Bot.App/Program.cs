@@ -384,7 +384,7 @@ namespace Telegram_Bot.App
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 bw = new BackgroundWorker();
                 MainMenu menuLibriary = new MainMenu(Const.GetsetBot, Const.GetSetApiKey, ref allSheldue);
-                MainMenu.Week = weekCheck;
+                menuLibriary.SetWeek = weekCheck;
                 bw.DoWork += menuLibriary.StartedMenu;
                 Const.GetsetBot = new TelegramBotClient(Const.GetSetApiKey);
                 if (bw.IsBusy != true)

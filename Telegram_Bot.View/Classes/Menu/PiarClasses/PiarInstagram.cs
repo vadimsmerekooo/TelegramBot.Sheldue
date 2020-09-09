@@ -30,7 +30,7 @@ namespace Telegram_Bot.View.Classes.Menu.PiarClasses
                             InlineKeyboardButton.WithUrl("Вконтакте","https://vk.com/lovebonsticks"),
                         }
                     });
-            await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"[Поддержи моего, молодого, создателя {new Emoji(0x1F474)}🖤](https://www.instagram.com/p/B8gbrHrnmto/)", ParseMode.Markdown, replyMarkup: keyboard);
+            await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"[Поддержи моего, молодого создателя подпиской {new Emoji(0x1F474)}🖤](https://www.instagram.com/p/CB-FuipHfhB/)", ParseMode.Markdown, replyMarkup: keyboard);
             
         }
     }

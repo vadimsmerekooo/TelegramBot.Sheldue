@@ -17,13 +17,15 @@ namespace Telegram_Bot.View.Classes.Menu
         private string ApiKeyBot;
         private string groupName;
         private Keyboards keyboard = new Keyboards();
+        private long idUserIni;
         Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue;
-        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue) : base(Bot, api, ref sheldue)
+        public ListDayWeak(TelegramBotClient Bot, string api, string group, Dictionary<string, List<IFCore.SheldueAllDaysTelegram>> sheldue, long idInput) : base(Bot, api, ref sheldue)
         {
             BotRoma = Bot;
             ApiKeyBot = api;
             groupName = group;
             this.sheldue = sheldue;
+            this.idUserIni = idInput;
         }
 
         public async void SendMessageListDayWeek(object sender, MessageEventArgs e)
@@ -34,6 +36,8 @@ namespace Telegram_Bot.View.Classes.Menu
                 await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
             }
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, message.Chat.Id))
+                return;
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 2); } catch { }
             var keyboardDays = new ReplyKeyboardMarkup
             {
@@ -69,6 +73,8 @@ namespace Telegram_Bot.View.Classes.Menu
                 await BotRoma.SendTextMessageAsync(message.Chat.Id, $@"К сожалению😱, данная команда не понятна мне😥", ParseMode.MarkdownV2);
                 return;
             }
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, message.Chat.Id))
+                return;
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId - 1); } catch { }
             try { await BotRoma.DeleteMessageAsync(message.Chat.Id, message.MessageId); } catch { }
             switch (message.Text.ToLower())
@@ -113,6 +119,8 @@ namespace Telegram_Bot.View.Classes.Menu
         public async void NextStepParseFile(object sender, MessageEventArgs e, string day)
         {
             var message = e.Message;
+            if (!MainMenu.CheckPrivarteClassUser(idUserIni, message.Chat.Id))
+                return;
             try { await BotRoma.SendTextMessageAsync(message.Chat.Id, @"Загрузка..."); } catch { }
             // Вызываем метод для получения расписания на выбранный день
             string parseTextWithoutWordFile = SerachShldueForUser(day);
